@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 @SuppressLint("ValidFragment")
@@ -54,16 +55,20 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 	TextView addressLine2;
 	TextView monthText; 
 	TextView monthNumber; 
-
+	RelativeLayout latestNewsContainer;
 	public NewsDetailsFragment() {
 		super();
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
+	
+		
 		if (this.newsItem.getCat()==1
 				|| this.newsItem.getCat()==2) {
 			View root = inflater.inflate(R.layout.news_widget, null);
+			 latestNewsContainer =(RelativeLayout) root.findViewById(R.id.latestNewsContainer);
 			imageHeader = (NetworkImageView) root
 					.findViewById(R.id.headerImage1);
 			image = (NetworkImageView) root.findViewById(R.id.newsImage);
@@ -79,6 +84,7 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			return root;
 		} else {
 			View root = inflater.inflate(R.layout.event_widget, null);
+			 latestNewsContainer =(RelativeLayout) root.findViewById(R.id.latestNewsContainer);
 			image = (NetworkImageView) root.findViewById(R.id.newsImage);
 			imageText = (TextView) root.findViewById(R.id.headerText1);
 			imageHeader = (NetworkImageView) root
@@ -108,11 +114,12 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 		super.onResume();
 		if (this.newsItem.getCat()==1
 				|| this.newsItem.getCat()==2) {
-			Uri uri = Uri.parse(newsItem.getImgUrl());
-			imageHeader.setImageUrl(newsItem.getImgUrl(), ImageCacheManager
+			
+		
+			imageHeader.setImageUrl(newsItem.getImgUrl()+"?w=600"  +"&h=600", ImageCacheManager
 					.getInstance().getImageLoader());
 			if(newsItem.articleImageUrl!=null) {
-				image.setImageUrl(newsItem.getArticleImageUrl(), ImageCacheManager
+				image.setImageUrl(newsItem.getArticleImageUrl()+"?w=" + image.getWidth() +"&h="+ image.getHeight(), ImageCacheManager
 						.getInstance().getImageLoader());
 			}
 			imageText.setText(newsItem.getTitle());
@@ -142,7 +149,8 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			mapImage.setImageUrl(gmapsUrl, ImageCacheManager
 					.getInstance().getImageLoader());
 			mapImage.setOnClickListener(this);
-			imageHeader.setImageUrl(newsItem.getImgUrl(), ImageCacheManager
+
+			imageHeader.setImageUrl(newsItem.getImgUrl()+"?w=600"  +"&h=600", ImageCacheManager
 					.getInstance().getImageLoader());
 			DateTime from = newsItem.getFrom();
 			DateTime to = newsItem.getTo();

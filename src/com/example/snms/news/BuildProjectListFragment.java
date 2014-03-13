@@ -143,7 +143,7 @@ public class BuildProjectListFragment extends ListFragment {
 			title.setText(getItem(position).getTitle());
 			Uri uri = Uri.parse(h.getImgUrl());
 		//	text.setText(h.getText());
-			image.setImageUrl(h.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
+			image.setImageUrl(h.getImgUrl()+"?w=300&h=300", ImageCacheManager.getInstance().getImageLoader());
 			return convertView;
 		}
 	

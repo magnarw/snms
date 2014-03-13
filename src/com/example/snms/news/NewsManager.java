@@ -14,7 +14,7 @@ public class NewsManager {
 	private final String TAG = getClass().getSimpleName();
 	private static NewsManager mInstance;
 
-	private static String NEWS_BASE =  "http://46.137.184.176:3000/api/news";
+	private static String NEWS_BASE =  "http://54.217.1.169:8080/snmscms/rest/json/news";
 	private static String NEWS_NUMBER_OF_RESULTS = "CapTech";
 	private static String NEWS_PAGENING = "CapTech";
 

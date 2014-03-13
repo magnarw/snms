@@ -146,10 +146,9 @@ public class EventListFragment extends ListFragment {
 					.findViewById(R.id.newsImage);
 			NewsItem h = getItem(position);
 			title.setText(getItem(position).getTitle());
-			Uri uri = Uri.parse(h.getImgUrl());
+			Uri uri = Uri.parse(h.getImgUrl()+"?w=" + image.getWidth() +"&h="+ image.getHeight()); 
 			// text.setText(h.getText());
-			image.setImageUrl(h.getImgUrl(), ImageCacheManager.getInstance()
-					.getImageLoader());
+			image.setImageUrl(h.getImgUrl()+"?w=300&h=300", ImageCacheManager.getInstance().getImageLoader());
 			return convertView;
 		}
 

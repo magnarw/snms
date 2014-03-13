@@ -651,7 +651,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	    			TextView newsText = (TextView) latestNews.findViewById(R.id.newsText);
 	    			NetworkImageView newsimage = (NetworkImageView)latestNews.findViewById(R.id.newsImage);
 	    			newsText.setText(item.getTitle());
-	    			newsimage.setImageUrl(item.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
+	    			newsimage.setImageUrl(item.getImgUrl()+"?w=300&h=300", ImageCacheManager.getInstance().getImageLoader());
 	    			latestNewsContainer.addView(latestNews);
 	    			newsMap.put(latestNews, item);
 	    			setListener(latestNews);

@@ -142,8 +142,8 @@ public class NewsListFragment extends ListFragment {
 			NewsItem h =  getItem(position);
 			title.setText(getItem(position).getTitle());
 			try {
-			Uri uri = Uri.parse(h.getImgUrl()); 
-			image.setImageUrl(h.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
+			Uri uri = Uri.parse(h.getImgUrl()+"?w=" + image.getWidth() +"&h="+ image.getHeight()); 
+			image.setImageUrl(h.getImgUrl()+"?w=300&h=300", ImageCacheManager.getInstance().getImageLoader());
 			} catch(Exception e){
 				e.printStackTrace();
 			}
