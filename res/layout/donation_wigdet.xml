@@ -110,13 +110,12 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_slider_arrow_up" />
 
-            <NumberPicker
+            <net.simonvt.numberpicker.NumberPicker
                 android:id="@+id/donationPicker"
-                style="@style/CustomNPStyle"
+                style="@style/NPWidget.Holo.NumberPicker"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:background="@color/snmsDarkBlue"
                 android:textColor="@color/white" />
 
             <ImageView

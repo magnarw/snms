@@ -49,6 +49,7 @@ public class SnmsDAO extends SQLiteOpenHelper {
 
 	private static final String TABLE_JUMMA_TO_DAY = "jummatoday";
 
+	
 	private static final String TABLE_JUMMA_HOUR = "jummahour";
 
 	private static final String TABLE_JUMMA_MINUTES = "jummaminutes";

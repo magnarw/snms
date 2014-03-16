@@ -47,7 +47,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.widget.NumberPicker;
+import net.simonvt.numberpicker.NumberPicker;
 import android.widget.TextView;
 
 public class DonationFragment extends Fragment implements OnClickListener, NumberPicker.OnValueChangeListener  {
@@ -62,7 +62,6 @@ public class DonationFragment extends Fragment implements OnClickListener, Numbe
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
 		View root = inflater.inflate(R.layout.donation_wigdet, null);
 		picker = (NumberPicker)root.findViewById(R.id.donationPicker);
 		donationButton =(Button)root.findViewById(R.id.donerButton);

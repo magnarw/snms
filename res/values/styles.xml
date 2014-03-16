@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="SnmsTheme" parent="Theme.Sherlock.Light.DarkActionBar">
+    <style name="SnmsTheme" parent="Theme.Sherlock">
         <item name="homeAsUpIndicator">@null</item>
         <item name="android:homeAsUpIndicator">@drawable/homeicon</item>
    		<item name="android:actionBarStyle">@style/SnmsActionBar</item>
@@ -8,9 +8,17 @@
    		<item name="android:actionBarSize">@dimen/snms_action_bar_default_height</item>
    		<item name="android:minWidth">@dimen/snms_action_button_min_width</item> 
    		<item name="android:icon">@drawable/ic_logo</item> 
+   		<item name="numberPickerStyle">@style/NPWidget.Holo.NumberPicker</item>
         <!-- >item name="android:actionBarStyle">@style/SnmsActionBar</item-->
         <!--item name="android:background">@drawable/snms_actionbar_background</item-->
     </style>
+    
+ 
+
+    <style name="SampleTheme.Light" parent="android:Theme.Light">
+        <item name="numberPickerStyle">@style/NPWidget.Holo.Light.NumberPicker</item>
+    </style>
+    
     
     <!-- >style name="SnmsActionBar" parent="Theme.Sherlock.Light.DarkActionBar">
         <item name="android:background">@drawable/snms_actionbar_background</item>

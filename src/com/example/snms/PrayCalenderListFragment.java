@@ -12,7 +12,6 @@ import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;
 import com.example.snms.news.NewsItem;
 import com.example.snms.news.NewsListFragment.NewsListAdapter;
-import com.example.snms.news.NewsListFragment.NewsScrollListner;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;

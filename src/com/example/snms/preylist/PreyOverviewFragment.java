@@ -39,7 +39,6 @@ import com.example.snms.news.NewsItem;
 import com.example.snms.news.NewsListFragment;
 import com.example.snms.news.NewsManager;
 import com.example.snms.news.NewsListFragment.NewsListAdapter;
-import com.example.snms.news.NewsListFragment.NewsScrollListner;
 import com.example.snms.qibla.QiblaFragment;
 import com.example.snms.settings.SettingsFragment;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
@@ -387,9 +386,15 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	private void renderNext(PreyItem key,View container, TextView title, TextView time, TextView status, ImageView image) {
 		
 		DateTimeZone zone = DateTimeZone.forID(TimeZone.getDefault().getID());
+		
+		String keyTime = key.getTime().toString();
+		String us = DateTime.now(zone).toString();
+		
 		DateTime delta = key.getTime().minus(
 				DateTime.now(zone).getMillis());
-		preyCountDownTimer = new PreyCountDownTimer(delta.getMillis(), 1000, status, this);
+		Long deltaMilis = key.getTime().getMillis()-DateTime.now(zone).getMillis();
+		
+		preyCountDownTimer = new PreyCountDownTimer(deltaMilis, 1000, status, this);
 		preyCountDownTimer.start();
 	}
 
@@ -439,10 +444,10 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			day = "Fredag";
 			break;
 		case 6:
-			day = "Lï¿½rdag";
+			day = "Lørdag";
 			break;
 		case 7:
-			day = "Sï¿½ndag";
+			day = "Søndag";
 			break;
 		default:
 			day = "Ukjent";

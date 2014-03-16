@@ -2,6 +2,9 @@ package com.example.snms.news;
 
 import java.util.List;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -69,13 +72,11 @@ public class NewsListFragment extends ListFragment {
 	private void switchFragment(Fragment fragment1, Fragment fragment2) {
 		if (getActivity() == null)
 			return;
-		
 		if (getActivity() instanceof BaseActivity) {
 			BaseActivity fca = (BaseActivity) getActivity();
 			fca.switchContent(fragment1, fragment2);
 		} 
 	}
-	
 	
 	@Override
 	public void onResume() {
@@ -83,7 +84,7 @@ public class NewsListFragment extends ListFragment {
 		newslistheader.setText("NYHETER");
 		if(getListView().getAdapter() == null) {
 			// Get the first page
-			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),10,0,1);
+			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),20,0,1);
 		}
 	}
 	
@@ -137,10 +138,14 @@ public class NewsListFragment extends ListFragment {
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.news_row, null);
 			}
 			TextView title = (TextView) convertView.findViewById(R.id.row_news_title);
-		//	TextView text = (TextView) convertView.findViewById(R.id.row_news_ingress);
+			TextView text = (TextView) convertView.findViewById(R.id.row_news_created);
+			
 			NetworkImageView image = (NetworkImageView)convertView.findViewById(R.id.newsImage);
 			NewsItem h =  getItem(position);
 			title.setText(getItem(position).getTitle());
+			DateTimeFormatter formatter = DateTimeFormat.forPattern("EEEE MM.dd hh:mm");
+			String created = formatter.print(h.getCreatedDate());
+			text.setText(created);
 			try {
 			Uri uri = Uri.parse(h.getImgUrl()+"?w=" + image.getWidth() +"&h="+ image.getHeight()); 
 			image.setImageUrl(h.getImgUrl()+"?w=300&h=300", ImageCacheManager.getInstance().getImageLoader());
