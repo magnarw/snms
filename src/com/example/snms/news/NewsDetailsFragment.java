@@ -12,6 +12,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.snms.R;
 import com.example.snms.R.id;
 import com.example.snms.R.layout;
+import com.example.snms.domain.NewsItem;
 import com.example.snms.images.ImageCacheManager;
 
 import android.annotation.SuppressLint;
@@ -27,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -41,20 +43,19 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 	TextView newstext2;
 	TextView title;
 	TextView authorTag;
-
 	TextView ingress;
 	NetworkImageView imageHeader;
 	NetworkImageView image;
 	NetworkImageView mapImage;
 	TextView imageText;
 	TextView articleImageText;
-
 	// Event stuff
 	TextView timeFrom;
 	TextView addressLine1;
 	TextView addressLine2;
 	TextView monthText; 
 	TextView monthNumber; 
+	ImageButton addTocal;
 	RelativeLayout latestNewsContainer;
 	public NewsDetailsFragment() {
 		super();
@@ -95,7 +96,8 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			addressLine2 = (TextView) root.findViewById(R.id.addressLine2);
 			monthText = (TextView) root.findViewById(R.id.dateWrapMonthText);
 			monthNumber = (TextView) root.findViewById(R.id.dateWrapMonthNumber); 
-			
+			addTocal = (ImageButton)root.findViewById(R.id.addTocal); 
+			addTocal.setOnClickListener(this);
 			timeFrom = (TextView) root.findViewById(R.id.timeText);
 			timeFrom.setOnClickListener(this);
 			text = (TextView) root.findViewById(R.id.Newstext);
@@ -115,11 +117,11 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 		if (this.newsItem.getCat()==1
 				|| this.newsItem.getCat()==2) {
 			
-		
-			imageHeader.setImageUrl(newsItem.getImgUrl()+"?w=600"  +"&h=600", ImageCacheManager
+			imageHeader.setImageUrl(newsItem.getImgUrl()+"?w=1200"  +"&h=600", ImageCacheManager
 					.getInstance().getImageLoader());
-			if(newsItem.articleImageUrl!=null) {
-				image.setImageUrl(newsItem.getArticleImageUrl()+"?w=" + image.getWidth() +"&h="+ image.getHeight(), ImageCacheManager
+			//150;
+			if(newsItem.getArticleImageUrl()!=null) {
+				image.setImageUrl(newsItem.getArticleImageUrl()+"?w=600&h=600", ImageCacheManager
 						.getInstance().getImageLoader());
 			}
 			imageText.setText(newsItem.getTitle());
@@ -206,32 +208,16 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 			getActivity().startActivity(intent);
 		}
-		if(v.equals(timeFrom)){
-			String[] projection = new String[] { "_id", "name" };
-			Uri calendars = Uri.parse("content://calendar/calendars");
-			     
-			Cursor managedCursor =
-			   getActivity().managedQuery(calendars, projection, null, null, null);
-			if (managedCursor.moveToFirst()) {
-				 String calName; 
-				 String calId; 
-				 int nameColumn = managedCursor.getColumnIndex("name"); 
-				 int idColumn = managedCursor.getColumnIndex("_id");
-				 do {
-				    calName = managedCursor.getString(nameColumn);
-				    calId = managedCursor.getString(idColumn);
-				 } while (managedCursor.moveToNext());
-				 ContentValues event = new ContentValues();
-				 event.put("calendar_id", calId);
-				 event.put("title", newsItem.getTitle());
-				 event.put("description", newsItem.getText());
-				 event.put("eventLocation",newsItem.getAddress());
-				 event.put("dtstart", newsItem.getFrom().getMillis());
-				 event.put("dtend", newsItem.getTo().getMillis());
-				  Uri eventsUri = Uri.parse("content://calendar/events");
-				  Uri url = getActivity().getContentResolver().insert(eventsUri, event);
+		if(v.equals(timeFrom) || v.equals(addTocal)){
+				Intent intent = new Intent(Intent.ACTION_EDIT);
+				intent.setType("vnd.android.cursor.item/event");
+				intent.putExtra("beginTime",newsItem.getFrom().getMillis());
+				intent.putExtra("allDay", false);
+				intent.putExtra("rrule", "FREQ=YEARLY");
+				intent.putExtra("endTime", newsItem.getTo().getMillis());
+				intent.putExtra("title", newsItem.getTitle());
+				startActivity(intent);
 			}
-		}
 		
 	}
 

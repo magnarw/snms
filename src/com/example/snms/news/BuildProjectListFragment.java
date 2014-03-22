@@ -14,6 +14,7 @@ import com.example.snms.HolidayListFragment.HolidayListAdapter;
 import com.example.snms.R.id;
 import com.example.snms.R.layout;
 import com.example.snms.domain.HolydayItem;
+import com.example.snms.domain.NewsItem;
 import com.example.snms.images.ImageCacheManager;
 import com.example.snms.network.GsonRequest;
 
@@ -44,6 +45,8 @@ public class BuildProjectListFragment extends ListFragment {
 	ProgressBar progressBar;
 	TextView errorMessage;
 	TextView newslistheader;
+	private static Integer PAGE_SIZE_FOR_BUILDPROJECT = 5; 
+	Integer lastLoadedPage =-1;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -79,12 +82,16 @@ public class BuildProjectListFragment extends ListFragment {
 	
 	@Override
 	public void onResume() {
-		newslistheader.setText("BYGGEPROSJEKTET");
 		super.onResume();
+		newslistheader.setText("BYGGEPROSJEKTET");
 		if(getListView().getAdapter() == null) {
 			// Get the first page
-			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),10,0,2);
+			isLoading = true;
+			lastLoadedPage = 0; 
+			
+			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_BUILDPROJECT,0,2);
 		}
+		progressBar.setVisibility(View.VISIBLE);
 	}
 	
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -132,9 +139,30 @@ public class BuildProjectListFragment extends ListFragment {
 			
 		}
 		
+		private boolean shouldLoadMoreData(int count, int position){
+			// If showing the last set of data, request for the next set of data
+			boolean scrollRangeReached = (position > (count - PAGE_SIZE_FOR_BUILDPROJECT));
+			NewsItem item = getItem(position);
+			boolean value =  (scrollRangeReached && !isLoading && item.getHasMoreElements() && item.getNextPage()>lastLoadedPage);
+			return value;
+		}
+
+		private void loadMoreData(int nextPage){
+			progressBar.setVisibility(View.VISIBLE);
+			isLoading = true;
+			lastLoadedPage = nextPage;
+			Log.v(getClass().toString(), "Load more tweets");
+			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_BUILDPROJECT,nextPage,2);
+		}
+		
+		
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.news_row, null);
+			}
+			
+			if(shouldLoadMoreData(this.getCount(), position) ) {
+				loadMoreData(getItem(position).getNextPage());
 			}
 			TextView title = (TextView) convertView.findViewById(R.id.row_news_title);
 		//	TextView text = (TextView) convertView.findViewById(R.id.row_news_ingress);

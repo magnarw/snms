@@ -13,9 +13,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.snms.database.SnmsDAO;
 import com.example.snms.domain.Jumma;
+import com.example.snms.domain.NewsItem;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.images.ImageCacheManager;
-import com.example.snms.news.NewsItem;
 import com.example.snms.news.NewsManager;
 
 public class JummaAdaptor {

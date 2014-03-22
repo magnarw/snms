@@ -4,11 +4,13 @@ package com.example.snms;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 
 import java.lang.reflect.Type;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import android.util.Log;
 
@@ -25,7 +27,8 @@ public class DateJsonMapper implements JsonDeserializer<DateTime> {
             JsonDeserializationContext context) throws JsonParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         try {
-        	return DateTime.parse(json.getAsString());
+        	DateTimeZone zone = DateTimeZone.forID(TimeZone.getDefault().getID());
+        	return new DateTime(json.getAsLong(),zone);
 		
 		} catch (Exception e) {
 			e.printStackTrace();

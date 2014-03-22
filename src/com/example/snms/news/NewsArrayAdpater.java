@@ -7,6 +7,7 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
+import com.example.snms.domain.NewsItem;
 
 public class NewsArrayAdpater extends ArrayAdapter<String> implements Listener<NewsItem>, ErrorListener {
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content" 
+    android:weightSum="1"
+    >
+	
+      <com.android.volley.toolbox.NetworkImageView
+	    android:id="@+id/newsImage"
+		android:layout_weight=".3"
+	    android:layout_width="0dp"
+	    android:layout_height="78dp"
+	    android:scaleType="fitStart"
+	    android:padding="5dp"
+	 />
+     
+    <LinearLayout 
+    android:layout_width="0dp"
+    android:orientation="vertical"
+    android:layout_height="wrap_content" 
+    android:layout_weight="0.7"
+    >
+        <TextView
+        android:id="@+id/row_news_created"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:paddingLeft="5dp"
+        android:paddingBottom="2dp"
+        android:textColor="@color/snmsLightGray"
+        android:text="29.01.2013"
+        android:textSize="14sp" />
+    <TextView
+        android:id="@+id/row_news_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:paddingBottom="2dp"
+        android:paddingLeft="5dp"
+        android:text="Dette er en bra nyhet som er frykelig lanjgjgjghjk  bujhkjhkj bkjbjkbjk kjhg"
+        android:textSize="18sp" />
+    
+    
+    
+    </LinearLayout>
+
+       
+       
+       
+
+</LinearLayout>

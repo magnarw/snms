@@ -2,6 +2,9 @@ package com.example.snms.news;
 
 import java.util.List;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -14,11 +17,17 @@ import com.example.snms.HolidayListFragment.HolidayListAdapter;
 import com.example.snms.R.id;
 import com.example.snms.R.layout;
 import com.example.snms.domain.HolydayItem;
+import com.example.snms.domain.NewsItem;
 import com.example.snms.images.ImageCacheManager;
 import com.example.snms.network.GsonRequest;
+import com.example.snms.news.NewsListFragment.NewsListAdapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -44,6 +53,8 @@ public class EventListFragment extends ListFragment {
 	ProgressBar progressBar;
 	TextView errorMessage;
 	TextView newslistheader;
+	private static Integer PAGE_SIZE_FOR_EVENTS = 5; 
+	Integer lastLoadedPage =-1;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +62,7 @@ public class EventListFragment extends ListFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 
 		View root = inflater.inflate(R.layout.listnews, container, false);
-		 newslistheader= (TextView) root.findViewById(R.id.newslistheader);
+		newslistheader= (TextView) root.findViewById(R.id.newslistheader);
 		progressBar = (ProgressBar) root.findViewById(R.id.progress);
 		return root;
 
@@ -80,38 +91,43 @@ public class EventListFragment extends ListFragment {
 		}
 	}
 
+
 	@Override
 	public void onResume() {
-		newslistheader.setText("EVENTS");
 		super.onResume();
-		if (getListView().getAdapter() == null) {
+		newslistheader.setText("EVENTS");
+		if(getListView().getAdapter() == null) {
 			// Get the first page
-			NewsManager.getInstance().getNews(createSuccessListener(),
-					createErrorListener(), 10, 0, 3);
+			isLoading = true;
+			lastLoadedPage = 0; 
+			
+			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_EVENTS,0,3);
 		}
+		progressBar.setVisibility(View.VISIBLE);
 	}
+	
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		this.getListView().setOnScrollListener(new NewsScrollListner());
 	}
 
-	private Response.Listener<NewsItem[]> createSuccessListener() {
-		return new Response.Listener<NewsItem[]>() {
-
-			@Override
+	private Response.Listener <NewsItem[]> createSuccessListener() {
+	    return new Response.Listener <NewsItem[]>() {
+	    	@Override
 			public void onResponse(NewsItem[] response) {
-				progressBar.setVisibility(View.GONE);
-				adapter = new NewsListAdapter(getActivity());
-				setListAdapter(adapter);
-				adapter.clear();
-				for (NewsItem item : response) {
+	    		progressBar.setVisibility(View.VISIBLE);
+	    		if(adapter==null) {
+	    			adapter = new NewsListAdapter(getActivity());
+	    			setListAdapter(adapter);
+	    		}
+				for(NewsItem item : response) {
 					adapter.add(item);
 				}
 				adapter.notifyDataSetChanged();
 				isLoading = false;
 			}
-		};
+	    };	
 	}
 
 	private Response.ErrorListener createErrorListener() {
@@ -132,12 +148,33 @@ public class EventListFragment extends ListFragment {
 			super(context, 0);
 
 		}
+		private boolean shouldLoadMoreData(int count, int position){
+			// If showing the last set of data, request for the next set of data
+			boolean scrollRangeReached = (position > (count - PAGE_SIZE_FOR_EVENTS));
+			NewsItem item = getItem(position);
+			boolean value =  (scrollRangeReached && !isLoading && item.getHasMoreElements() && item.getNextPage()>lastLoadedPage);
+			return value;
+		}
+
+		private void loadMoreData(int nextPage){
+			progressBar.setVisibility(View.VISIBLE);
+			isLoading = true;
+			lastLoadedPage = nextPage;
+			Log.v(getClass().toString(), "Load more tweets");
+			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_EVENTS,nextPage,3);
+		}
+
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
 				convertView = LayoutInflater.from(getContext()).inflate(
-						R.layout.news_row, null);
+						R.layout.event_row, null);
 			}
+			if(shouldLoadMoreData(this.getCount(), position) ) {
+				loadMoreData(getItem(position).getNextPage());
+			}
+			TextView text = (TextView) convertView.findViewById(R.id.row_news_created);
+			
 			TextView title = (TextView) convertView
 					.findViewById(R.id.row_news_title);
 			// TextView text = (TextView)
@@ -149,6 +186,15 @@ public class EventListFragment extends ListFragment {
 			Uri uri = Uri.parse(h.getImgUrl()+"?w=" + image.getWidth() +"&h="+ image.getHeight()); 
 			// text.setText(h.getText());
 			image.setImageUrl(h.getImgUrl()+"?w=300&h=300", ImageCacheManager.getInstance().getImageLoader());
+			DateTimeFormatter formatter = DateTimeFormat.forPattern("MM.dd hh:mm");
+			String created = formatter.print(h.getFrom());
+			text.setText(created + "-" + formatter.print(h.getTo()) );
+			if(h.getTo().isBeforeNow()){
+				image.setColorFilter(Color.argb(450, 48, 48, 48),   Mode.SRC_ATOP);
+				title.setTextColor(Color.rgb(108, 108, 108));
+				title.setText("Event har pasert\n"+ h.getTitle());
+			}
+			
 			return convertView;
 		}
 

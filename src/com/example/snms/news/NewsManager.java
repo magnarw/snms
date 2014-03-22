@@ -6,6 +6,7 @@ import android.util.Log;
 import com.android.volley.Request.Method;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+import com.example.snms.domain.NewsItem;
 import com.example.snms.network.GsonRequest;
 import com.example.snms.network.RequestManager;
 

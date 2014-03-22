@@ -167,7 +167,6 @@
             
                <ProgressBar
             android:id="@+id/progressBar"
-            style="@style/AppTheme"
                 android:layout_below="@+id/locationContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

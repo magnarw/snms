@@ -10,14 +10,12 @@ import com.example.snms.database.SnmsDAO;
 import com.example.snms.domain.Geolocation;
 import com.example.snms.domain.GeolocationSearchResult;
 import com.example.snms.domain.Geometry;
-import com.example.snms.news.NewsItem;
+import com.example.snms.domain.NewsItem;
 import com.example.snms.news.NewsListFragment.NewsListAdapter;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;

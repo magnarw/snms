@@ -1,5 +1,6 @@
 package com.example.snms;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -8,16 +9,11 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.example.snms.domain.NewsItem;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;
-import com.example.snms.news.NewsItem;
 import com.example.snms.news.NewsListFragment.NewsListAdapter;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
-import com.fourmob.datetimepicker.date.DatePickerDialog;
-import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
-import com.sleepbot.datetimepicker.time.RadialPickerLayout;
-import com.sleepbot.datetimepicker.time.TimePickerDialog;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
@@ -31,18 +27,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class PrayCalenderListFragment extends Fragment implements
-		OnClickListener ,  OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+		OnClickListener ,  android.app.DatePickerDialog.OnDateSetListener {
 
 	ListView prayGridForMonth;
 	SnmsPrayTimeAdapter prayTimeAdapter;
 	PreyCalenderAdapter adapter;
-	  DatePickerDialog datePickerDialog;
 	   public static final String DATEPICKER_TAG = "datepicker";
 	TextView date;
 	TextView fajr;
@@ -79,10 +75,6 @@ public class PrayCalenderListFragment extends Fragment implements
 		prevDay.setOnClickListener(this);
 		currentDate = new DateTime();
 		timeCurrentlyUsedInPreyOverView = currentDate;
-		   final Calendar calendar = Calendar.getInstance();
-	        datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
-			
-
 		return rootView;
 	}
 
@@ -162,11 +154,6 @@ public class PrayCalenderListFragment extends Fragment implements
 			Log.e("PreyListCalender", "Bygge kalender fra preylist adatper:"
 					+ e.getLocalizedMessage());
 		}
-
-		prayGridForMonth.setItemChecked(
-				timeCurrentlyUsedInPreyOverView.getDayOfMonth() - 1, true);
-		prayGridForMonth.smoothScrollToPosition(timeCurrentlyUsedInPreyOverView
-				.getDayOfMonth() - 1);
 		adapter.notifyDataSetChanged();
 	}
 
@@ -225,7 +212,19 @@ public class PrayCalenderListFragment extends Fragment implements
 							break;
 						}
 						TextView prey = lables.get(counter);
-						prey.setText(item.getTimeOfDayAsString());
+						String ZeroPlusHour = Integer.toString(item.getTime()
+								.getHourOfDay());
+						if (item.getTime().getHourOfDay() < 10) {
+							ZeroPlusHour = "0" + ZeroPlusHour;
+						}
+						String ZeroPlusMin = Integer.toString(item.getTime()
+								.getMinuteOfHour());
+						if (item.getTime().getMinuteOfHour() < 10) {
+							ZeroPlusMin = "0" + ZeroPlusMin;
+						}
+						prey.setText(ZeroPlusHour + ":" + ZeroPlusMin);
+						
+						
 						counter++;
 					}
 				} catch (Exception exception) {
@@ -241,14 +240,6 @@ public class PrayCalenderListFragment extends Fragment implements
 
 		}
 
-		private String addWhiteSpaces(String preyText) {
-			String s = preyText;
-			while (s.length() < 11) {
-				s += " ";
-			}
-
-			return s;
-		}
 
 	}
 
@@ -256,23 +247,31 @@ public class PrayCalenderListFragment extends Fragment implements
 	public void onClick(View v) {
 		
 		if (v.equals(currentDay)) {
-		       datePickerDialog.setYearRange(1985, 2028);
-            datePickerDialog.show(getFragmentManager(), DATEPICKER_TAG);
-			/*
-			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView.plusDays(1);
-			setUpCurrentDay();
-			preyTimes = loadPrayTimes(timeCurrentlyUsedInPreyOverView);
-			adapter.setActivePreys(preyTimes);
-			adapter.clear();
-			adapter.setActivePreys(preyTimes);
-			for (PreyItem preyItem : preyTimes) {
-				adapter.add(preyItem);
-				// checkAlarmStateAtStartup(preyItem);
-			}
-			adapter.notifyDataSetChanged();
-			*/
+		     android.app.DatePickerDialog pika = new android.app.DatePickerDialog(this.getActivity(), this, 
+                       DateTime.now().getYear(),DateTime.now().getMonthOfYear(),1);
+		  
+		     DatePicker dp = pika.getDatePicker();
+		     try {
+		    	    Field f[] = dp.getClass().getDeclaredFields();
+		    	    for (Field field : f) {
+		    	        if (field.getName().equals("mDaySpinner")) {
+		    	            field.setAccessible(true);
+		    	            Object dayPicker = new Object();
+		    	            dayPicker = field.get(dp);
+		    	            ((View) dayPicker).setVisibility(View.GONE);
+		    	        }
+		    	    }
+		    	} catch (SecurityException e) {
+		    	    Log.d("ERROR", e.getMessage());
+		    	} 
+		    	catch (IllegalArgumentException e) {
+		    	    Log.d("ERROR", e.getMessage());
+		    	} catch (IllegalAccessException e) {
+		    	    Log.d("ERROR", e.getMessage());
+		    	}
+		     
+		     pika.show();
 		}
-		
 		if (v.equals(nextDay)) {
 			adapter.clear();
 			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView
@@ -324,15 +323,9 @@ public class PrayCalenderListFragment extends Fragment implements
 
 	}
 
-	@Override
-	public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
-	@SuppressLint("NewApi")
-	@Override
-	public void onDateSet(DatePickerDialog datePickerDialog, int year,
+	public void onDateSet(DatePicker datePickerDialog, int year,
 			int month, int day) {
 		
 		timeCurrentlyUsedInPreyOverView = new DateTime(year,month+1,day,0,0);
@@ -352,10 +345,9 @@ public class PrayCalenderListFragment extends Fragment implements
 		}
 	
 		adapter.notifyDataSetChanged();
-		prayGridForMonth.setItemChecked(
-				day-1, true);
-		prayGridForMonth.smoothScrollToPosition(day-1);
 		
 	}
+
+
 
 }

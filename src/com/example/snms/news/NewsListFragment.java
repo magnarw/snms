@@ -17,6 +17,7 @@ import com.example.snms.HolidayListFragment.HolidayListAdapter;
 import com.example.snms.R.id;
 import com.example.snms.R.layout;
 import com.example.snms.domain.HolydayItem;
+import com.example.snms.domain.NewsItem;
 import com.example.snms.images.ImageCacheManager;
 import com.example.snms.network.GsonRequest;
 
@@ -47,6 +48,10 @@ public class NewsListFragment extends ListFragment {
 	ProgressBar progressBar;
 	TextView errorMessage;
 	TextView newslistheader;
+	Integer lastLoadedPage =-1;
+	
+	private static Integer PAGE_SIZE_FOR_NEWS = 5; 
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		   super.onCreateView(inflater, container,
@@ -84,13 +89,16 @@ public class NewsListFragment extends ListFragment {
 		newslistheader.setText("NYHETER");
 		if(getListView().getAdapter() == null) {
 			// Get the first page
-			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),20,0,1);
+			isLoading = true;
+			lastLoadedPage = 0; 
+			
+			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_NEWS,0,1);
 		}
+		progressBar.setVisibility(View.VISIBLE);
 	}
 	
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		this.getListView().setOnScrollListener(new NewsScrollListner());
 	}
 	
 
@@ -99,11 +107,11 @@ public class NewsListFragment extends ListFragment {
 	    return new Response.Listener <NewsItem[]>() {
 	    	@Override
 			public void onResponse(NewsItem[] response) {
-	    		
-	    		progressBar.setVisibility(View.GONE);
-	    		adapter = new NewsListAdapter(getActivity());
-	    		setListAdapter(adapter);
-	    		adapter.clear();
+	    		progressBar.setVisibility(View.VISIBLE);
+	    		if(adapter==null) {
+	    			adapter = new NewsListAdapter(getActivity());
+	    			setListAdapter(adapter);
+	    		}
 				for(NewsItem item : response) {
 					adapter.add(item);
 				}
@@ -117,7 +125,7 @@ public class NewsListFragment extends ListFragment {
 	    return new Response.ErrorListener() {
 	        @Override
 	        public void onErrorResponse(VolleyError error) {
-	        	progressBar.setVisibility(View.GONE);
+	          	progressBar.setVisibility(View.VISIBLE);
 	        	//TODO : Log error and get prey times from local storage
 	            //error.getStackTrace();
 	        	Log.e("error",error.toString());
@@ -127,7 +135,26 @@ public class NewsListFragment extends ListFragment {
 	
 	
 	public class NewsListAdapter extends ArrayAdapter<NewsItem> {
+		
+		
+		private boolean shouldLoadMoreData(int count, int position){
+			// If showing the last set of data, request for the next set of data
+			boolean scrollRangeReached = (position > (count - PAGE_SIZE_FOR_NEWS));
+			NewsItem item = getItem(position);
+			boolean value =  (scrollRangeReached && !isLoading && item.getHasMoreElements() && item.getNextPage()>lastLoadedPage);
+			return value;
+		}
 
+		private void loadMoreData(int nextPage){
+			progressBar.setVisibility(View.VISIBLE);
+			isLoading = true;
+			lastLoadedPage = nextPage;
+			Log.v(getClass().toString(), "Load more tweets");
+			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_NEWS,nextPage,1);
+		}
+
+		
+		
 		public NewsListAdapter(Context context) {
 			super(context, 0);
 			
@@ -137,6 +164,10 @@ public class NewsListFragment extends ListFragment {
 			if (convertView == null) {
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.news_row, null);
 			}
+			if(shouldLoadMoreData(this.getCount(), position) ) {
+				loadMoreData(getItem(position).getNextPage());
+			}
+			
 			TextView title = (TextView) convertView.findViewById(R.id.row_news_title);
 			TextView text = (TextView) convertView.findViewById(R.id.row_news_created);
 			
@@ -160,46 +191,7 @@ public class NewsListFragment extends ListFragment {
 		
 }
 	
-	public class NewsScrollListner implements OnScrollListener  {
-		
-		int currentFirstVisibleItem;
-		int  currentVisibleItemCount;
-		int currentScrollState;
-	
-		
-		
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-		    this.currentFirstVisibleItem = firstVisibleItem;
-		    this.currentVisibleItemCount = visibleItemCount;
-		}
-		
-		@Override
-		public void onScrollStateChanged(AbsListView view, int scrollState) {
-		    this.currentScrollState = scrollState;
-		    this.isScrollCompleted();
-		 }
-		
-		void loadMoreData() {
-		//	putPreyItemsOnRequestQueue();
-		}
 
-		private void isScrollCompleted() {
-		    if (this.currentVisibleItemCount > 0 && this.currentScrollState == SCROLL_STATE_IDLE) {
-		        /*** In this way I detect if there's been a scroll which has completed ***/
-		        /*** do the work for load more date! ***/
-		        if(!isLoading){
-		             isLoading = true;
-		             loadMoreData();
-		        }
-		    }
-		}
-
-
-
-		
-		
-	}
 	
 	
 }

@@ -38,6 +38,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,35 +46,59 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import net.simonvt.numberpicker.NumberPicker;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.TextView;
 
-public class DonationFragment extends Fragment implements OnClickListener, NumberPicker.OnValueChangeListener  {
+public class DonationFragment extends Fragment implements OnClickListener {
 	
 	
-	private NumberPicker picker; 
+	private TextView picker; 
 	private Button donationButton; 
 	private String[] nums = new String[10];
 	private TextView dontationText; 
 	private TextView infoButton;
 	private ImageView infoImage;
+	private Integer currentValue = 200;
+	private ImageButton up;
+	private ImageButton down;
+	private TextView donationSumPickerPrev;
+	private TextView donationSumPickerNext;
+	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View root = inflater.inflate(R.layout.donation_wigdet, null);
-		picker = (NumberPicker)root.findViewById(R.id.donationPicker);
+		picker = (TextView)root.findViewById(R.id.donationSumPicker);
+	  //  picker.seton
+	//	picker.seton
+		
+		
+		donationSumPickerPrev =(TextView)root.findViewById(R.id.donationSumPickerPrev);
+		donationSumPickerNext = (TextView)root.findViewById(R.id.donationSumPickerNext);
+		
+		donationSumPickerPrev.setText("150");
+		picker.setText("200");
+		donationSumPickerNext.setText("250");
 		donationButton =(Button)root.findViewById(R.id.donerButton);
 		infoButton =(TextView)root.findViewById(R.id.moreInfo);
 		dontationText = (TextView)root.findViewById(R.id.donationSum);
+
+		
+		
+		dontationText.setText("200kr");
+		up = (ImageButton)root.findViewById(R.id.up);
+		down = (ImageButton)root.findViewById(R.id.down);
+		
+		up.setOnClickListener(this);
+		down.setOnClickListener(this);
+		
 		infoImage = (ImageView)root.findViewById(R.id.placeHolder3);
-		picker.setOnValueChangedListener(this);
 		infoButton.setOnClickListener(this);
 		infoImage.setOnClickListener(this);
-		for(int i=0; i<nums.length; i++)
-			nums[i] = Integer.toString(i*50 + 50);
-
 		
 		return root;
 	}
@@ -87,12 +112,12 @@ public class DonationFragment extends Fragment implements OnClickListener, Numbe
 	public void onResume() {
 		super.onResume();
 		donationButton.setOnClickListener(this);
-		picker.setMaxValue(nums.length-1);
-		picker.setMinValue(0);
-		picker.setWrapSelectorWheel(false);
-		picker.setDisplayedValues(nums);
-		picker.setValue(0);
-		dontationText.setText("50kr");
+//		picker.setMaxValue(nums.length-1);
+//		picker.setMinValue(0);
+//		picker.setWrapSelectorWheel(false);
+//		picker.setDisplayedValues(nums);
+//		picker.setValue(0);
+		dontationText.setText("200kr");
 
 	}
 
@@ -115,14 +140,13 @@ public class DonationFragment extends Fragment implements OnClickListener, Numbe
 	public void onClick(View v) {
 		if(v.equals(donationButton)){
 			 Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-			    smsIntent.putExtra("sms_body", "Masjid " + (picker.getValue()*50 +50)); 
+		    smsIntent.putExtra("sms_body", "Masjid " + currentValue); 
 			    smsIntent.putExtra("address", "1963");
 			    smsIntent.setType("vnd.android-dir/mms-sms");
 			    startActivity(smsIntent);
 		}
 		
 		//SharedPreferences p = getActivity().get
-		
 		if(v.equals(infoButton) ||v.equals(infoImage)){
 			// 1. Instantiate an AlertDialog.Builder with its constructor
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -132,14 +156,25 @@ public class DonationFragment extends Fragment implements OnClickListener, Numbe
 			AlertDialog dialog = builder.create();
 			dialog.show();
 		}
-		
-		
-		
-	}
-
-	@Override
-	public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-		  dontationText.setText(newVal*50+50 + "kr");
+		if(v.equals(up)){
+			
+			currentValue= currentValue +50; 
+			picker.setText(String.valueOf(currentValue));
+			dontationText.setText(currentValue + "kr");
+			donationSumPickerPrev.setText(String.valueOf(currentValue-50));
+			donationSumPickerNext.setText(String.valueOf(currentValue+50));
+			
+		}
+		if(v.equals(down)){
+			if((currentValue-50)>0)
+			{		
+			currentValue= currentValue -50; 
+			picker.setText(String.valueOf(currentValue));
+			dontationText.setText(currentValue + "kr");
+			donationSumPickerPrev.setText(String.valueOf(currentValue-50));
+			donationSumPickerNext.setText(String.valueOf(currentValue+50));
+			}
+		}
 	}
 
 

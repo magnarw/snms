@@ -100,31 +100,61 @@
             android:paddingBottom="5dp"
             android:paddingTop="10dp" >
 
-            <ImageView
-                android:id="@+id/placeHolder"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:padding="0dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_slider_arrow_up" />
-
-            <net.simonvt.numberpicker.NumberPicker
-                android:id="@+id/donationPicker"
-                style="@style/NPWidget.Holo.NumberPicker"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:textColor="@color/white" />
-
-            <ImageView
-                android:id="@+id/placeHolder2"
-                android:layout_width="60dp"
+            <ImageButton
+                android:id="@+id/down"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="0dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_slider_arrow_down" />
+                android:src="@drawable/downarrow" />
+            
+             <TextView
+                android:id="@+id/donationSumPickerPrev"
+                android:gravity="center"
+                android:background="@color/snmsDarkBlue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/snmsEventDarkGray"
+                android:textSize="15dp"
+                android:text="150"
+                android:inputType="number" >
+
+            </TextView>
+            
+
+            <TextView
+                android:id="@+id/donationSumPicker"
+                android:gravity="center"
+                    android:background="@color/snmsDarkBlue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="40dp"
+                android:text="50"
+                android:inputType="number" >
+
+            </TextView>
+            
+                        
+             <TextView
+                android:id="@+id/donationSumPickerNext"
+                android:gravity="center"
+                android:background="@color/snmsDarkBlue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/snmsEventDarkGray"
+                android:textSize="15dp"
+                android:text="250"
+                android:inputType="number" >
+
+            </TextView>
+            
+
+            <ImageButton
+                android:id="@+id/up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:src="@drawable/uparrow" />
         </LinearLayout>
 
         <LinearLayout
@@ -160,10 +190,12 @@
             <Button
                 android:id="@+id/donerButton"
                 android:layout_width="180dp"
-                android:layout_height="45dp"
-                android:background="@drawable/snmsbutton"
+                   android:layout_marginTop="15dp"
+                android:layout_height="75dp"
+                android:background="@color/snmsActiveGreen"
                 android:gravity="center"
-                android:text="JEG VIL GI\n PENGESTØTTE"
+                android:padding="5dp"
+                android:text="TRYKK HER FOR\n FOR Å GI PENGESTØTTE"
                 android:textColor="@color/white" />
             
              <LinearLayout

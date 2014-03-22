@@ -26,6 +26,7 @@ import com.example.snms.alarm.AlarmChangeListner;
 import com.example.snms.alarm.AlarmDialogFragment;
 import com.example.snms.alarm.AlarmUtilities;
 import com.example.snms.database.SnmsDAO;
+import com.example.snms.domain.NewsItem;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.donation.DonationFragment;
 import com.example.snms.images.ImageCacheManager;
@@ -35,20 +36,16 @@ import com.example.snms.network.RequestManager;
 import com.example.snms.news.BuildProjectListFragment;
 import com.example.snms.news.EventListFragment;
 import com.example.snms.news.NewsDetailsFragment;
-import com.example.snms.news.NewsItem;
 import com.example.snms.news.NewsListFragment;
 import com.example.snms.news.NewsManager;
 import com.example.snms.news.NewsListFragment.NewsListAdapter;
 import com.example.snms.qibla.QiblaFragment;
 import com.example.snms.settings.SettingsFragment;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
-import com.fourmob.datetimepicker.date.DatePickerDialog;
-import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
-import com.sleepbot.datetimepicker.time.RadialPickerLayout;
-import com.sleepbot.datetimepicker.time.TimePickerDialog;
-import com.sleepbot.datetimepicker.time.TimePickerDialog.OnTimeSetListener;
+
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -66,6 +63,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -74,7 +72,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class PreyOverviewFragment extends Fragment implements  OnClickListener,  OnDateSetListener, OnTimeSetListener, JummaListner, AlarmChangeListner{
+public class PreyOverviewFragment extends Fragment implements  OnClickListener, JummaListner, AlarmChangeListner, android.app.DatePickerDialog.OnDateSetListener{
 
 	private DateTime currentDate;
 	private DateTime timeCurrentlyUsedInPreyOverView;
@@ -97,7 +95,6 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	
 	private TextView calender;
 	private DateTime currentDateTime;
-	DatePickerDialog datePickerDialog;
 	public static final String DATEPICKER_TAG = "datepicker";
 	private JummaAdaptor jummaAdaptor; 
 	private CountDownTimer preyCountDownTimer;
@@ -169,7 +166,6 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 
 	
         final Calendar calendar = Calendar.getInstance();
-        datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
 		currentDay = (TextView) root.findViewById(R.id.prey_current_day);
 		jummaAdaptor = new JummaAdaptor(((PreyOverView) getActivity()).getDAO());
 		
@@ -473,8 +469,10 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	@Override
 	public void onClick(View v) {
 		if (v.equals(currentDay)) {
-		       datePickerDialog.setYearRange(1985, 2028);
-               datePickerDialog.show(getFragmentManager(), DATEPICKER_TAG);
+		     android.app.DatePickerDialog pika = new android.app.DatePickerDialog(this.getActivity(), this, 
+                     DateTime.now().getYear(),DateTime.now().getMonthOfYear(),1);
+
+		     pika.show();
 		}
 		if (v.equals(nextDay)) {
 			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView.plusDays(1);
@@ -594,20 +592,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	    return MainApplication.getAppContext();
 	}
 
-	@Override
-	public void onDateSet(DatePickerDialog datePickerDialog, int year,
-			int month, int day) {
-		if(preyCountDownTimer!=null) {
-			preyCountDownTimer.cancel();
-			preyCountDownTimer = null;
-		}
-		timeCurrentlyUsedInPreyOverView = new DateTime(year,month+1,day,0,0);
-		setUpCurrentDay();
-		preyTimes = loadPrayTimes(timeCurrentlyUsedInPreyOverView);
-		renderPreyList();
-		jummaAdaptor.tryFetchningJummaLocally(this.timeCurrentlyUsedInPreyOverView);
-		
-	}
+
 	
 	private void switchFragment(Fragment fragment1, Fragment fragment2) {
 		if (getActivity() == null)
@@ -619,12 +604,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		} 
 	}
 
-	@Override
-	public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+
 	private Response.ErrorListener createErrorListener() {
 	    return new Response.ErrorListener() {
 	        @Override
@@ -663,32 +643,6 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	    			
 	    		}
 	    		
-//	    		
-//	    		if(response.length>0) {
-//	    			NewsItem item = response[0];
-//	    			newsImage1.setVisibility(View.VISIBLE);
-//	    			newsText1.setVisibility(View.VISIBLE);
-//	    			newsText1.setText(item.getTitle());
-//					currentNewsItem1 = item;
-//					newsText1.setWidth(width);
-//					newsImage1.getLayoutParams().width = width;
-//					Uri uri = Uri.parse(item.getImgUrl());
-//				//	text.setText(h.getText());
-//					newsImage1.setImageUrl(item.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
-//	    		}
-//	    		
-//	    		if(response.length>1) {
-//	    			NewsItem item = response[1];
-//	    			currentNewsItem2 = item;
-//					newsText2.setText(item.getTitle());
-//					newsImage2.setVisibility(View.VISIBLE);
-//	    			newsText2.setVisibility(View.VISIBLE);
-//					newsText2.setWidth(width);
-//					Uri uri = Uri.parse(item.getImgUrl());
-//				//	text.setText(h.getText());
-//					newsImage2.getLayoutParams().width = width;
-//					newsImage2.setImageUrl(item.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
-//	    		}		
 			}
 	    };	
 	}
@@ -731,6 +685,21 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	public void alarmChanged() {
 //		Util.SetRepeatingAlarm(prey, id, context, alarm, offset);
 		renderAlarmState();
+	}
+
+	@Override
+	public void onDateSet(DatePicker view, int year, int monthOfYear,
+			int dayOfMonth) {
+		if(preyCountDownTimer!=null) {
+			preyCountDownTimer.cancel();
+			preyCountDownTimer = null;
+		}
+		timeCurrentlyUsedInPreyOverView = new DateTime(year,monthOfYear+1,dayOfMonth,0,0);
+		setUpCurrentDay();
+		preyTimes = loadPrayTimes(timeCurrentlyUsedInPreyOverView);
+		renderPreyList();
+		jummaAdaptor.tryFetchningJummaLocally(this.timeCurrentlyUsedInPreyOverView);
+		
 	}
 
 }
