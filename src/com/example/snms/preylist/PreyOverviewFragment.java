@@ -48,6 +48,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
@@ -176,6 +177,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	}
 
 	private void addPreyRowsToContainerAndStoreInMap(LayoutInflater inflater) {
+		if(preyNamePreyRowMap==null){
 		preyNamePreyRowMap = new HashMap<String, View>();
 		for (int i = 0; i < NUMBER_OF_PRAYS; i++) {
 			View row = inflater.inflate(R.layout.prey_row, preyRowContainer,false);
@@ -190,6 +192,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		jummaContainer = (LinearLayout) row;
 		jummaContainer.setVisibility(View.GONE);
 		preyRowContainer.addView(jummaContainer);
+		}
 		
 	}
 	@Override
@@ -682,9 +685,17 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	}
 	
 	@Override
-	public void alarmChanged() {
-//		Util.SetRepeatingAlarm(prey, id, context, alarm, offset);
-		renderAlarmState();
+	public void alarmChanged(String alarm, Boolean value) {
+		ImageView alarmIcon = alarmButtonNameMap.get(alarm);
+		Resources resources = getResources();
+		if(value){
+			alarmIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_alarm_clock_active));
+			alarmIcon.setBackgroundResource(R.drawable.ic_alarm_clock_active);
+			alarmIcon.refreshDrawableState();
+		}else {
+			alarmIcon.setImageDrawable(resources.getDrawable(R.drawable.ic_alarm_clock));
+		}
+		
 	}
 
 	@Override

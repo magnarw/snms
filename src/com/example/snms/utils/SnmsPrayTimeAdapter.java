@@ -57,10 +57,12 @@ public class SnmsPrayTimeAdapter {
 		PreySettings settings = dao.getAllSettings();
 		
 		if(!settings.getHasAvansertPreyCalenderSet()){
-			if(settings.getHasShafiPreyCalenderSet())
-				return readPrayItemFormXml(time,"shafi");
-			else 
-				return readPrayItemFormXml(time,"hanafi");
+			
+			return getPreyItemBasedOnCity("Trondheim",time);
+//			if(settings.getHasShafiPreyCalenderSet())
+//				return readPrayItemFormXml(time,"shafi");
+//			else 
+//				return readPrayItemFormXml(time,"hanafi");
 		}else {
 			PrayTime prayers = new PrayTime();
 			prayers.setTimeFormat(prayers.Time24);
@@ -129,6 +131,49 @@ public class SnmsPrayTimeAdapter {
 		}
 		return entries;
 	}
+	
+	
+
+	
+	private List<PreyItem> readCityFeed(XmlPullParser parser, DateTime time,String city, Boolean returnMonth)
+			throws XmlPullParserException, IOException {
+		List<PreyItem> entries = new ArrayList<PreyItem>();
+		parser.require(XmlPullParser.START_TAG, ns, "Records");
+		DateTime firstDayOfMonth = time.dayOfMonth().withMinimumValue();
+		DateTime lastDayOfMonth = time.dayOfMonth().withMaximumValue();
+		int start = returnMonth?firstDayOfMonth.getDayOfYear():time.getDayOfYear();
+		int end = returnMonth?lastDayOfMonth.getDayOfYear():-1;
+		int counter = 0; 
+		boolean startCounting = false; 
+		while (parser.next() != XmlPullParser.END_TAG) {
+			if (parser.getEventType() != XmlPullParser.START_TAG) {
+				continue;
+			}
+			String name = parser.getName();
+			if(startCounting)
+				counter++;
+			// Starts by looking for the entry tag
+			if (name.equals("Row")
+					&& parser.getAttributeValue(0).contains(city)) {
+				// entries.addAll(readEntry(parser,time));
+				startCounting = true; 
+				skip(parser);
+			} else if(returnMonth && (counter>=start && counter<=end)){
+				entries.addAll(readCityEntry(parser,time));
+			}else if(!returnMonth && counter==start){
+				entries.addAll(readCityEntry(parser,time));
+			}else {
+					skip(parser);
+				
+			}
+		
+		}
+		return entries;
+	}
+	
+	
+	
+	
 
 	private void skip(XmlPullParser parser) throws XmlPullParserException,
 			IOException {
@@ -149,36 +194,34 @@ public class SnmsPrayTimeAdapter {
 	}
 	
 		
-		/*
-	    public static void main(String[] args) {
-	        double latitude = 59;
-	        double longitude = 10;
-	        double timezone = 1;
-	        // Test Prayer times here
-	        PrayTime prayers = new PrayTime();
-
-	        prayers.setTimeFormat(prayers.Time24);
-	        prayers.setCalcMethod(prayers.Jafari);
-	        prayers.setAsrJuristic(prayers.Shafii);
-	        prayers.setAdjustHighLats(prayers.AngleBased);
-	        int[] offsets = {0, 0, 0, 0, 0, 0, 0}; // {Fajr,Sunrise,Dhuhr,Asr,Sunset,Maghrib,Isha}
-	        prayers.tune(offsets);
-
-	        Date now = new Date();
-	        Calendar cal = Calendar.getInstance();
-	        cal.setTime(now);
-
-	        ArrayList<String> prayerTimes = prayers.getPrayerTimes(cal,
-	                latitude, longitude, timezone);
-	        ArrayList<String> prayerNames = prayers.getTimeNames();
-
-	        for (int i = 0; i < prayerTimes.size(); i++) {
-	            System.out.println(prayerNames.get(i) + " - " + prayerTimes.get(i));
-	        }
-
-	    }
-		*/
+	
+	private List<PreyItem> getPreyItemBasedOnCity(String city, DateTime date){
+		InputStream inputStream = null;
+		try {
+			inputStream = assetManager.open("cities/norwegiancities.xml");
+			//inputStream = assetManager.open("1.xml");
+			XmlPullParser parser = Xml.newPullParser();
+			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+			parser.setInput(inputStream, null);
+			parser.nextTag();
+			return readCityFeed(parser,date,"Trondheim",false);}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		 finally {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return null;
 		
+	}
+	
+	
+	
 
 	private DateTime getPrayTimeFromString(DateTime time, String timeToParse) {
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("h:mm:ss aa");
@@ -214,6 +257,33 @@ public class SnmsPrayTimeAdapter {
 	
 	    return preyList;
 	}
+	
+	private List<PreyItem> readCityEntry(XmlPullParser parser,DateTime time) throws XmlPullParserException, IOException {
+	    parser.require(XmlPullParser.START_TAG, ns, "Row");
+	    List <PreyItem> preyList = new ArrayList<PreyItem>();
+	  	DateTime fajrTime = getPrayTimeFromString(time,parser.getAttributeValue(2));
+	  	PreyItem fajr = new PreyItem("Fajr", fajrTime, false);	 
+	 	DateTime soloppgangTime = getPrayTimeFromString(time,parser.getAttributeValue(3));
+	  	PreyItem soloppgang = new PreyItem("Soloppgang", soloppgangTime, false);		  	 
+	  	DateTime dhuhrTime = getPrayTimeFromString(time,parser.getAttributeValue(4));
+	  	PreyItem duhr = new PreyItem("Dhuhr", dhuhrTime, false);	
+		DateTime asrTime = getPrayTimeFromString(time,parser.getAttributeValue(5));
+		PreyItem asr = new PreyItem("Asr", asrTime, false);	
+	    DateTime maghribTime = getPrayTimeFromString(time,parser.getAttributeValue(6));  	
+		PreyItem maghrib = new PreyItem("Maghrib", maghribTime, false);	
+		DateTime ishaTime = getPrayTimeFromString(time,parser.getAttributeValue(7));
+		PreyItem isha = new PreyItem("Isha", ishaTime, false);	
+		preyList.add(fajr);
+		preyList.add(soloppgang);
+		preyList.add(duhr);
+		preyList.add(asr);
+		preyList.add(maghrib);
+		preyList.add(isha);
+	
+	    return preyList;
+	}
+	
+	
 
 	
 	

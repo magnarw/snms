@@ -82,7 +82,6 @@ public class AlarmUtilities {
 		alarms = dao.getAlarms();
 		for (Alarm alarm : alarms) {
 			if (alarm.getPrey().equals(name)) {
-
 				return true;
 			}
 		}
@@ -165,33 +164,7 @@ public class AlarmUtilities {
 		}
 
 		long intervalMillis = nextPrey.getMillis() - thisPrey.getMillis();
-		
 
-//		Toast.makeText(
-//				context,
-//				"Satt alarm :" + thisPrey.getYear() + " "
-//						+ thisPrey.getMonthOfYear() + " "
-//						+ thisPrey.getDayOfMonth() + " "
-//						+ thisPrey.getHourOfDay() + " "
-//						+ thisPrey.getMinuteOfHour() + " "
-//						+ thisPrey.getSecondOfMinute(), Toast.LENGTH_LONG)
-//				.show();
-//		Toast.makeText(
-//				context,
-//				"Neste alarm :" + nextPrey.getYear() + " "
-//						+ nextPrey.getMonthOfYear() + " "
-//						+ nextPrey.getDayOfMonth() + " "
-//						+ nextPrey.getHourOfDay() + " "
-//						+ nextPrey.getMinuteOfHour() + " "
-//						+ nextPrey.getSecondOfMinute(), Toast.LENGTH_LONG)
-//				.show();
-
-
-
-		// long intervalMillis = 10000; //for test
-		// End get time for next repeating alarm
-
-		// Intent intent = new Intent(this, AlarmReceiverActivity.class);
 		Intent intent = new Intent(context, AlarmReceiverActivity.class);
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, id,
 				intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -200,47 +173,17 @@ public class AlarmUtilities {
 		am.setRepeating(AlarmManager.RTC_WAKEUP, thisPrey.getMillis(),
 				intervalMillis, pendingIntent);
 
-		// ThisDay = ThisDay.plusSeconds(10);
-		//
-		// System.out.println("Dagyear: " + ThisDay.getYear());
-		//
-		// System.out.println("Dagmonth: " + ThisDay.getMonthOfYear());
-		//
-		// System.out.println("DagDay: " + ThisDay.getDayOfMonth());
-		//
-		// System.out.println("DagHour: " + ThisDay.getHourOfDay());
-		//
-		// System.out.println("DagMin: " + ThisDay.getMinuteOfHour());
-		//
-		// System.out.println("DagSec: " + ThisDay.getSecondOfMinute());
 
-		// AlarmManager am = (AlarmManager)
-		// context.getSystemService(Activity.ALARM_SERVICE);
-		// am.setRepeating(AlarmManager.RTC_WAKEUP, ThisDay.getMillis(), 50000,
-		// pendingIntent);
 
 		Alarm alarm = new Alarm(name, offset, id);
 		dao.insertAlarm(alarm);
 		dao.closeDB();
-		// alarms = dao.getAlarms();
-		// dao.closeDB();
 
-//		Toast.makeText(context, "Alarm er blitt satt", Toast.LENGTH_SHORT)
-//				.show();
-
-		// PreyOverviewFragment povf = new PreyOverviewFragment();
-		//
-		// povf.renderAlarmState();
 
 		dao.getAlarms(); // Fjern denne
 
 		dao.closeDB(); // Fjern denne
 
-		// }else{
-		// Toast.makeText(context, "Oops... Alarmdato har allerede passert",
-		// Toast.LENGTH_SHORT).show();
-		//
-		// }
 	}
 
 	public DateTime getDateTimeNow() {

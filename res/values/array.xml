@@ -33,6 +33,17 @@
         <item>@drawable/vulture</item>
     </string-array>
     
+        <string-array name="cities">
+        <item>Asker</item>
+        <item>Volda</item>
+        <item>Trysil</item>
+        <item>Trondheim</item>
+        <item>Tonsberg</item>
+        <item>Stavanger</item>
+        <item>Oslo</item>
+        <item>Notodden</item>
+    </string-array>
+    
      <string-array name="calculation_methods">
         <item>Jafari</item>
         <item>Karachi</item>

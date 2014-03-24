@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/snmsDarkBlue"
+    android:background="@color/white"
      android:gravity="center"
     android:orientation="vertical" >
 
@@ -12,12 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2.5dp"
         android:layout_weight="1"
-        android:background="@color/snmsDarkBlue"
         android:gravity="center"
         android:padding="0dp"
         android:text="Sett gjenntagende alarm for Soloppgang"
         android:textAppearance="@android:style/TextAppearance.Large"
-        android:textColor="@color/white" >
+        android:textColor="@color/black" >
     </TextView>
         <TextView
         android:id="@+id/exp"
@@ -25,23 +24,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_weight="1"
-        android:background="@color/snmsDarkBlue"
         android:gravity="center"
         android:padding="0dp"
-        android:text="Velg antall minutter du ønsker\n at alarmen skal gå av før bønn"
+        android:text="Velg antall minutter du ønsker alarmen skal settes før bønnen"
         android:textAppearance="@android:style/TextAppearance.Small"
-        android:textColor="@color/white" >
+      android:textColor="@color/black" >
     </TextView>
-
-    <ImageView
-        android:id="@+id/placeHolder"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:padding="0dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_slider_arrow_up" />
 
     <NumberPicker
         android:id="@+id/donationPicker"
@@ -49,21 +37,11 @@
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:background="@color/snmsDarkBlue"
         android:textColor="@color/white" />
-
-    <ImageView
-        android:id="@+id/placeHolder2"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:padding="0dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_slider_arrow_down" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/snmsDarkBlue"
         android:orientation="horizontal"
         android:padding="10dp" >
 
@@ -74,7 +52,7 @@
             android:layout_margin="5dp"
             android:layout_marginTop="2.5dp"
             android:layout_weight="1"
-            android:background="@drawable/datepickerbg"
+            android:background="@color/snmsActiveGreen"
             android:gravity="center"
             android:padding="5dp"
             android:text="Sett alarm"

@@ -9,6 +9,6 @@ public interface AlarmChangeListner {
 	
 	
 
-	public void alarmChanged(); 
+	public void alarmChanged(String name, Boolean value); 
 	
 }

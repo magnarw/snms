@@ -43,13 +43,16 @@ public class SettingsFragment extends Fragment implements
 	EditText location;
 	Spinner calcMethod;
 	Spinner jurMethod;
+	Spinner cities;
 	Spinner adjustMethod;
 	CheckBox hanaFi;
 	CheckBox icc;
 	CheckBox avansert;
+	CheckBox city;
 	Button searchButton;
 	RelativeLayout avansertContainer;
 	ArrayAdapter<CharSequence> locationAdapter;
+	ArrayAdapter<CharSequence> citiesAdapter;
 	ArrayAdapter<CharSequence> calcAdapter;
 	ArrayAdapter<CharSequence> adjustMethodAdapter;
 	ArrayAdapter<CharSequence> jurMethodAdapter;
@@ -57,6 +60,8 @@ public class SettingsFragment extends Fragment implements
 	ProgressBar progressBar;
 	TextView locationText;
 	TextView timeZoneContainer;
+	
+	//cities
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -67,6 +72,8 @@ public class SettingsFragment extends Fragment implements
 		View root = inflater.inflate(R.layout.settings, null);
 
 		hanaFi = (CheckBox) root.findViewById(R.id.hanafi);
+		city = (CheckBox) root.findViewById(R.id.cityCheckBox);
+		city.setOnClickListener(this);
 		icc = (CheckBox) root.findViewById(R.id.icc);
 		avansert = (CheckBox) root.findViewById(R.id.avansert);
 		progressBar = (ProgressBar) root.findViewById(R.id.progressBar);
@@ -82,7 +89,13 @@ public class SettingsFragment extends Fragment implements
 		searchButton = (Button) root.findViewById(R.id.search);
 		searchButton.setOnClickListener(this);
 		location = (EditText) root.findViewById(R.id.location);
+		cities = (Spinner) root.findViewById(R.id.cities);
+		citiesAdapter =  ArrayAdapter.createFromResource(getActivity(),
+				R.array.cities,
+				android.R.layout.simple_spinner_item);
+		cities.setAdapter(citiesAdapter);
 		calcMethod = (Spinner) root.findViewById(R.id.calcMethod);
+		
 		adjustMethod = (Spinner) root.findViewById(R.id.adjustMethod);
 		jurMethod = (Spinner) root.findViewById(R.id.jurMethod);
 
@@ -108,6 +121,7 @@ public class SettingsFragment extends Fragment implements
 		calcMethod.setOnItemSelectedListener(this);
 		adjustMethod.setOnItemSelectedListener(this);
 		jurMethod.setOnItemSelectedListener(this);
+		cities.setOnItemSelectedListener(this);
 
 		renderSettingState();
 
@@ -136,7 +150,14 @@ public class SettingsFragment extends Fragment implements
 			hanaFi.setChecked(false);
 			icc.setChecked(true);
 			avansert.setChecked(false);
-		} else if (dao.getSettingsValue("avansert") != null) {
+		}
+		else if (dao.getSettingsValue("city") != null) {
+			hanaFi.setChecked(false);
+			icc.setChecked(false);
+			city.setChecked(true);
+			avansert.setChecked(false);
+		}
+		else if (dao.getSettingsValue("avansert") != null) {
 			hanaFi.setChecked(false);
 			icc.setChecked(false);
 			avansert.setChecked(true);
@@ -252,6 +273,15 @@ public class SettingsFragment extends Fragment implements
 			avansertContainer.setVisibility(View.GONE);
 			hanaFi.setChecked(false);
 			avansert.setChecked(false);
+		}
+		if (buttonView.equals(city) && isChecked) {
+			dao.saveSetting("city","true");
+			dao.deleteSetting("hanfi");
+			dao.deleteSetting("avansert");
+			avansertContainer.setVisibility(View.GONE);
+			hanaFi.setChecked(false);
+			avansert.setChecked(false);
+			city.setChecked(true);
 		}
 		
 		if(!icc.isChecked() && !hanaFi.isChecked() && !avansert.isChecked())

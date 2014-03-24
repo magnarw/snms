@@ -31,7 +31,6 @@ import android.widget.TimePicker;
 
 public class PreyOverView extends  BaseActivity {
 	
-//	private static Context context;		//Dag-Martin
 	SnmsDAO snmsDAO; 
 	ArrayList<AlarmChangeListner> alarmChangeListners = new ArrayList<AlarmChangeListner>();
 	
@@ -73,9 +72,9 @@ public class PreyOverView extends  BaseActivity {
 		}
 	}
 	
-	public void setAlarm() {
+	public void setAlarm(String alarm,Boolean value) {
 		for(AlarmChangeListner alarmChangeListner : alarmChangeListners){
-			alarmChangeListner.alarmChanged();
+			alarmChangeListner.alarmChanged(alarm,value);
 		}
 	}
 	

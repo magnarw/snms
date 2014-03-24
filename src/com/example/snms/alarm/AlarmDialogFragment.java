@@ -88,7 +88,7 @@ public class AlarmDialogFragment extends SherlockDialogFragment implements OnCli
 //			Intent intent = new Intent(getAppContext(), AlarmDialogFragment.class);
 			Util.SetRepeatingAlarm(prey, alarm.getId(), getAppContext(),prey.getName(), alarm.getOffset());
 			
-			((PreyOverView) getActivity()).setAlarm();
+			((PreyOverView) getActivity()).setAlarm(prey.getName(),true);
 			
 			this.dismiss();
 		}
