@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class PreySettings {
 
-	private Boolean hasAvansertPreyCalenderSet;
+	private boolean hasAvansertPreyCalenderSet;
 	private Integer calculationMethodNo;
 	private Integer juristicMethodsNo;
 	private Integer adjustingMethodNo;
@@ -12,8 +12,10 @@ public class PreySettings {
 	private Float lng;
 	private Float lat;
 
-	private Boolean hasHanafiPreyCalenderSet;
-	private Boolean hasShafiPreyCalenderSet;
+	private boolean hasHanafiPreyCalenderSet;
+	private boolean hasShafiPreyCalenderSet;
+	private boolean hasCityCalednerSet; 
+	private String city; 
 
 	public static PreySettings createFromSettingsMap(
 			HashMap<String, String> settings) {
@@ -23,11 +25,22 @@ public class PreySettings {
 			preySettings.setHasAvansertPreyCalenderSet(false);
 			preySettings.setHasHanafiPreyCalenderSet(true);
 			preySettings.setHasShafiPreyCalenderSet(false);
+			preySettings.setHasCityCalednerSet(false);
 			return preySettings;
-		} else if (settings.get("icc") != null) {
+		}else if(settings.get("citysetting")!=null){
+			preySettings.setHasAvansertPreyCalenderSet(false);
+			preySettings.setHasHanafiPreyCalenderSet(false);
+			preySettings.setHasShafiPreyCalenderSet(false);
+			preySettings.setHasCityCalednerSet(true);
+			preySettings.setCity(settings.get("city"));
+			return preySettings;
+		}
+		
+		else if (settings.get("icc") != null) {
 			preySettings.setHasAvansertPreyCalenderSet(false);
 			preySettings.setHasHanafiPreyCalenderSet(false);
 			preySettings.setHasShafiPreyCalenderSet(true);
+			preySettings.setHasCityCalednerSet(false);
 			return preySettings;
 		} else if (settings.get("avansert") != null) {
 			preySettings.setHasAvansertPreyCalenderSet(true);
@@ -99,6 +112,24 @@ public class PreySettings {
 
 	public Boolean getHasAvansertPreyCalenderSet() {
 		return hasAvansertPreyCalenderSet;
+	}
+
+	
+	
+	public boolean getHasCityCalednerSet() {
+		return hasCityCalednerSet;
+	}
+
+	public void setHasCityCalednerSet(Boolean hasCityCalednerSet) {
+		this.hasCityCalednerSet = hasCityCalednerSet;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public void setHasAvansertPreyCalenderSet(Boolean hasAvansertPreyCalenderSet) {

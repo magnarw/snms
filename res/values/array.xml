@@ -42,6 +42,26 @@
         <item>Stavanger</item>
         <item>Oslo</item>
         <item>Notodden</item>
+        <item>Moss</item>
+        <item>Lillehmmer</item>
+       	<item>Larvik</item>
+       	<item>Kragerø</item>
+       	<item>Kongsvinger</item>
+       	<item>Kongsberg</item>
+       	<item>Horten</item>
+       	<item>Floro</item>
+       	<item>Grimstad</item>
+       	<item>Halden</item>
+       	<item>Hamar</item>
+       	<item>Hugesund</item>
+       	<item>Honefoss</item>
+       	<item>Fredrikstad</item>
+       	<item>Flekkefjord</item>
+       	<item>Finse</item>
+       	<item>Egersund</item>
+       	<item>Drammen</item>
+       	<item>Dombs</item>
+       	<item>Bergen</item>
     </string-array>
     
      <string-array name="calculation_methods">

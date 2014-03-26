@@ -73,7 +73,7 @@ public class SettingsFragment extends Fragment implements
 
 		hanaFi = (CheckBox) root.findViewById(R.id.hanafi);
 		city = (CheckBox) root.findViewById(R.id.cityCheckBox);
-		city.setOnClickListener(this);
+		city.setOnCheckedChangeListener(this);
 		icc = (CheckBox) root.findViewById(R.id.icc);
 		avansert = (CheckBox) root.findViewById(R.id.avansert);
 		progressBar = (ProgressBar) root.findViewById(R.id.progressBar);
@@ -145,23 +145,37 @@ public class SettingsFragment extends Fragment implements
 		if (dao.getSettingsValue("hanfi") != null) {
 			hanaFi.setChecked(true);
 			icc.setChecked(false);
+			cities.setEnabled(false);
+			city.setChecked(false);
 			avansert.setChecked(false);
 		} else if (dao.getSettingsValue("icc") != null) {
 			hanaFi.setChecked(false);
 			icc.setChecked(true);
 			avansert.setChecked(false);
+			cities.setEnabled(false);
+			city.setChecked(false);
 		}
-		else if (dao.getSettingsValue("city") != null) {
+		else if (dao.getSettingsValue("citysetting") != null) {
 			hanaFi.setChecked(false);
 			icc.setChecked(false);
 			city.setChecked(true);
 			avansert.setChecked(false);
+			cities.setEnabled(true);
+			if (dao.getSettingsValue("city") != null) {
+				cities.setSelection(citiesAdapter.getPosition(dao
+						.getSettingsValue("city")));
+			}else {
+				cities.setSelection(citiesAdapter.getPosition("Oslo"));
+				dao.saveSetting("city","oslo");
+				
+			}
 		}
 		else if (dao.getSettingsValue("avansert") != null) {
 			hanaFi.setChecked(false);
 			icc.setChecked(false);
 			avansert.setChecked(true);
-
+			cities.setEnabled(false);
+			city.setChecked(false);
 			if (dao.getSettingsValue("jurmethod") != null) {
 				jurMethod.setSelection(jurMethodAdapter.getPosition(dao
 						.getSettingsValue("jurmethod")));
@@ -182,6 +196,8 @@ public class SettingsFragment extends Fragment implements
 			hanaFi.setChecked(true);
 			icc.setChecked(false);
 			avansert.setChecked(false);
+			cities.setEnabled(false);
+			city.setChecked(false);
 			dao.saveSetting("icc", "true");
 		}
 	}
@@ -201,6 +217,10 @@ public class SettingsFragment extends Fragment implements
 		if (arg0 == jurMethod) {
 			String jurMethod = (String) arg0.getItemAtPosition(arg2);
 			dao.saveSetting("jurmethod", jurMethod);
+		}
+		if (arg0 == cities) {
+			String city = (String) arg0.getItemAtPosition(arg2);
+			dao.saveSetting("city", city);
 		}
 
 	}
@@ -255,12 +275,18 @@ public class SettingsFragment extends Fragment implements
 			dao.deleteSetting("hanfi");
 			avansertContainer.setVisibility(View.VISIBLE);
 			dao.deleteSetting("icc");
+			dao.deleteSetting("citysetting");
+			cities.setEnabled(false);
+			city.setChecked(false);
 			icc.setChecked(false);
 			hanaFi.setChecked(false);
 		}
 		if (buttonView.equals(hanaFi) && isChecked) {
 			dao.saveSetting("hanfi", "true");
 			dao.deleteSetting("avansert");
+			dao.deleteSetting("citysetting");
+			cities.setEnabled(false);
+			city.setChecked(false);
 			avansertContainer.setVisibility(View.GONE);
 			dao.deleteSetting("icc");
 			icc.setChecked(false);
@@ -269,22 +295,27 @@ public class SettingsFragment extends Fragment implements
 		if (buttonView.equals(icc) && isChecked) {
 			dao.saveSetting("icc", "true");
 			dao.deleteSetting("hanfi");
+			dao.deleteSetting("citysetting");
+			cities.setEnabled(false);
+			city.setChecked(false);
 			dao.deleteSetting("avansert");
 			avansertContainer.setVisibility(View.GONE);
 			hanaFi.setChecked(false);
 			avansert.setChecked(false);
 		}
 		if (buttonView.equals(city) && isChecked) {
-			dao.saveSetting("city","true");
+			dao.saveSetting("citysetting","true");
 			dao.deleteSetting("hanfi");
 			dao.deleteSetting("avansert");
 			avansertContainer.setVisibility(View.GONE);
 			hanaFi.setChecked(false);
 			avansert.setChecked(false);
+			icc.setChecked(false);
 			city.setChecked(true);
+			cities.setEnabled(true);
 		}
 		
-		if(!icc.isChecked() && !hanaFi.isChecked() && !avansert.isChecked())
+		if(!icc.isChecked() && !hanaFi.isChecked() && !avansert.isChecked() && !city.isChecked())
 			hanaFi.setChecked(true);
 
 	}

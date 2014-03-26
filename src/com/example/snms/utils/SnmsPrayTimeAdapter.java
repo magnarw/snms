@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -57,12 +58,14 @@ public class SnmsPrayTimeAdapter {
 		PreySettings settings = dao.getAllSettings();
 		
 		if(!settings.getHasAvansertPreyCalenderSet()){
-			
-			return getPreyItemBasedOnCity("Trondheim",time);
-//			if(settings.getHasShafiPreyCalenderSet())
-//				return readPrayItemFormXml(time,"shafi");
-//			else 
-//				return readPrayItemFormXml(time,"hanafi");
+			if(settings.getHasShafiPreyCalenderSet())
+				return readPrayItemFormXml(time,"shafi");
+			else if(settings.getHasCityCalednerSet()){
+				return getPreyItemBasedOnCity(settings.getCity(),time,false);
+			}
+			else {
+				return readPrayItemFormXml(time,"hanafi");
+			}
 		}else {
 			PrayTime prayers = new PrayTime();
 			prayers.setTimeFormat(prayers.Time24);
@@ -98,8 +101,37 @@ public class SnmsPrayTimeAdapter {
 	}
 
 	
-	
 	public List<PreyItemList> getPrayGridForMonthIndYear(int month, int year, boolean includeAlarm) {
+		PreySettings settings = dao.getAllSettings();
+		if(settings.getHasCityCalednerSet()){
+			List<PreyItemList> dayPreyListMap = new ArrayList<PreyItemList>();
+			DateTime dateTime2 = new DateTime(year, month,1, 1, 0, 0, 000);
+			List<PreyItem> items =getPreyItemBasedOnCity(settings.getCity(),dateTime2,true);
+			
+			int counter = 0; 
+			PreyItemList list = new PreyItemList();
+			int day = 1; 
+			list.setDay(day);
+			Iterator it = items.iterator();
+			while(it.hasNext()){
+				if(counter!=6){
+					list.getPreylist().add((PreyItem) it.next());
+				}else {
+					dayPreyListMap.add(list);
+					list = new PreyItemList();
+					day++; 
+					list.setDay(day);
+				}
+				counter++; 
+			}
+			
+			
+		
+			
+			return dayPreyListMap;
+			
+		}
+		
 		DateTime dateTime = new DateTime(year, month, 1, 1, 0, 0, 000);
 		List<PreyItemList> dayPreyListMap = new ArrayList<PreyItemList>();
 		for (int i = 1; i <= dateTime.dayOfMonth().getMaximumValue(); i++) {
@@ -160,6 +192,7 @@ public class SnmsPrayTimeAdapter {
 				skip(parser);
 			} else if(returnMonth && (counter>=start && counter<=end)){
 				entries.addAll(readCityEntry(parser,time));
+				skip(parser);
 			}else if(!returnMonth && counter==start){
 				entries.addAll(readCityEntry(parser,time));
 			}else {
@@ -195,7 +228,7 @@ public class SnmsPrayTimeAdapter {
 	
 		
 	
-	private List<PreyItem> getPreyItemBasedOnCity(String city, DateTime date){
+	private List<PreyItem> getPreyItemBasedOnCity(String city, DateTime date, Boolean calender){
 		InputStream inputStream = null;
 		try {
 			inputStream = assetManager.open("cities/norwegiancities.xml");
@@ -204,7 +237,7 @@ public class SnmsPrayTimeAdapter {
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 			parser.setInput(inputStream, null);
 			parser.nextTag();
-			return readCityFeed(parser,date,"Trondheim",false);}
+			return readCityFeed(parser,date,city,calender);}
 		catch(Exception e) {
 			e.printStackTrace();
 		}

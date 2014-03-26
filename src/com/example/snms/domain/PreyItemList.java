@@ -1,5 +1,6 @@
 package com.example.snms.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PreyItemList {
@@ -7,7 +8,9 @@ public class PreyItemList {
 	List <PreyItem> preylist; 
 	Integer day; 
 	
-	
+	public PreyItemList(){
+		preylist = new ArrayList<PreyItem>();
+	}
 	
 	public PreyItemList(List <PreyItem> preylist,int day) {
 		this.preylist = preylist; 

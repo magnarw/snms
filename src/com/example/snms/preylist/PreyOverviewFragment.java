@@ -177,7 +177,6 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	}
 
 	private void addPreyRowsToContainerAndStoreInMap(LayoutInflater inflater) {
-		if(preyNamePreyRowMap==null){
 		preyNamePreyRowMap = new HashMap<String, View>();
 		for (int i = 0; i < NUMBER_OF_PRAYS; i++) {
 			View row = inflater.inflate(R.layout.prey_row, preyRowContainer,false);
@@ -192,7 +191,6 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		jummaContainer = (LinearLayout) row;
 		jummaContainer.setVisibility(View.GONE);
 		preyRowContainer.addView(jummaContainer);
-		}
 		
 	}
 	@Override
