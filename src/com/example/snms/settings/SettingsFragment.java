@@ -307,6 +307,7 @@ public class SettingsFragment extends Fragment implements
 			dao.saveSetting("citysetting","true");
 			dao.deleteSetting("hanfi");
 			dao.deleteSetting("avansert");
+			dao.deleteSetting("icc");
 			avansertContainer.setVisibility(View.GONE);
 			hanaFi.setChecked(false);
 			avansert.setChecked(false);
