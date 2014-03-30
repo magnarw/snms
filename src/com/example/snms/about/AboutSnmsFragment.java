@@ -44,6 +44,7 @@ public class AboutSnmsFragment extends Fragment implements OnClickListener {
 	ImageView mapImage;
 	ImageView faceImage;
 	ImageView webImage;
+	TextView faceText;
 
 
 
@@ -51,12 +52,15 @@ public class AboutSnmsFragment extends Fragment implements OnClickListener {
 			Bundle savedInstanceState) {
 
 			View root = inflater.inflate(R.layout.about_widget, null);
+			faceText = (TextView)inflater.inflate(R.id.faceText, null); 
 			image = (NetworkImageView) root.findViewById(R.id.newsImage);
 			imageText = (TextView) root.findViewById(R.id.headerText1);
 			imageHeader = (ImageView) root
 					.findViewById(R.id.headerImage1);
 			mapImage = (ImageView) root
 					.findViewById(R.id.mapImage);
+			
+			
 			addressLine1 = (TextView) root.findViewById(R.id.addressLine1);
 			addressLine2 = (TextView) root.findViewById(R.id.addressLine2);
 			monthText = (TextView) root.findViewById(R.id.dateWrapMonthText);
@@ -65,6 +69,7 @@ public class AboutSnmsFragment extends Fragment implements OnClickListener {
 			webImage = (ImageView)root.findViewById(R.id.webpageImageLink);
 			webImage.setOnClickListener(this);
 			faceImage.setOnClickListener(this);
+			faceText.setOnClickListener(this);
 			//text = (TextView) root.findViewById(R.id.Newstext);
 			return root;
 		}
@@ -104,6 +109,9 @@ public class AboutSnmsFragment extends Fragment implements OnClickListener {
 			startActivity(browserIntent);
 		}
 		if(v.equals(faceImage)){
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/pages/S%C3%B8ndre-Nordstrand-Muslimske-Senter/312656635444443?fref=ts"));
+			startActivity(browserIntent);
+		}if(v.equals(faceText)){
 			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/pages/S%C3%B8ndre-Nordstrand-Muslimske-Senter/312656635444443?fref=ts"));
 			startActivity(browserIntent);
 		}

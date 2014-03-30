@@ -8,7 +8,6 @@
         <item>White</item>
         <item>Black</item>
     </string-array>
-    
     <string-array name="birds">
         <item>Eagle</item>
         <item>Flamingo</item>
@@ -20,7 +19,6 @@
         <item>Turkey</item>
         <item>Vulture</item>
     </string-array>
-
     <string-array name="birds_img">
         <item>@drawable/eagle</item>
         <item>@drawable/flamingo</item>
@@ -32,39 +30,42 @@
         <item>@drawable/turkey</item>
         <item>@drawable/vulture</item>
     </string-array>
-    
-        <string-array name="cities">
-        <item>Asker</item>
-        <item>Volda</item>
-        <item>Trysil</item>
-        <item>Trondheim</item>
-        <item>Tonsberg</item>
-        <item>Stavanger</item>
-        <item>Oslo</item>
-        <item>Notodden</item>
+    <string-array name="cities">
+        <item>Bergen</item>
+        <item>Bodeo</item>
+        <item>Dombs</item>
+        <item>Drammen</item>
+        <item>Egersund</item>
+        <item>Finse</item>
+        <item>Flekkefjord</item>
+        <item>Floro</item>
+        <item>Geilo</item>
+        <item>Grimstad</item>
+        <item>Halden</item>
+        <item>Hamar</item>
+        <item>Harstd</item>
+        <item>Honefoss</item>
+        <item>Horten</item>
+        <item>Hugesund</item>
+        <item>Kongsberg</item>
+        <item>KongsvingerNORWY</item>
+        <item>Kragero</item>
+        <item>Larvik</item>
+        <item>LillehmmerNORWY</item>
+        <item>Mndl</item>
         <item>Moss</item>
-        <item>Lillehmmer</item>
-       	<item>Larvik</item>
-       	<item>Kragerø</item>
-       	<item>Kongsvinger</item>
-       	<item>Kongsberg</item>
-       	<item>Horten</item>
-       	<item>Floro</item>
-       	<item>Grimstad</item>
-       	<item>Halden</item>
-       	<item>Hamar</item>
-       	<item>Hugesund</item>
-       	<item>Honefoss</item>
-       	<item>Fredrikstad</item>
-       	<item>Flekkefjord</item>
-       	<item>Finse</item>
-       	<item>Egersund</item>
-       	<item>Drammen</item>
-       	<item>Dombs</item>
-       	<item>Bergen</item>
+        <item>Narvik</item>
+        <item>Notodden</item>
+        <item>Oslo</item>
+        <item>Stavanger</item>
+        <item>SunndlsorNORWY</item>
+        <item>Tonsberg</item>
+        <item>Tromso</item>
+        <item>Trondheim</item>
+        <item>Trysil</item>
+        <item>Volda</item>
     </string-array>
-    
-     <string-array name="calculation_methods">
+    <string-array name="calculation_methods">
         <item>Jafari</item>
         <item>Karachi</item>
         <item>Islamic Society of North America (ISNA)</item>
@@ -73,26 +74,18 @@
         <item>Egypt</item>
         <item>Tehran</item>
     </string-array>
-    
-     <string-array name="jurstic_methods">
+    <string-array name="jurstic_methods">
         <item>Shafii</item>
         <item>Hanafi</item>
     </string-array>
-    
-     
     <string-array name="adjust_methods">
         <item>Ingen</item>
         <item>Midnatt</item>
         <item>1/7 av natten</item>
         <item>Grader</item>
     </string-array>
-    
-    
     <string-array name="location">
         <item>Oslo</item>
         <item>Halden</item>
     </string-array>
-    
-    
-
 </resources>

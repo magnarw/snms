@@ -257,7 +257,7 @@
                 android:drawableTop="@drawable/ic_donation"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
-                android:text="Støtt oss"
+                android:text="Donasjon"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/snms_text_button" >
             </Button>

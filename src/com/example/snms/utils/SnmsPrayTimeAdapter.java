@@ -53,6 +53,8 @@ public class SnmsPrayTimeAdapter {
 	}
 	
 	
+	
+	
 	public List<PreyItem> getPrayListForDate(DateTime time) {
 		
 		PreySettings settings = dao.getAllSettings();
@@ -176,6 +178,7 @@ public class SnmsPrayTimeAdapter {
 		int end = returnMonth?lastDayOfMonth.getDayOfYear():-1;
 		int counter = 0; 
 		boolean startCounting = false; 
+		startCounting = true; 
 		while (parser.next() != XmlPullParser.END_TAG) {
 			if (parser.getEventType() != XmlPullParser.START_TAG) {
 				continue;
@@ -184,12 +187,7 @@ public class SnmsPrayTimeAdapter {
 			if(startCounting)
 				counter++;
 			// Starts by looking for the entry tag
-			if (name.equals("Row")
-					&& parser.getAttributeValue(0).contains(city)) {
-				// entries.addAll(readEntry(parser,time));
-				startCounting = true; 
-				skip(parser);
-			} else if(returnMonth && (counter>=start && counter<=end)){
+			 if(returnMonth && (counter>=start && counter<=end)){
 				entries.addAll(readCityEntry(parser,time));
 				skip(parser);
 			}else if(!returnMonth && counter==start){
@@ -230,12 +228,12 @@ public class SnmsPrayTimeAdapter {
 	private List<PreyItem> getPreyItemBasedOnCity(String city, DateTime date, Boolean calender){
 		InputStream inputStream = null;
 		try {
-			inputStream = assetManager.open("cities/norwegiancities.xml");
-			//inputStream = assetManager.open("1.xml");
+			inputStream = assetManager.open("cities/"+ city +".xml");
 			XmlPullParser parser = Xml.newPullParser();
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 			parser.setInput(inputStream, null);
 			parser.nextTag();
+			
 			return readCityFeed(parser,date,city,calender);}
 		catch(Exception e) {
 			e.printStackTrace();

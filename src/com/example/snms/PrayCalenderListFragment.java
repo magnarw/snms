@@ -184,8 +184,8 @@ public class PrayCalenderListFragment extends Fragment implements
 
 			PreyItemList h = getItem(position);
 
-			if (!hasBeenRendered(h.getDay())) {
-				convertView = LayoutInflater.from(getContext()).inflate(
+			
+			convertView = LayoutInflater.from(getContext()).inflate(
 						R.layout.calender_row, parent, false);
 
 				date = (TextView) convertView.findViewById(R.id.row_date);
@@ -233,11 +233,11 @@ public class PrayCalenderListFragment extends Fragment implements
 							+ exception.getLocalizedMessage());
 				}
 
-				hasBeenRenderedMap.put(h.getDay(), convertView);
+			//	hasBeenRenderedMap.put(h.getDay(), convertView);
 				return convertView;
-			}
+			
 
-			return hasBeenRenderedMap.get(h.getDay());
+			//return hasBeenRenderedMap.get(h.getDay());
 
 		}
 

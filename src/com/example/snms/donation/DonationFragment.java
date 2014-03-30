@@ -141,7 +141,7 @@ public class DonationFragment extends Fragment implements OnClickListener {
 		if(v.equals(donationButton)){
 			 Intent smsIntent = new Intent(Intent.ACTION_VIEW);
 		    smsIntent.putExtra("sms_body", "Masjid " + currentValue); 
-			    smsIntent.putExtra("address", "1963");
+			    smsIntent.putExtra("address", "2380");
 			    smsIntent.setType("vnd.android-dir/mms-sms");
 			    startActivity(smsIntent);
 		}

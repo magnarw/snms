@@ -11,6 +11,7 @@ import com.example.snms.news.EventListFragment;
 import com.example.snms.news.NewsListFragment;
 import com.example.snms.preylist.PreyOverviewFragment;
 import com.example.snms.qibla.QiblaFragment;
+import com.example.snms.settings.SettingsFragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class SampleListFragment extends ListFragment {
 	    adapter.add(new SampleItem("Om snms", R.drawable.ic_logo));
 	    adapter.add(new SampleItem("Qibla", R.drawable.ic_qibla));
 	    adapter.add(new SampleItem("Donasjon", R.drawable.ic_donation));
+	    adapter.add(new SampleItem("Instillinger", R.drawable.ic_settings));
 	
 		setListAdapter(adapter);
 	}
@@ -77,7 +79,9 @@ public class SampleListFragment extends ListFragment {
 		case 5:
 			newContent1 = new DonationFragment();
 			break;	
-			
+		case 6:
+			newContent1 = new SettingsFragment();
+			break;	
 		}
 		
 		if (newContent1 != null)

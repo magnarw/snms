@@ -74,7 +74,7 @@
             android:layout_height="match_parent"
             android:layout_margin="0dp"
             android:gravity="center_vertical"
-            android:text="SMS Donasjon er en sikker og effektiv løsning som gir deg mulighet til å gi donasjoner til SNMS.\nMed Allahs velsignelse arbeider SNMS målrettet for å bygge moské på Mortensrud, og vi trenger økonomisk støtte fra dere. Alle som ønsker å bidra kan velge et beløp under og klikke på 'Jeg vil gi pengestøtte'"
+            android:text="SMS Donasjon er en sikker og effektiv løsning som gir deg mulighet til å gi donasjoner til SNMS.\nMed Allahs velsignelse arbeider SNMS målrettet for å bygge moské på Mortensrud, og vi trenger økonomisk støtte fra dere. Alle som ønsker å bidra kan velge et beløp under og klikke på 'Trykk her for å gi pengestøtte'"
 			android:textSize="13dp"
             android:textColor="@color/black" />
     </LinearLayout>
