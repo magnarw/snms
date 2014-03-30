@@ -116,17 +116,16 @@ public class SnmsPrayTimeAdapter {
 			while(it.hasNext()){
 				if(counter!=6){
 					list.getPreylist().add((PreyItem) it.next());
+					counter++; 
 				}else {
 					dayPreyListMap.add(list);
 					list = new PreyItemList();
 					day++; 
 					list.setDay(day);
+					counter = 0; 
 				}
-				counter++; 
+				
 			}
-			
-			
-		
 			
 			return dayPreyListMap;
 			

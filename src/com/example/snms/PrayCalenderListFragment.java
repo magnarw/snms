@@ -211,6 +211,7 @@ public class PrayCalenderListFragment extends Fragment implements
 						if (counter == 6) {
 							break;
 						}
+						
 						TextView prey = lables.get(counter);
 						String ZeroPlusHour = Integer.toString(item.getTime()
 								.getHourOfDay());
