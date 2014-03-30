@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -34,14 +35,16 @@ public class AlarmDialogFragment extends SherlockDialogFragment implements OnCli
 		private NumberPicker picker; 
 		private String[] nums = new String[300];
 		TextView alarmTitle;
+		ImageButton button; 
 		
-		AlarmDialogFragment(PreyItem preyItem){
+		AlarmDialogFragment(PreyItem preyItem, ImageButton button){
 			this.prey = preyItem;
+			this.button = button; 
 		}
 	 	
 	    @SuppressLint("ValidFragment")
-		public static AlarmDialogFragment newInstance(PreyItem preyItem) {
-	    	AlarmDialogFragment f = new AlarmDialogFragment(preyItem);
+		public static AlarmDialogFragment newInstance(PreyItem preyItem, ImageButton button) {
+	    	AlarmDialogFragment f = new AlarmDialogFragment(preyItem,button);
 	        return f;
 	    }
 	 
@@ -89,6 +92,8 @@ public class AlarmDialogFragment extends SherlockDialogFragment implements OnCli
 			Util.SetRepeatingAlarm(prey, alarm.getId(), getAppContext(),prey.getName(), alarm.getOffset());
 			
 			((PreyOverView) getActivity()).setAlarm(prey.getName(),true);
+			
+			button.setSelected(true);
 			
 			this.dismiss();
 		}
