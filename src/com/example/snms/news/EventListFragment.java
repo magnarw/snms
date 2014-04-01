@@ -116,7 +116,7 @@ public class EventListFragment extends ListFragment {
 	    return new Response.Listener <NewsItem[]>() {
 	    	@Override
 			public void onResponse(NewsItem[] response) {
-	    		progressBar.setVisibility(View.VISIBLE);
+	    		progressBar.setVisibility(View.GONE);
 	    		if(adapter==null) {
 	    			adapter = new NewsListAdapter(getActivity());
 	    			setListAdapter(adapter);
@@ -157,7 +157,7 @@ public class EventListFragment extends ListFragment {
 		}
 
 		private void loadMoreData(int nextPage){
-			progressBar.setVisibility(View.VISIBLE);
+			progressBar.setVisibility(View.GONE);
 			isLoading = true;
 			lastLoadedPage = nextPage;
 			Log.v(getClass().toString(), "Load more tweets");

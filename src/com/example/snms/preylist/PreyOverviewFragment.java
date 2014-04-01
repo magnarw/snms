@@ -94,6 +94,7 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 	private Button qiblaDonationShortCut;
 	private Button qiblaShortcut;
 	private Button newsShortCut;
+	private PreyItem currentJumma;
 
 	private TextView calender;
 	private DateTime currentDateTime;
@@ -108,6 +109,7 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 	private Map<String, View> preyNamePreyRowMap;
 	private Map<String, ImageView> alarmButtonNameMap = new HashMap<String, ImageView>();
 	private ProgressBar newsSpinnerProgress;
+	private ProgressBar newsSpinnerProgress2;
 	private HorizontalScrollView latesetNewsScrollView;
 	private Button shortCuts;
 	private Button latestNews;
@@ -146,6 +148,7 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 		shortCuts = (Button) root.findViewById(R.id.shortCuts);
 		shortCuts.setSelected(true);
 		latestNews = (Button) root.findViewById(R.id.latestNews);
+		newsSpinnerProgress2 = (ProgressBar)root.findViewById(R.id.newsSpinnerProgress2);
 		shortCuts.setOnClickListener(this);
 		latestNews.setOnClickListener(this);
 
@@ -183,7 +186,6 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 	}
 
 	private void addPreyRowsToContainerAndStoreInMap(LayoutInflater inflater) {
-		if (preyNamePreyRowMap  == null) {
 			preyNamePreyRowMap = new HashMap<String, View>();
 			for (int i = 0; i < NUMBER_OF_PRAYS; i++) {
 				View row = inflater.inflate(R.layout.prey_row,
@@ -200,7 +202,6 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 			jummaContainer = (LinearLayout) row;
 			jummaContainer.setVisibility(View.GONE);
 			preyRowContainer.addView(jummaContainer);
-		}
 
 	}
 
@@ -606,6 +607,19 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 							args.putString("prey", key);
 							newFragment.setArguments(args);
 
+						}else if(currentJumma!=null && currentJumma.getName().equals(key)){
+							FragmentTransaction ft = getActivity()
+									.getSupportFragmentManager()
+									.beginTransaction(); // endre dette til �
+															// bruke
+															// setReapeting
+							AlarmDialogFragment newFragment = AlarmDialogFragment
+									.newInstance(currentJumma,(ImageButton) v); // var key
+							newFragment.show(ft, "dialog");
+							Bundle args = new Bundle();
+							args.putString("prey", key);
+							newFragment.setArguments(args);
+							break;
 						}
 					}
 
@@ -643,7 +657,7 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 			public void onErrorResponse(VolleyError error) {
 				// TODO : Log error and get prey times from local storage
 				// error.getStackTrace();
-
+				newsSpinnerProgress2.setVisibility(View.GONE);
 				Log.e("error", error.toString());
 			}
 		};
@@ -663,6 +677,7 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 			public void onResponse(NewsItem[] response) {
 				// newsSpinnerProgress.setVisibility(View.GONE);
 				LayoutInflater inflater = getActivity().getLayoutInflater();
+				newsSpinnerProgress2.setVisibility(View.GONE);
 				for (NewsItem item : response) {
 					RelativeLayout latestNews = (RelativeLayout) inflater
 							.inflate(R.layout.recent_news, null, false);
@@ -686,7 +701,7 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 	@Override
 	public void updateJumma(PreyItem item) {
 		newsJummaSpinnerProgress.setVisibility(View.GONE);
-
+		currentJumma = item;
 		jummaContainer.setVisibility(View.VISIBLE);
 		if (isAdded()) {
 			TextView jummaTime = (TextView) jummaContainer
@@ -699,6 +714,11 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 					.setBackgroundResource(R.drawable.border_none_active_pray);
 			jummaTime.setText(item.getTimeOfDayAsString());
 			jummaStatus.setText("");
+			preyNamePreyRowMap.put(item.getName(), jummaContainer);
+			ImageView alarmIcon = (ImageView) jummaContainer
+					.findViewById(R.id.alarmclock_inactive);
+			alarmButtonNameMap.put(item.getName(), alarmIcon);
+			alarmIcon.setOnClickListener(this);
 
 			String ZeroPlusHour = Integer.toString(item.getTime()
 					.getHourOfDay());

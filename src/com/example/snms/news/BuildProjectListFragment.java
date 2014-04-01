@@ -148,7 +148,7 @@ public class BuildProjectListFragment extends ListFragment {
 		}
 
 		private void loadMoreData(int nextPage){
-			progressBar.setVisibility(View.VISIBLE);
+			progressBar.setVisibility(View.GONE);
 			isLoading = true;
 			lastLoadedPage = nextPage;
 			Log.v(getClass().toString(), "Load more tweets");

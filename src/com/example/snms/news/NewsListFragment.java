@@ -107,7 +107,7 @@ public class NewsListFragment extends ListFragment {
 	    return new Response.Listener <NewsItem[]>() {
 	    	@Override
 			public void onResponse(NewsItem[] response) {
-	    		progressBar.setVisibility(View.VISIBLE);
+	    		progressBar.setVisibility(View.GONE);
 	    		if(adapter==null) {
 	    			adapter = new NewsListAdapter(getActivity());
 	    			setListAdapter(adapter);
@@ -125,7 +125,7 @@ public class NewsListFragment extends ListFragment {
 	    return new Response.ErrorListener() {
 	        @Override
 	        public void onErrorResponse(VolleyError error) {
-	          	progressBar.setVisibility(View.VISIBLE);
+	        	progressBar.setVisibility(View.GONE);
 	        	//TODO : Log error and get prey times from local storage
 	            //error.getStackTrace();
 	        	Log.e("error",error.toString());

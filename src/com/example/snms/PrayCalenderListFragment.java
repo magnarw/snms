@@ -181,20 +181,25 @@ public class PrayCalenderListFragment extends Fragment implements
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
-
-			PreyItemList h = getItem(position);
-
 			
-			convertView = LayoutInflater.from(getContext()).inflate(
+		   View rowView = convertView;
+			PreyItemList h = getItem(position);
+		
+			
+			if(rowView == null) {
+				rowView = LayoutInflater.from(getContext()).inflate(
 						R.layout.calender_row, parent, false);
+			 }
+			
+	
 
-				date = (TextView) convertView.findViewById(R.id.row_date);
-				asr = (TextView) convertView.findViewById(R.id.row_asr);
-				fajr = (TextView) convertView.findViewById(R.id.row_fajr);
-				sol = (TextView) convertView.findViewById(R.id.row_soloppgang);
-				duhr = (TextView) convertView.findViewById(R.id.row_duhr);
-				mag = (TextView) convertView.findViewById(R.id.row_magrihb);
-				ish = (TextView) convertView.findViewById(R.id.row_isha);
+				date = (TextView) rowView.findViewById(R.id.row_date);
+				asr = (TextView) rowView.findViewById(R.id.row_asr);
+				fajr = (TextView) rowView.findViewById(R.id.row_fajr);
+				sol = (TextView) rowView.findViewById(R.id.row_soloppgang);
+				duhr = (TextView) rowView.findViewById(R.id.row_duhr);
+				mag = (TextView) rowView.findViewById(R.id.row_magrihb);
+				ish = (TextView) rowView.findViewById(R.id.row_isha);
 
 				List<TextView> lables = new ArrayList<TextView>();
 
@@ -234,7 +239,7 @@ public class PrayCalenderListFragment extends Fragment implements
 				}
 
 			//	hasBeenRenderedMap.put(h.getDay(), convertView);
-				return convertView;
+				return rowView;
 			
 
 			//return hasBeenRenderedMap.get(h.getDay());
