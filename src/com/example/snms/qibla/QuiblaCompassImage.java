@@ -47,7 +47,7 @@ public class QuiblaCompassImage extends ImageView{
 	                canvas.translate(0,paddingTop);
 
 	            canvas.drawBitmap( BitmapFactory.decodeResource(getContext().getResources(),
-	          			R.drawable.ic_compass_arrow),0,0,p );
+	          			R.drawable.ic_compass_arrow2),0,0,p );
 	            canvas.restore();
 	        }
 

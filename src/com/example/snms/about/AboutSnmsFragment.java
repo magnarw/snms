@@ -52,7 +52,7 @@ public class AboutSnmsFragment extends Fragment implements OnClickListener {
 			Bundle savedInstanceState) {
 
 			View root = inflater.inflate(R.layout.about_widget, null);
-			faceText = (TextView)inflater.inflate(R.id.faceText, null); 
+			faceText = (TextView)root.findViewById(R.id.faceText); 
 			image = (NetworkImageView) root.findViewById(R.id.newsImage);
 			imageText = (TextView) root.findViewById(R.id.headerText1);
 			imageHeader = (ImageView) root

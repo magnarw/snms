@@ -247,7 +247,7 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 				// alarmIcon.setImageResource(R.drawable.ic_alarm_clock_active);
 			} else {
 				alarmIcon.setSelected(false);
-				// alarmIcon.setImageResource(R.drawable.ic_alarm_clock);
+				 alarmIcon.setImageResource(R.drawable.ic_alarm_clock);
 			}
 		}
 
@@ -608,18 +608,18 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 							newFragment.setArguments(args);
 
 						}else if(currentJumma!=null && currentJumma.getName().equals(key)){
-							FragmentTransaction ft = getActivity()
-									.getSupportFragmentManager()
-									.beginTransaction(); // endre dette til �
-															// bruke
-															// setReapeting
-							AlarmDialogFragment newFragment = AlarmDialogFragment
-									.newInstance(currentJumma,(ImageButton) v); // var key
-							newFragment.show(ft, "dialog");
-							Bundle args = new Bundle();
-							args.putString("prey", key);
-							newFragment.setArguments(args);
-							break;
+//							FragmentTransaction ft = getActivity()
+//									.getSupportFragmentManager()
+//									.beginTransaction(); // endre dette til �
+//															// bruke
+//															// setReapeting
+//							AlarmDialogFragment newFragment = AlarmDialogFragment
+//									.newInstance(currentJumma,(ImageButton) v); // var key
+//							newFragment.show(ft, "dialog");
+//							Bundle args = new Bundle();
+//							args.putString("prey", key);
+//							newFragment.setArguments(args);
+//							break;
 						}
 					}
 
@@ -719,6 +719,7 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 					.findViewById(R.id.alarmclock_inactive);
 			alarmButtonNameMap.put(item.getName(), alarmIcon);
 			alarmIcon.setOnClickListener(this);
+			alarmIcon.setVisibility(View.GONE);
 
 			String ZeroPlusHour = Integer.toString(item.getTime()
 					.getHourOfDay());

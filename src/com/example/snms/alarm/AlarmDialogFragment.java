@@ -94,6 +94,7 @@ public class AlarmDialogFragment extends SherlockDialogFragment implements OnCli
 			((PreyOverView) getActivity()).setAlarm(prey.getName(),true);
 			
 			button.setSelected(true);
+		//	button.setImageResource(R.drawable.ic_alarm_clock_active);
 			
 			this.dismiss();
 		}

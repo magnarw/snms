@@ -34,6 +34,7 @@ public class SampleListFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		SampleAdapter adapter = new SampleAdapter(getActivity());
+		adapter.add(new SampleItem("Hjem", R.drawable.ic_apphome));
 	    adapter.add(new SampleItem("Nyheter", R.drawable.ic_news));
 	    adapter.add(new SampleItem("Byggeprosjektet", R.drawable.ic_buildproject));
 	    adapter.add(new SampleItem("Events", R.drawable.ic_events));
@@ -59,27 +60,28 @@ public class SampleListFragment extends ListFragment {
 		Fragment newContent1 = null;
 		Fragment newContent2 = null;
 		switch (position) {
-		
-
 		case 0:
-			newContent1 = new NewsListFragment();
+			newContent1 = new PreyOverviewFragment();
 			break;
 		case 1:
+			newContent1 = new NewsListFragment();
+			break;
+		case 2:
 			newContent1 = new BuildProjectListFragment();
 			break;	
-		case 2:
+		case 3:
 			newContent1 = new EventListFragment();
 			break;	
-		case 3:
+		case 4:
 			newContent1 = new AboutSnmsFragment();
 			break;		
-		case 4:
+		case 5:
 			newContent1 = new QiblaFragment();
 			break;		
-		case 5:
+		case 6:
 			newContent1 = new DonationFragment();
 			break;	
-		case 6:
+		case 7:
 			newContent1 = new SettingsFragment();
 			break;	
 		}
