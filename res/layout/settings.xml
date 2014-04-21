@@ -23,13 +23,38 @@
             android:id="@+id/hanafi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Oslo - Hanafi tider (JUN)" />
+            android:text="Oslo - Hanafi tider (SNMS WIM CJAS)" />
 
         <CheckBox
             android:id="@+id/icc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Oslo - Shafi tider (ICC)" />
+        
+         <TextView
+                android:id="@+id/betaheadline"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/snmsbutton"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:text="Avanserte innstillinger(Beta) "
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+         
+         
+               <TextView
+                android:id="@+id/betaExplain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:padding="7dp"
+                android:text="Funksjonene under er i beta. Det betyr at feil kan oppstå og vi kan grantere at bønnetidene i alle tilfeller vil være korrekte. Du har mulighet til sette bønnetider med utgangspunktet i en norsk by. Du kan også ekspremitere med ulike kalkulasjonsmetoder. Reglene vi benytter her er hentet fra preytimes.org"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+        
         
          <CheckBox
             android:id="@+id/cityCheckBox"
@@ -50,7 +75,7 @@
             android:id="@+id/avansert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Avansert" />
+            android:text="Preytimes.org" />
 
         <RelativeLayout
             android:id="@+id/avansertContainer"

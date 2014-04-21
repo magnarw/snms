@@ -6,30 +6,6 @@
      android:gravity="center"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/prey_current_day"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2.5dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:padding="0dp"
-        android:text="Sett gjenntagende alarm for Soloppgang"
-        android:textAppearance="@android:style/TextAppearance.Large"
-        android:textColor="@color/black" >
-    </TextView>
-        <TextView
-        android:id="@+id/exp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:padding="0dp"
-        android:text="Velg antall minutter du ønsker alarmen skal settes før bønnen"
-        android:textAppearance="@android:style/TextAppearance.Small"
-      android:textColor="@color/black" >
-    </TextView>
 
     <NumberPicker
         android:id="@+id/donationPicker"
@@ -39,25 +15,6 @@
         android:layout_marginTop="0dp"
         android:textColor="@color/white" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp" >
 
-        <Button
-            android:id="@+id/okAlarm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginTop="2.5dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="Sett alarm"
-            android:textAppearance="@android:style/TextAppearance.Large"
-            android:textColor="@color/black" >
-        </Button>
-    </LinearLayout>
 
 </LinearLayout>
