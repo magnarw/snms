@@ -8,6 +8,16 @@ public class PreySettings {
 	private Integer calculationMethodNo;
 	private Integer juristicMethodsNo;
 	private Integer adjustingMethodNo;
+	
+	private boolean hasBeta; 
+
+	public boolean isHasBeta() {
+		return hasBeta;
+	}
+
+	public void setHasBeta(boolean hasBeta) {
+		this.hasBeta = hasBeta;
+	}
 
 	private Float lng;
 	private Float lat;
@@ -20,14 +30,19 @@ public class PreySettings {
 	public static PreySettings createFromSettingsMap(
 			HashMap<String, String> settings) {
 		PreySettings preySettings = new PreySettings();
-
+		
+		if(settings.get("beta")!=null){
+			preySettings.setHasBeta(true);
+		}
+		
 		if (settings.get("hanfi") != null) {
 			preySettings.setHasAvansertPreyCalenderSet(false);
 			preySettings.setHasHanafiPreyCalenderSet(true);
 			preySettings.setHasShafiPreyCalenderSet(false);
 			preySettings.setHasCityCalednerSet(false);
 			return preySettings;
-		}else if(settings.get("citysetting")!=null){
+		}
+		else if(settings.get("citysetting")!=null){
 			preySettings.setHasAvansertPreyCalenderSet(false);
 			preySettings.setHasHanafiPreyCalenderSet(false);
 			preySettings.setHasShafiPreyCalenderSet(false);

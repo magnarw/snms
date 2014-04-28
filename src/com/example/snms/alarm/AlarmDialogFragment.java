@@ -55,10 +55,6 @@ public class AlarmDialogFragment extends SherlockDialogFragment implements OnCli
 	        LayoutInflater inflater = getActivity().getLayoutInflater();
 	        preyActivity = (PreyOverView) getActivity();
 	        View view = inflater.inflate(R.layout.alarmdialog, null);
-	        okButton = (Button)view.findViewById(R.id.okAlarm);
-	        alarmTitle = (TextView)view.findViewById(R.id.prey_current_day);
-	        alarmTitle.setText("Sett alarm for " + prey.getName());
-	        okButton.setOnClickListener(this);
 	        AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity());
 	        picker = (NumberPicker)view.findViewById(R.id.donationPicker);
 	        for(int i=0; i<nums.length; i++)
@@ -71,6 +67,30 @@ public class AlarmDialogFragment extends SherlockDialogFragment implements OnCli
 			picker.setValue(1);
 	        
 	        builder.setView(view);
+	        builder.setTitle("Sett alarm for " + prey.getName());
+	        builder.setMessage("Velg antall minutter før alarmen skal gå av");
+	        
+	        
+	    	builder.setPositiveButton("Sett alarm", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		   			AlarmUtilities Util = new AlarmUtilities(((PreyOverView) getActivity()).getDAO());
+//					alarm.setOffset(10);
+//					prey.getTime();
+//					alarm.setPrey();
+//					alarm.setId(Util.getAlarmId(prey.getTime()));7
+					Alarm alarm = new Alarm(prey.getName(), picker.getValue(), Util.getAlarmId(prey.getTime()));
+//					Intent intent = new Intent(getAppContext(), AlarmDialogFragment.class);
+					Util.SetRepeatingAlarm(prey, alarm.getId(), getAppContext(),prey.getName(), alarm.getOffset());
+					((PreyOverView) getActivity()).setAlarm(prey.getName(),true);
+					button.setSelected(true);
+					
+		           }
+		       });
+		builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		               // User cancelled the dialog
+		           }
+		       });
 	        
 	        
 	        return builder.create();
@@ -81,22 +101,7 @@ public class AlarmDialogFragment extends SherlockDialogFragment implements OnCli
 		if(v.equals(okButton)){
 			
 			
-			AlarmUtilities Util = new AlarmUtilities(((PreyOverView) getActivity()).getDAO());
-//			alarm.setOffset(10);
-//			prey.getTime();
-//			alarm.setPrey();
-			
-//			alarm.setId(Util.getAlarmId(prey.getTime()));7
-			Alarm alarm = new Alarm(prey.getName(), picker.getValue(), Util.getAlarmId(prey.getTime()));
-//			Intent intent = new Intent(getAppContext(), AlarmDialogFragment.class);
-			Util.SetRepeatingAlarm(prey, alarm.getId(), getAppContext(),prey.getName(), alarm.getOffset());
-			
-			((PreyOverView) getActivity()).setAlarm(prey.getName(),true);
-			
-			button.setSelected(true);
-		//	button.setImageResource(R.drawable.ic_alarm_clock_active);
-			
-			this.dismiss();
+
 		}
 		
 	}

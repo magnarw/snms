@@ -13,6 +13,7 @@ import com.example.snms.domain.Geometry;
 import com.example.snms.domain.NewsItem;
 import com.example.snms.news.NewsListFragment.NewsListAdapter;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SettingsFragment extends Fragment implements
 		OnItemSelectedListener, OnCheckedChangeListener, OnClickListener {
@@ -47,6 +49,7 @@ public class SettingsFragment extends Fragment implements
 	Spinner adjustMethod;
 	CheckBox hanaFi;
 	CheckBox icc;
+	CheckBox beta;
 	CheckBox avansert;
 	CheckBox city;
 	Button searchButton;
@@ -59,6 +62,7 @@ public class SettingsFragment extends Fragment implements
 	GeolocationManager geolocationManager = GeolocationManager.getInstance();
 	ProgressBar progressBar;
 	TextView locationText;
+	
 	TextView timeZoneContainer;
 	
 	//cities
@@ -70,7 +74,8 @@ public class SettingsFragment extends Fragment implements
 
 		dao = ((PreyOverView) getActivity()).getDAO();
 		View root = inflater.inflate(R.layout.settings, null);
-
+		beta =  (CheckBox) root.findViewById(R.id.beta);
+		beta.setOnCheckedChangeListener(this);
 		hanaFi = (CheckBox) root.findViewById(R.id.hanafi);
 		city = (CheckBox) root.findViewById(R.id.cityCheckBox);
 		city.setOnCheckedChangeListener(this);
@@ -82,6 +87,12 @@ public class SettingsFragment extends Fragment implements
 		timeZoneContainer = (TextView) root
 				.findViewById(R.id.timeZoneContainer);
 		hanaFi.setOnCheckedChangeListener(this);
+		hanaFi.setOnClickListener(this);
+		hanaFi.setOnClickListener(this);
+		hanaFi.setOnClickListener(this);
+		city.setOnClickListener(this);
+		avansert.setOnClickListener(this);
+		icc.setOnClickListener(this);
 		icc.setOnCheckedChangeListener(this);
 		avansert.setOnCheckedChangeListener(this);
 		avansertContainer = (RelativeLayout) root
@@ -141,7 +152,19 @@ public class SettingsFragment extends Fragment implements
 
 		timeZoneContainer.setText(TimeZone.getDefault().getDisplayName() + " "
 				+ timeZonePretty);
-
+		
+		
+		if(dao.getSettingsValue("beta")!=null){
+			city.setVisibility(View.VISIBLE);
+			cities.setVisibility(View.VISIBLE);
+			avansert.setVisibility(View.VISIBLE);
+			beta.setChecked(true);
+		}else {
+			cities.setVisibility(View.GONE);
+			avansert.setVisibility(View.GONE);
+			beta.setChecked(false);
+			city.setVisibility(View.GONE);
+		}
 		if (dao.getSettingsValue("hanfi") != null) {
 			hanaFi.setChecked(true);
 			icc.setChecked(false);
@@ -280,7 +303,7 @@ public class SettingsFragment extends Fragment implements
 			city.setChecked(false);
 			icc.setChecked(false);
 			hanaFi.setChecked(false);
-		}
+				}
 		if (buttonView.equals(hanaFi) && isChecked) {
 			dao.saveSetting("hanfi", "true");
 			dao.deleteSetting("avansert");
@@ -291,7 +314,7 @@ public class SettingsFragment extends Fragment implements
 			dao.deleteSetting("icc");
 			icc.setChecked(false);
 			avansert.setChecked(false);
-		}
+				}
 		if (buttonView.equals(icc) && isChecked) {
 			dao.saveSetting("icc", "true");
 			dao.deleteSetting("hanfi");
@@ -302,7 +325,7 @@ public class SettingsFragment extends Fragment implements
 			avansertContainer.setVisibility(View.GONE);
 			hanaFi.setChecked(false);
 			avansert.setChecked(false);
-		}
+				}
 		if (buttonView.equals(city) && isChecked) {
 			dao.saveSetting("citysetting","true");
 			dao.deleteSetting("hanfi");
@@ -314,10 +337,36 @@ public class SettingsFragment extends Fragment implements
 			icc.setChecked(false);
 			city.setChecked(true);
 			cities.setEnabled(true);
+				}
+		if(buttonView.equals(beta) && isChecked){
+			city.setVisibility(View.VISIBLE);
+			cities.setVisibility(View.VISIBLE);
+			avansert.setVisibility(View.VISIBLE);
+			dao.saveSetting("beta","true");
+			beta.setChecked(true);
+		}
+		if(buttonView.equals(beta) && !isChecked){
+			
+				city.setVisibility(View.GONE);
+				cities.setVisibility(View.GONE);
+				avansert.setVisibility(View.GONE);
+				beta.setChecked(false);
+				dao.deleteSetting("beta");
+				dao.deleteSetting("hanfi");
+				dao.deleteSetting("avansert");
+				dao.deleteSetting("icc");
+				dao.deleteSetting("citysetting");
+				icc.setChecked(true);
+				dao.saveSetting("icc","true");
+				
+			
+		
 		}
 		
 		if(!icc.isChecked() && !hanaFi.isChecked() && !avansert.isChecked() && !city.isChecked())
 			hanaFi.setChecked(true);
+		
+		
 
 	}
 
@@ -330,6 +379,14 @@ public class SettingsFragment extends Fragment implements
 			geolocationManager.getGeolocation(createSuccessListener(),
 					createErrorListener(), address);
 
+		}
+		if(v instanceof CheckBox) {
+			Context context = getActivity().getApplicationContext();
+			CharSequence text = "Lagert";
+			int duration = Toast.LENGTH_SHORT;
+
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
 		}
 
 	}

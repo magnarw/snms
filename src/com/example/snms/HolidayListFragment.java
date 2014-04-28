@@ -34,6 +34,7 @@ private RequestQueue requestQueue;
 		this.requestQueue = Volley.newRequestQueue(this.getActivity());
 		mheaderView = inflater.inflate(R.layout.holyday_header, null);
 		return inflater.inflate(R.layout.list, null);
+	
 	}
 	
 	

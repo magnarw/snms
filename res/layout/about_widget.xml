@@ -231,10 +231,13 @@
 	  	 android:layout_marginLeft="15dp"
  	 android:layout_marginRight="15dp"
  	 android:layout_marginTop="10dp"
+ 	  android:paddingBottom="20dp"
     android:layout_below="@+id/webpageContainer"
     android:gravity="left"
     android:padding="5dp"
-    android:text="Søndre Nordstrand Muslimske Senter (SNMS) er et muslimsk trossamfunn i Bydel Søndre Nordstrand."
+    android:text="Søndre Nordstrand Muslimske Senter (SNMS) er et muslimsk trossamfunn i Bydel Søndre Nordstrand opprettet i 2004. Trossamfunnet er en aktiv bidragsyter i lokalsamfunnet og er opptatt av å vise at Islam er en fredelig religion som inviterer til dialog og utveksling av kunnskap. 
+
+\n\nVi har som mål å leve etter islamsk lære for å få Allahs velsignelse og suksess både i dette livet og etter døden. Vi tilbyr religiøse tjenester, veiledning, og mener at økt kunnskap vil føre til bedre forståelse som åpner for dialog og vennskap."
     android:textColor="@color/black" 
      android:textAppearance="@android:style/TextAppearance.Small" />
     /> 

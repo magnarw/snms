@@ -36,11 +36,13 @@ public class SampleListFragment extends ListFragment {
 		SampleAdapter adapter = new SampleAdapter(getActivity());
 		adapter.add(new SampleItem("Hjem", R.drawable.ic_apphome));
 	    adapter.add(new SampleItem("Nyheter", R.drawable.ic_news));
-	    adapter.add(new SampleItem("Byggeprosjektet", R.drawable.ic_buildproject));
-	    adapter.add(new SampleItem("Events", R.drawable.ic_events));
-	    adapter.add(new SampleItem("Om snms", R.drawable.ic_logo));
-	    adapter.add(new SampleItem("Qibla", R.drawable.ic_qibla));
 	    adapter.add(new SampleItem("Donasjon", R.drawable.ic_donation));
+	    adapter.add(new SampleItem("Qibla", R.drawable.ic_qibla));
+	    adapter.add(new SampleItem("Events", R.drawable.ic_events));
+	    adapter.add(new SampleItem("Byggeprosjektet", R.drawable.ic_buildproject));
+	 
+	    adapter.add(new SampleItem("Om SNMS", R.drawable.ic_logo));
+	    
 	    adapter.add(new SampleItem("Instillinger", R.drawable.ic_settings));
 	
 		setListAdapter(adapter);
@@ -67,20 +69,22 @@ public class SampleListFragment extends ListFragment {
 			newContent1 = new NewsListFragment();
 			break;
 		case 2:
-			newContent1 = new BuildProjectListFragment();
-			break;	
-		case 3:
-			newContent1 = new EventListFragment();
-			break;	
-		case 4:
-			newContent1 = new AboutSnmsFragment();
-			break;		
-		case 5:
-			newContent1 = new QiblaFragment();
-			break;		
-		case 6:
 			newContent1 = new DonationFragment();
 			break;	
+		case 3:
+			newContent1 = new QiblaFragment();
+			break;	
+		case 4:
+			newContent1 = new EventListFragment();
+			break;	
+		case 5:
+			newContent1 = new BuildProjectListFragment();
+			break;	
+		
+		case 6:
+			newContent1 = new AboutSnmsFragment();
+			break;		
+		
 		case 7:
 			newContent1 = new SettingsFragment();
 			break;	

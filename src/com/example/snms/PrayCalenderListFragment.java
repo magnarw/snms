@@ -154,7 +154,11 @@ public class PrayCalenderListFragment extends Fragment implements
 			Log.e("PreyListCalender", "Bygge kalender fra preylist adatper:"
 					+ e.getLocalizedMessage());
 		}
+		prayGridForMonth.setItemChecked(timeCurrentlyUsedInPreyOverView.getDayOfMonth()-1, true);
 		adapter.notifyDataSetChanged();
+		prayGridForMonth.setSelection(timeCurrentlyUsedInPreyOverView.getDayOfMonth());
+		adapter.notifyDataSetChanged();
+		
 	}
 
 	public class PreyCalenderAdapter extends ArrayAdapter<PreyItemList> {
@@ -292,6 +296,10 @@ public class PrayCalenderListFragment extends Fragment implements
 				for (PreyItemList o : list) {
 					adapter.add(o);
 				}
+				if(this.timeCurrentlyUsedInPreyOverView.getMonthOfYear()==DateTime.now().getMonthOfYear()){
+					prayGridForMonth.setSelection(timeCurrentlyUsedInPreyOverView.getDayOfMonth());
+					prayGridForMonth.setItemChecked(timeCurrentlyUsedInPreyOverView.getDayOfMonth()-1, true);
+				}
 			} catch (Exception e) {
 				Log.e("PreyListCalender",
 						"Bygge kalender fra preylist adatper:"
@@ -316,6 +324,10 @@ public class PrayCalenderListFragment extends Fragment implements
 				for (PreyItemList o : list) {
 					adapter.add(o);
 				}
+				if(this.timeCurrentlyUsedInPreyOverView.getMonthOfYear()==DateTime.now().getMonthOfYear()){
+					prayGridForMonth.setSelection(timeCurrentlyUsedInPreyOverView.getDayOfMonth());
+					prayGridForMonth.setItemChecked(timeCurrentlyUsedInPreyOverView.getDayOfMonth()-1, true);
+				}
 			} catch (Exception e) {
 				Log.e("PreyListCalender",
 						"Bygge kalender fra preylist adatper:"
@@ -323,7 +335,9 @@ public class PrayCalenderListFragment extends Fragment implements
 			}
 
 			adapter.notifyDataSetChanged();
-
+			if(this.timeCurrentlyUsedInPreyOverView.getMonthOfYear()==DateTime.now().getMonthOfYear()){
+				prayGridForMonth.setSelection(timeCurrentlyUsedInPreyOverView.getDayOfMonth());
+			}
 		}
 		
 

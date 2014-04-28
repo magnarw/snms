@@ -13,6 +13,7 @@ import java.util.TimeZone;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -29,6 +30,7 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.util.Xml;
 import android.widget.ImageView;
+
 
 //import com.example.snms.DBAdapter;
 import com.example.snms.PreyOverView;
@@ -52,7 +54,64 @@ public class SnmsPrayTimeAdapter {
 		this.dao = dao; 
 	}
 	
+	/*
+	- I det opprinnelig Excel arket med bønnetider, settes det 1 time tilbake fra og med siste søndagen i mars til og med siste lørdagen i oktober.
+
+	- Kalenderen vil nå være i normaltid, som igjen er vintertid.
+
+	- Det må lages en algoritme/funksjon, som setter sommertid. Dvs. beregner frem siste søndagen i mars og setter alle bønnetidene 1 time frem. 
+	Dette skal vare til og med siste lørdagen i oktober. Fra og med siste søndag i oktober skal vi begynne å bruke normaltid (vintertid)
 	
+	*/
+	
+	private int getLastSundayInMarch(DateTime time) {
+		int lastSundayInMarch = -1;
+		DateTime march = new DateTime(time.getYear(),3, 1,0,0);
+		while(march.getMonthOfYear()==3){
+			if(march.getDayOfWeek()==DateTimeConstants.SUNDAY){
+				lastSundayInMarch = march.getDayOfYear();
+			}
+			//Keep adding days to march until we reach april
+			march = march.plusDays(1);
+		}
+		return lastSundayInMarch;
+		
+	}
+	
+	private int getLastSaturdayInOctober(DateTime time) {
+		int lastSaturdayInOctober = -1;
+		DateTime october = new DateTime(time.getYear(),10, 1,0,0);
+		while(october.getMonthOfYear()==10){
+			if(october.getDayOfWeek()==DateTimeConstants.SATURDAY){
+				lastSaturdayInOctober = october.getDayOfYear();
+			}
+			//Keep adding days to march until we reach 
+			october = october.plusDays(1);
+		}
+		return lastSaturdayInOctober;
+	}
+	
+	private void cleanUpOrignalPreyCalender(DateTime currentDate, List <PreyItem> preyTimes) {
+		//Summer time in 2013 startet at 2013-03-31 and lasted to 2013-10-27
+		DateTime startOfSummerTime2013 = new DateTime(2013, 3, 31, 0,0);
+		DateTime endOfSummerTime2013 = new DateTime(2013, 10, 27, 0,0);
+		if(currentDate.getDayOfYear()>=startOfSummerTime2013.getDayOfYear() && currentDate.getDayOfYear()<=endOfSummerTime2013.getDayOfYear()){
+			for(PreyItem prey : preyTimes){
+				prey.setTime(prey.getTime().minusHours(1));
+			}
+		}
+	}
+	
+	
+	private List<PreyItem> adjustForDaylightSavings(DateTime time, List <PreyItem> items){
+		cleanUpOrignalPreyCalender(time, items);
+		if(time.getDayOfYear()>=getLastSundayInMarch(time) && time.getDayOfYear()<=getLastSaturdayInOctober(time)){
+			for(PreyItem prey : items){
+				prey.setTime(prey.getTime().plusHours(1));
+			}
+		}
+		return items;
+	}
 	
 	
 	public List<PreyItem> getPrayListForDate(DateTime time) {
@@ -61,12 +120,12 @@ public class SnmsPrayTimeAdapter {
 		
 		if(!settings.getHasAvansertPreyCalenderSet()){
 			if(settings.getHasShafiPreyCalenderSet())
-				return readPrayItemFormXml(time,"shafi");
+				return adjustForDaylightSavings(time,readPrayItemFormXml(time,"shafi"));
 			else if(settings.getHasCityCalednerSet()){
-				return getPreyItemBasedOnCity(settings.getCity(),time,false);
+				return adjustForDaylightSavings(time,getPreyItemBasedOnCity(settings.getCity(),time,false));
 			}
 			else {
-				return readPrayItemFormXml(time,"hanafi");
+				return adjustForDaylightSavings(time,readPrayItemFormXml(time,"hanafi"));
 			}
 		}else {
 			PrayTime prayers = new PrayTime();
@@ -108,7 +167,10 @@ public class SnmsPrayTimeAdapter {
 		if(settings.getHasCityCalednerSet()){
 			List<PreyItemList> dayPreyListMap = new ArrayList<PreyItemList>();
 			DateTime dateTime2 = new DateTime(year, month,1, 1, 0, 0, 000);
-			List<PreyItem> items =getPreyItemBasedOnCity(settings.getCity(),dateTime2,true);
+			DateTime midnight = dateTime2.minusHours(dateTime2.getHourOfDay())
+					.minusMinutes(dateTime2.getMinuteOfHour())
+					.minusSeconds(dateTime2.getSecondOfMinute());
+			List<PreyItem> items =getPreyItemBasedOnCity(settings.getCity(),midnight,true);
 			
 			int counter = 0; 
 			PreyItemList list = new PreyItemList();
@@ -137,7 +199,10 @@ public class SnmsPrayTimeAdapter {
 		List<PreyItemList> dayPreyListMap = new ArrayList<PreyItemList>();
 		for (int i = 1; i <= dateTime.dayOfMonth().getMaximumValue(); i++) {
 			DateTime dateTime2 = new DateTime(year, month, i, 1, 0, 0, 000);
-			List<PreyItem> items = this.getPrayListForDate(dateTime2);
+			DateTime midnight = dateTime2.minusHours(dateTime2.getHourOfDay())
+					.minusMinutes(dateTime2.getMinuteOfHour())
+					.minusSeconds(dateTime2.getSecondOfMinute());
+			List<PreyItem> items = this.getPrayListForDate(midnight);
 			PreyItemList list = new PreyItemList(items, i);
 			dayPreyListMap.add(list);
 		}

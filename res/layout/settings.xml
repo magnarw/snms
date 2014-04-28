@@ -22,28 +22,50 @@
         <CheckBox
             android:id="@+id/hanafi"
             android:layout_width="wrap_content"
+              android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
-            android:text="Oslo - Hanafi tider (SNMS WIM CJAS)" />
+            android:text="Oslo - Hanafi tider (SNMS,WIM,CJAS)" />
 
         <CheckBox
             android:id="@+id/icc"
             android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
             android:text="Oslo - Shafi tider (ICC)" />
         
-         <TextView
-                android:id="@+id/betaheadline"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/snmsbutton"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:text="Avanserte innstillinger(Beta) "
-                android:textColor="@color/white"
-                android:textSize="17sp" />
-         
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        
+        android:orientation="horizontal" >
+        
+        
+           <TextView
+            android:id="@+id/betaheadline"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/border2"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:text="Avanserte innstillinger"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+        <TextView
+            android:id="@+id/betaheadline"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/border2"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:text="(Beta) "
+            android:textColor="@color/red"
+            android:textSize="17sp" />
+        </LinearLayout>
+        
+        
          
                <TextView
                 android:id="@+id/betaExplain"
@@ -51,10 +73,15 @@
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:padding="7dp"
-                android:text="Funksjonene under er i beta. Det betyr at feil kan oppstå og vi kan grantere at bønnetidene i alle tilfeller vil være korrekte. Du har mulighet til sette bønnetider med utgangspunktet i en norsk by. Du kan også ekspremitere med ulike kalkulasjonsmetoder. Reglene vi benytter her er hentet fra preytimes.org"
+                android:text="Avsanserte innstillinger er i beta. Dette betyr at noen tider vil være unøyaktig. Reglene vi benytter er hentet fra preytimes.org"
                 android:textColor="@color/black"
-                android:textSize="17sp" />
-        
+                android:textSize="14sp" />
+         <CheckBox
+            android:id="@+id/beta"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:text="Vis avanserte innstillinger" />
         
          <CheckBox
             android:id="@+id/cityCheckBox"

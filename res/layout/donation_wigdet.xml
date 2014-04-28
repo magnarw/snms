@@ -63,7 +63,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.2"
+        android:layout_weight="0.25"
         android:background="@drawable/border_donation"
         android:orientation="vertical"
         android:padding="3dp" >
@@ -72,9 +72,10 @@
             android:id="@+id/donationText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingBottom="3dp"
             android:layout_margin="0dp"
             android:gravity="center_vertical"
-            android:text="SMS Donasjon er en sikker og effektiv løsning som gir deg mulighet til å gi donasjoner til SNMS.\nMed Allahs velsignelse arbeider SNMS målrettet for å bygge moské på Mortensrud, og vi trenger økonomisk støtte fra dere. Alle som ønsker å bidra kan velge et beløp under og klikke på 'Trykk her for å gi pengestøtte'"
+            android:text="SMS Donasjon er en sikker og effektiv tjeneste som gir deg mulighet til å donere til Masjid ved å sende en tekstmelding.\n\nMed Allahs velsignelse arbeider SNMS målrettet for å bygge moské på Mortensrud, og trenger økonomisk støtte fra dere.\nAlle som ønsker å bidra kan velge et beløp under og klikke på 'Trykk her for å gi pengestøtte'. JazakAllah khair!"
 			android:textSize="13dp"
             android:textColor="@color/black" />
     </LinearLayout>
@@ -82,7 +83,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.45"
         android:background="@color/snmsBackgroundBlue"
         android:orientation="horizontal"
         android:weightSum="1" >
@@ -92,13 +93,13 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="0dp"
             android:layout_weight="0.3"
             android:background="@color/snmsDarkBlue"
             android:gravity="center"
             android:orientation="vertical"
             android:paddingBottom="5dp"
-            android:paddingTop="10dp" >
+            android:paddingTop="0dp" >
 
             <ImageButton
                 android:id="@+id/down"

@@ -44,8 +44,10 @@ import com.example.snms.settings.SettingsFragment;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -192,13 +194,27 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 						preyRowContainer, false);
 				preyRowContainer.addView(row);
 				preyNamePreyRowMap.put(PREY_LABLES[i], row);
-				ImageView alarmIcon = (ImageView) row
-						.findViewById(R.id.alarmclock_inactive);
-				alarmButtonNameMap.put(PREY_LABLES[i], alarmIcon);
-				alarmIcon.setOnClickListener(this);
+				
+				if(i!=1) {
+					ImageView alarmIcon = (ImageView) row
+							.findViewById(R.id.alarmclock_inactive);
+					alarmButtonNameMap.put(PREY_LABLES[i], alarmIcon);
+					alarmIcon.setOnClickListener(this);
+					preyNamePreyRowMap.put(PREY_LABLES[i], row);
+				} else {
+					ImageView alarmIcon = (ImageView) row
+							.findViewById(R.id.alarmclock_inactive);
+					 alarmIcon.setImageResource(Color.GRAY);
+					 alarmIcon.setBackgroundResource(R.drawable.snmsnoneactivealarm);
+				}
+			
 			}
 			View row = inflater.inflate(R.layout.prey_row, preyRowContainer,
 					false);
+			ImageView alarmIcon = (ImageView) row
+					.findViewById(R.id.alarmclock_inactive);
+			 alarmIcon.setImageResource(Color.GRAY);
+			 alarmIcon.setBackgroundResource(R.drawable.snmsnoneactivealarm);
 			jummaContainer = (LinearLayout) row;
 			jummaContainer.setVisibility(View.GONE);
 			preyRowContainer.addView(jummaContainer);
@@ -459,10 +475,10 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 			day = "Fredag";
 			break;
 		case 6:
-			day = "Lørdag";
+			day = "LÃ¸rdag";
 			break;
 		case 7:
-			day = "Søndag";
+			day = "SÃ¸ndag";
 			break;
 		default:
 			day = "Ukjent";
@@ -503,7 +519,8 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 			renderPreyList();
 			jummaAdaptor
 					.tryFetchningJummaLocally(this.timeCurrentlyUsedInPreyOverView);
-
+			
+		
 		}
 		if (v.equals(prevDay)) {
 			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView
@@ -590,14 +607,35 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 		}
 
 		for (String key : alarmButtonNameMap.keySet()) {
-			if (v.equals(alarmButtonNameMap.get(key))) {
+			if (!key.equals("Soloppgang") && v.equals(alarmButtonNameMap.get(key))) {
 				if (!Util.hasAlarm(key)) {
 					for (PreyItem preyItem : preyTimes) {
 						if (preyItem.getName().equals(key)) {
-
+							//create a standard android dialog
+							
+//							CharSequence [] test = {"1", "2"};
+//							AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//							// Add the buttons
+//							builder.setPositiveButton("Sett alarm", new DialogInterface.OnClickListener() {
+//							           public void onClick(DialogInterface dialog, int id) {
+//							               // User clicked OK button
+//							           }
+//							       });
+//							builder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
+//							           public void onClick(DialogInterface dialog, int id) {
+//							               // User cancelled the dialog
+//							           }
+//							       });
+//							
+//							
+//							builder.setMultiChoiceItems( new String[]{"Mars", "Earth"}, new boolean[]{false, false}, new DialogSelectionClickHandler());
+//							AlertDialog dialog = builder.create();
+//							dialog.show();
+//							AlertDialog dialog = builder.create();
+//							
 							FragmentTransaction ft = getActivity()
 									.getSupportFragmentManager()
-									.beginTransaction(); // endre dette til ï¿½
+									.beginTransaction(); // endre dette til Ã¥
 															// bruke
 															// setReapeting
 							AlarmDialogFragment newFragment = AlarmDialogFragment
@@ -719,7 +757,7 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 					.findViewById(R.id.alarmclock_inactive);
 			alarmButtonNameMap.put(item.getName(), alarmIcon);
 			alarmIcon.setOnClickListener(this);
-			alarmIcon.setVisibility(View.GONE);
+			//alarmIcon.setVisibility(View.GONE);
 
 			String ZeroPlusHour = Integer.toString(item.getTime()
 					.getHourOfDay());
