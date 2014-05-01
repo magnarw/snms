@@ -41,7 +41,7 @@
     
     android:gravity="bottom"
      android:background="#99000000"
-       android:text="Om snms"
+       android:text="Om SNMS"
     android:textColor="@color/white" 
      android:textAppearance="@android:style/TextAppearance.Large" />
     />   
@@ -143,26 +143,28 @@
 
 
   
-  	  <LinearLayout
+    	  <RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
        android:id="@+id/timeWrapper"
+       android:clickable="true"
     android:paddingLeft="5dp" 
-    android:background="@drawable/border"
+      android:paddingTop="10dp" 
+    android:background="@drawable/linkbackground"
    	android:layout_marginTop="15dp"
    	android:layout_below="@+id/mapWrapper"
    	android:layout_marginLeft="15dp"
  	android:layout_marginRight="15dp"
- 	        android:paddingTop="13dp"
  	     android:layout_gravity="left"
- 	      android:paddingBottom="13dp"
-    android:gravity="left">
+ 	      android:paddingBottom="10dp"
+   >
 
   	      <ImageView
   	          android:id="@+id/facebookImage"
   	          android:layout_width="25dp"
   	          android:layout_height="25dp"
+  	          android:layout_alignParentRight="false"
   	          android:gravity="bottom"
   	          android:padding="0dp"
   	          android:layout_marginRight="10dp"
@@ -173,6 +175,7 @@
   android:layout_width="wrap_content"
 	  android:layout_height="wrap_content"
     android:gravity="bottom"
+    android:layout_toRightOf="@+id/facebookImage"
     android:layout_gravity="center"
     android:paddingTop="0dp"
     android:text="Lik oss på facebook"
@@ -180,30 +183,47 @@
      android:textAppearance="@android:style/TextAppearance.Small" 
      />
     
+        <ImageView
+  	          android:id="@+id/addTocal"
+  	          android:layout_width="25dp"
+  	          android:layout_height="25dp"
+  	              android:layout_alignParentRight="true"
+  	          android:padding="0dp"
+  	          android:layout_marginLeft="10dp"
+  	          android:src="@drawable/ic_button_arrow" />
      
-    </LinearLayout>
+    </RelativeLayout>
     
-  	    	  <LinearLayout
+  	 
+        
+  	    	     	  <RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
        android:id="@+id/webpageContainer"
+       android:clickable="true"
     android:paddingLeft="5dp" 
-    android:background="@drawable/border"
+      android:paddingTop="10dp" 
+    android:background="@drawable/linkbackground"
    	android:layout_marginTop="15dp"
    	android:layout_below="@+id/timeWrapper"
    	android:layout_marginLeft="15dp"
  	android:layout_marginRight="15dp"
  	     android:layout_gravity="left"
- 	          android:paddingTop="13dp"
- 	      android:paddingBottom="13dp"
-    android:gravity="left">
+ 	      android:paddingBottom="10dp"
+   >    
+  	    	      
+  	    	      
+        
+  	    	      
+  	    	      
 
   	      <ImageView
   	          android:id="@+id/webpageImageLink"
   	          android:layout_width="25dp"
   	          android:layout_height="25dp"
   	          android:gravity="bottom"
+  	           android:layout_alignParentLeft="true"
   	          android:padding="0dp"
   	          android:layout_marginRight="10dp"
   	          android:src="@drawable/ic_home_webpage" />
@@ -213,15 +233,25 @@
   android:layout_width="wrap_content"
 	  android:layout_height="wrap_content"
     android:gravity="bottom"
-    android:layout_gravity="center"
+    android:layout_gravity="bottom"
+    android:layout_toRightOf="@+id/webpageImageLink"
     android:paddingTop="0dp"
     android:text="Besøk vår webside"
     android:textColor="@color/black" 
      android:textAppearance="@android:style/TextAppearance.Small" 
      />
     
+        <ImageView
+  	          android:id="@+id/addTocal"
+  	          android:layout_width="25dp"
+  	          android:layout_height="25dp"
+  	              android:layout_alignParentRight="true"
+  	          android:padding="0dp"
+  	          android:layout_marginLeft="10dp"
+  	          android:src="@drawable/ic_button_arrow" />
+    
      
-    </LinearLayout>
+    </RelativeLayout>
 
 
  	   <TextView

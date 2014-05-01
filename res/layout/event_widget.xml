@@ -21,7 +21,7 @@
 	    android:layout_alignParentTop="true"
 	    android:layout_width="fill_parent"
 	    android:layout_height="180dp"
-	     android:scaleType="centerCrop"
+	     android:scaleType="fitXY"
 	    android:padding="0dp"
 	 />
  
@@ -180,21 +180,22 @@
 
 
   
-  	  <LinearLayout
+  	  <RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
        android:id="@+id/timeWrapper"
+       android:clickable="true"
     android:paddingLeft="5dp" 
       android:paddingTop="10dp" 
-    android:background="@drawable/border"
+    android:background="@drawable/linkbackground"
    	android:layout_marginTop="15dp"
    	android:layout_below="@+id/mapWrapper"
    	android:layout_marginLeft="15dp"
  	android:layout_marginRight="15dp"
  	     android:layout_gravity="left"
  	      android:paddingBottom="10dp"
-    android:gravity="left">
+   >
 
   	      <ImageView
   	          android:id="@+id/timeImage"
@@ -202,6 +203,7 @@
   	          android:layout_height="25dp"
   	          android:gravity="bottom"
   	          android:padding="0dp"
+  	              android:layout_alignParentLeft="true"
   	          android:layout_marginRight="10dp"
   	          android:src="@drawable/ic_calendar_small" />
     
@@ -211,22 +213,22 @@
 	  android:layout_height="wrap_content"
     android:gravity="bottom"
     android:layout_gravity="left"
+    android:layout_toRightOf="@+id/timeImage"
     android:paddingTop="3dp"
     android:text="Søndag 19, 20:30"
     android:textColor="@color/black" 
      android:textAppearance="@android:style/TextAppearance.Small" 
      />
-         <ImageButton
+         <ImageView
   	          android:id="@+id/addTocal"
   	          android:layout_width="25dp"
   	          android:layout_height="25dp"
-  	          android:gravity="bottom"
-  	          android:background="@color/snmsActiveGreen"
+  	              android:layout_alignParentRight="true"
   	          android:padding="0dp"
   	          android:layout_marginLeft="10dp"
-  	          android:src="@drawable/ic_right_arrow" />
+  	          android:src="@drawable/ic_button_arrow" />
      
-    </LinearLayout>
+    </RelativeLayout>
 
 
  	   <TextView
