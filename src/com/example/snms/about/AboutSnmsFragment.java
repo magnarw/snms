@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class AboutSnmsFragment extends Fragment implements OnClickListener {
@@ -45,8 +46,8 @@ public class AboutSnmsFragment extends Fragment implements OnClickListener {
 	ImageView faceImage;
 	ImageView webImage;
 	TextView faceText;
-
-
+	RelativeLayout likeOnFaceWraper;
+	RelativeLayout webpageContainer;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -60,6 +61,11 @@ public class AboutSnmsFragment extends Fragment implements OnClickListener {
 			mapImage = (ImageView) root
 					.findViewById(R.id.mapImage);
 			
+			likeOnFaceWraper = (RelativeLayout)root.findViewById(R.id.timeWrapper);
+			likeOnFaceWraper.setOnClickListener(this);
+			
+			webpageContainer = (RelativeLayout)root.findViewById(R.id.webpageContainer);
+			webpageContainer.setOnClickListener(this);
 			
 			addressLine1 = (TextView) root.findViewById(R.id.addressLine1);
 			addressLine2 = (TextView) root.findViewById(R.id.addressLine2);
@@ -102,18 +108,30 @@ public class AboutSnmsFragment extends Fragment implements OnClickListener {
 		if(v.equals(mapImage)){
 			String uri = String.format(Locale.ENGLISH, "geo:%f,%f?z=%d&q=%f,%f (%s)", 59.84703700000001, 10.828062300000056,10,  10.828062300000056, 59.84703700000001, "SNMS");
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+			webpageContainer.setPressed(true);
 			getActivity().startActivity(intent);
 		}
 		if(v.equals(webImage)){
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.muslimskesenter.no"));
+			startActivity(browserIntent);
+			webpageContainer.setPressed(true);
+		}
+		if(v.equals(webpageContainer)){
 			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.muslimskesenter.no"));
 			startActivity(browserIntent);
 		}
 		if(v.equals(faceImage)){
 			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/pages/S%C3%B8ndre-Nordstrand-Muslimske-Senter/312656635444443?fref=ts"));
 			startActivity(browserIntent);
+			likeOnFaceWraper.setPressed(true);
 		}if(v.equals(faceText)){
 			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/pages/S%C3%B8ndre-Nordstrand-Muslimske-Senter/312656635444443?fref=ts"));
 			startActivity(browserIntent);
+			likeOnFaceWraper.setPressed(true);
+		}if(v.equals(likeOnFaceWraper)){
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/pages/S%C3%B8ndre-Nordstrand-Muslimske-Senter/312656635444443?fref=ts"));
+			startActivity(browserIntent);
+			
 		}
 	}
 

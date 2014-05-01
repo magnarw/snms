@@ -2,6 +2,9 @@ package com.example.snms.news;
 
 import java.util.List;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -20,6 +23,7 @@ import com.example.snms.network.GsonRequest;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -90,8 +94,11 @@ public class BuildProjectListFragment extends ListFragment {
 			lastLoadedPage = 0; 
 			
 			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_BUILDPROJECT,0,2);
+			progressBar.setVisibility(View.VISIBLE);
+		}else {
+			progressBar.setVisibility(View.GONE);
 		}
-		progressBar.setVisibility(View.VISIBLE);
+		
 	}
 	
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -165,10 +172,14 @@ public class BuildProjectListFragment extends ListFragment {
 				loadMoreData(getItem(position).getNextPage());
 			}
 			TextView title = (TextView) convertView.findViewById(R.id.row_news_title);
-		//	TextView text = (TextView) convertView.findViewById(R.id.row_news_ingress);
+			TextView text = (TextView) convertView.findViewById(R.id.row_news_created);
 			NetworkImageView image = (NetworkImageView)convertView.findViewById(R.id.newsImage);
 			NewsItem h =  getItem(position);
 			title.setText(getItem(position).getTitle());
+			DateTimeFormatter formatter = DateTimeFormat.forPattern("'Publisert' dd.MMM yyyy");
+			String created = formatter.print(h.getCreatedDate());
+			text.setText(created);
+			text.setTextColor(Color.BLACK);
 			Uri uri = Uri.parse(h.getImgUrl());
 		//	text.setText(h.getText());
 			image.setImageUrl(h.getImgUrl()+"?w=300&h=300", ImageCacheManager.getInstance().getImageLoader());

@@ -16,6 +16,7 @@ import com.example.snms.domain.NewsItem;
 import com.example.snms.images.ImageCacheManager;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,7 +29,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -39,10 +42,11 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 
 	// News stuff
 	TextView createdDate;
+	RelativeLayout addToCalender;
 	TextView text;
 	TextView newstext2;
 	TextView title;
-	TextView authorTag;
+//	TextView authorTag;
 	TextView ingress;
 	NetworkImageView imageHeader;
 	NetworkImageView image;
@@ -55,7 +59,7 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 	TextView addressLine2;
 	TextView monthText; 
 	TextView monthNumber; 
-	ImageButton addTocal;
+	ImageView addTocal;
 	RelativeLayout latestNewsContainer;
 	public NewsDetailsFragment() {
 		super();
@@ -73,7 +77,7 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			imageHeader = (NetworkImageView) root
 					.findViewById(R.id.headerImage1);
 			image = (NetworkImageView) root.findViewById(R.id.newsImage);
-			authorTag =(TextView) root.findViewById(R.id.authorTag);
+		//	authorTag =(TextView) root.findViewById(R.id.authorTag);
 			imageText = (TextView) root.findViewById(R.id.headerText1);
 			createdDate = (TextView) root.findViewById(R.id.createdTag);
 			ingress = (TextView) root.findViewById(R.id.newsIngress);
@@ -85,7 +89,9 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			return root;
 		} else {
 			View root = inflater.inflate(R.layout.event_widget, null);
-			 latestNewsContainer =(RelativeLayout) root.findViewById(R.id.latestNewsContainer);
+			addToCalender = (RelativeLayout) root.findViewById(R.id.timeWrapper);
+			addToCalender.setOnClickListener(this);
+			latestNewsContainer =(RelativeLayout) root.findViewById(R.id.latestNewsContainer);
 			image = (NetworkImageView) root.findViewById(R.id.newsImage);
 			imageText = (TextView) root.findViewById(R.id.headerText1);
 			imageHeader = (NetworkImageView) root
@@ -96,7 +102,7 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			addressLine2 = (TextView) root.findViewById(R.id.addressLine2);
 			monthText = (TextView) root.findViewById(R.id.dateWrapMonthText);
 			monthNumber = (TextView) root.findViewById(R.id.dateWrapMonthNumber); 
-			addTocal = (ImageButton)root.findViewById(R.id.addTocal); 
+			addTocal = (ImageView)root.findViewById(R.id.addTocal); 
 			addTocal.setOnClickListener(this);
 			timeFrom = (TextView) root.findViewById(R.id.timeText);
 			timeFrom.setOnClickListener(this);
@@ -117,15 +123,19 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 		if (this.newsItem.getCat()==1
 				|| this.newsItem.getCat()==2) {
 			
-			imageHeader.setImageUrl(newsItem.getImgUrl()+"?w=1200"  +"&h=600", ImageCacheManager
+			imageHeader.setImageUrl(newsItem.getImgUrl()+"?w=600"  +"&h=300", ImageCacheManager
 					.getInstance().getImageLoader());
+			
+			imageHeader.setOnClickListener(this);
 			//150;
 			if(newsItem.getArticleImageUrl()!=null) {
 				image.setImageUrl(newsItem.getArticleImageUrl()+"?w=600&h=600", ImageCacheManager
 						.getInstance().getImageLoader());
+				image.setOnClickListener(this);
 			}
 			imageText.setText(newsItem.getTitle());
-			DateTimeFormatter formatter = DateTimeFormat.forPattern("EEEE MM.dd hh:mm");
+			
+			DateTimeFormatter formatter = DateTimeFormat.forPattern("'Publisert' dd.MMM yyyy");
 			String created = formatter.print(newsItem.getCreatedDate());
 			
 			String newsText1 = "";
@@ -143,7 +153,7 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			
 			createdDate.setText(created);
 			ingress.setText(newsItem.getIngress());
-			authorTag.setText(newsItem.getAuthor());
+		//	authorTag.setText(newsItem.getAuthor());
 			text.setText(newsText1);
 			newstext2.setText(newsText2);
 		} else {
@@ -152,28 +162,16 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 					.getInstance().getImageLoader());
 			mapImage.setOnClickListener(this);
 
-			imageHeader.setImageUrl(newsItem.getImgUrl()+"?w=600"  +"&h=600", ImageCacheManager
+			imageHeader.setImageUrl(newsItem.getImgUrl()+"?w=600"  +"&h=300", ImageCacheManager
 					.getInstance().getImageLoader());
+			
+			imageHeader.setOnClickListener(this);
+			
 			DateTime from = newsItem.getFrom();
 			DateTime to = newsItem.getTo();
 			imageText.setText(newsItem.getTitle());
-			from = from.plusHours(1);
-			
-			DateTimeFormatter formatter = DateTimeFormat.forPattern("EEEE, MMM d");
-			DateTimeFormatter formatter2 = DateTimeFormat.forPattern("kk:mm");
-			DateTimeFormatter formatterMonth = DateTimeFormat.forPattern("MMM");
-			DateTimeFormatter formatterDay = DateTimeFormat.forPattern("dd");
-			
-			String formattedDate = formatter.print(from);
-			String formatedTime = formatter2.print(from);
-			
-			String formatedMonth = formatterMonth.print(from);
-			String formatedDay = formatterDay.print(from);
-			
-			monthNumber.setText(formatedDay);
-			monthText.setText(formatedMonth.toUpperCase());
-			
-			timeFrom.setText(formattedDate + " klokken " + formatedTime);
+			DateTimeFormatter formatter = DateTimeFormat.forPattern("EEEE dd.MMM 'kl' HH:mm");
+			timeFrom.setText(formatter.print(from));
 			text.setText(newsItem.getText());
 			String [] address =  newsItem.getAddress().split(",");
 			if(address.length>1){
@@ -200,6 +198,20 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 		this.newsItem = newsItem;
 
 	}
+	
+	public void createImageDialog(String url){
+		Dialog settingsDialog = new Dialog(getActivity());
+		settingsDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+		
+		View root = getActivity().getLayoutInflater().inflate(R.layout.imagepopup, null);
+		NetworkImageView v =(NetworkImageView) root.findViewById(R.id.image);
+		v.setImageUrl(url, ImageCacheManager
+				.getInstance().getImageLoader());
+		settingsDialog.setContentView(root);
+		settingsDialog.show();
+		
+	}
+	
 
 	@Override
 	public void onClick(View v) {
@@ -210,14 +222,25 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 		}
 		if(v.equals(timeFrom) || v.equals(addTocal)){
 				Intent intent = new Intent(Intent.ACTION_EDIT);
+				addToCalender.requestFocus();
 				intent.setType("vnd.android.cursor.item/event");
 				intent.putExtra("beginTime",newsItem.getFrom().getMillis());
 				intent.putExtra("allDay", false);
 				intent.putExtra("rrule", "FREQ=YEARLY");
 				intent.putExtra("endTime", newsItem.getTo().getMillis());
 				intent.putExtra("title", newsItem.getTitle());
+				intent.putExtra("location", newsItem.getAddress());
 				startActivity(intent);
+				addToCalender.setPressed(true);
 			}
+	
+		if(v.equals(imageHeader)){
+			this.createImageDialog(newsItem.getImgUrl()+"?w=1200"  +"&h=600");
+		}
+		if(v.equals(image)){
+			this.createImageDialog(newsItem.getArticleImageUrl()+"?w=600&h=600");
+		}
+		
 		
 	}
 

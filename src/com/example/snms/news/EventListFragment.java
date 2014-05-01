@@ -102,8 +102,11 @@ public class EventListFragment extends ListFragment {
 			lastLoadedPage = 0; 
 			
 			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_EVENTS,0,3);
+			progressBar.setVisibility(View.VISIBLE);
+		}else {
+			progressBar.setVisibility(View.GONE);
 		}
-		progressBar.setVisibility(View.VISIBLE);
+	
 	}
 	
 
@@ -186,9 +189,13 @@ public class EventListFragment extends ListFragment {
 			Uri uri = Uri.parse(h.getImgUrl()+"?w=" + image.getWidth() +"&h="+ image.getHeight()); 
 			// text.setText(h.getText());
 			image.setImageUrl(h.getImgUrl()+"?w=300&h=300", ImageCacheManager.getInstance().getImageLoader());
-			DateTimeFormatter formatter = DateTimeFormat.forPattern("MM.dd hh:mm");
+			
+			DateTimeFormatter formatter = DateTimeFormat.forPattern("EEEE dd.MMM 'kl' HH:mm");
+			//Onsdag 30.april, kl 20:30
 			String created = formatter.print(h.getFrom());
-			text.setText(created + "-" + formatter.print(h.getTo()) );
+		//	text.
+			text.setText(created);
+			text.setTextColor(Color.BLACK);
 			if(h.getTo().isBeforeNow()){
 				image.setColorFilter(Color.argb(450, 48, 48, 48),   Mode.SRC_ATOP);
 				title.setTextColor(Color.rgb(108, 108, 108));

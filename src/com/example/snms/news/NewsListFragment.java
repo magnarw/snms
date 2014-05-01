@@ -23,6 +23,7 @@ import com.example.snms.network.GsonRequest;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -93,8 +94,11 @@ public class NewsListFragment extends ListFragment {
 			lastLoadedPage = 0; 
 			
 			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_NEWS,0,1);
+			progressBar.setVisibility(View.VISIBLE);
+		}else {
+			progressBar.setVisibility(View.GONE);
 		}
-		progressBar.setVisibility(View.VISIBLE);
+	
 	}
 	
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -174,8 +178,12 @@ public class NewsListFragment extends ListFragment {
 			NetworkImageView image = (NetworkImageView)convertView.findViewById(R.id.newsImage);
 			NewsItem h =  getItem(position);
 			title.setText(getItem(position).getTitle());
-			DateTimeFormatter formatter = DateTimeFormat.forPattern("EEEE MM.dd hh:mm");
+			
+			//Publisert 04.jan 2014 
+			
+			DateTimeFormatter formatter = DateTimeFormat.forPattern("'Publisert' dd.MMM yyyy");
 			String created = formatter.print(h.getCreatedDate());
+			text.setTextColor(Color.BLACK);
 			text.setText(created);
 			try {
 			Uri uri = Uri.parse(h.getImgUrl()+"?w=" + image.getWidth() +"&h="+ image.getHeight()); 

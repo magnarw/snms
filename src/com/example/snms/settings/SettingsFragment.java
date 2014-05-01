@@ -346,7 +346,6 @@ public class SettingsFragment extends Fragment implements
 			beta.setChecked(true);
 		}
 		if(buttonView.equals(beta) && !isChecked){
-			
 				city.setVisibility(View.GONE);
 				cities.setVisibility(View.GONE);
 				avansert.setVisibility(View.GONE);

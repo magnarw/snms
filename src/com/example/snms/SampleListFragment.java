@@ -43,7 +43,7 @@ public class SampleListFragment extends ListFragment {
 	 
 	    adapter.add(new SampleItem("Om SNMS", R.drawable.ic_logo));
 	    
-	    adapter.add(new SampleItem("Instillinger", R.drawable.ic_settings));
+	    adapter.add(new SampleItem("Innstillinger", R.drawable.ic_settings));
 	
 		setListAdapter(adapter);
 	}

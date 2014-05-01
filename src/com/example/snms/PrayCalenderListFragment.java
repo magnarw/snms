@@ -291,11 +291,12 @@ public class PrayCalenderListFragment extends Fragment implements
 			prayGridForMonth.clearChoices();
 			try {
 				list = prayTimeAdapter.getPrayGridForMonthIndYear(
-						timeCurrentlyUsedInPreyOverView.getMonthOfYear(), 2013,
+						timeCurrentlyUsedInPreyOverView.getMonthOfYear(), timeCurrentlyUsedInPreyOverView.getYear(),
 						false);
 				for (PreyItemList o : list) {
 					adapter.add(o);
 				}
+				
 				if(this.timeCurrentlyUsedInPreyOverView.getMonthOfYear()==DateTime.now().getMonthOfYear()){
 					prayGridForMonth.setSelection(timeCurrentlyUsedInPreyOverView.getDayOfMonth());
 					prayGridForMonth.setItemChecked(timeCurrentlyUsedInPreyOverView.getDayOfMonth()-1, true);
@@ -319,7 +320,7 @@ public class PrayCalenderListFragment extends Fragment implements
 			prayGridForMonth.clearChoices();
 			try {
 				list = prayTimeAdapter.getPrayGridForMonthIndYear(
-						timeCurrentlyUsedInPreyOverView.getMonthOfYear(), 2013,
+						timeCurrentlyUsedInPreyOverView.getMonthOfYear(), timeCurrentlyUsedInPreyOverView.getYear(),
 						false);
 				for (PreyItemList o : list) {
 					adapter.add(o);
@@ -353,7 +354,7 @@ public class PrayCalenderListFragment extends Fragment implements
 		adapter.clear();
 		try {
 			list = prayTimeAdapter.getPrayGridForMonthIndYear(
-					timeCurrentlyUsedInPreyOverView.getMonthOfYear(), 2013,
+					timeCurrentlyUsedInPreyOverView.getMonthOfYear(), timeCurrentlyUsedInPreyOverView.getYear(),
 					false);
 			for (PreyItemList o : list) {
 				adapter.add(o);

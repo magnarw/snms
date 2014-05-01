@@ -507,7 +507,7 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 		if (v.equals(currentDay)) {
 			android.app.DatePickerDialog pika = new android.app.DatePickerDialog(
 					this.getActivity(), this, DateTime.now().getYear(),
-					DateTime.now().getMonthOfYear(), 1);
+					DateTime.now().getMonthOfYear()-1, DateTime.now().getDayOfMonth());
 
 			pika.show();
 		}

@@ -93,9 +93,21 @@ public class SnmsPrayTimeAdapter {
 	
 	private void cleanUpOrignalPreyCalender(DateTime currentDate, List <PreyItem> preyTimes) {
 		//Summer time in 2013 startet at 2013-03-31 and lasted to 2013-10-27
-		DateTime startOfSummerTime2013 = new DateTime(2013, 3, 31, 0,0);
-		DateTime endOfSummerTime2013 = new DateTime(2013, 10, 27, 0,0);
-		if(currentDate.getDayOfYear()>=startOfSummerTime2013.getDayOfYear() && currentDate.getDayOfYear()<=endOfSummerTime2013.getDayOfYear()){
+		int month = currentDate.getMonthOfYear();
+		int day = currentDate.getDayOfMonth();
+		
+		DateTime startOfSummerTime2013 = new DateTime(2013, 3, 31, 5,0);
+		DateTime endOfSummerTime2013 = new DateTime(2013, 10, 27, 5,0);
+		System.out.println("This is start of summer time 2013:" + startOfSummerTime2013.getDayOfYear());
+		System.out.println("This is end of summer time 2013:" + endOfSummerTime2013.getDayOfYear());
+		
+		int yearOffset = 2013 -currentDate.getYear();
+		
+		DateTime transformedCurrentDate = currentDate.minusYears(yearOffset);
+		
+		System.out.println("day of year:" + currentDate.getDayOfYear());
+		
+		if(currentDate.getDayOfYear()>=90 && currentDate.getDayOfYear()<=300){
 			for(PreyItem prey : preyTimes){
 				prey.setTime(prey.getTime().minusHours(1));
 			}
@@ -104,12 +116,22 @@ public class SnmsPrayTimeAdapter {
 	
 	
 	private List<PreyItem> adjustForDaylightSavings(DateTime time, List <PreyItem> items){
-		cleanUpOrignalPreyCalender(time, items);
+	//	cleanUpOrignalPreyCalender(time, items);
+		
+	
+		
+		System.out.println("This is last sunday in march:" + getLastSundayInMarch(time));
+		System.out.println("This is last sauterday in october:" + getLastSaturdayInOctober(time));
+		
+		System.out.println("This is last sauterday in october:" + getLastSaturdayInOctober(time));
+		System.out.println("This is last sauterday in october:" + getLastSaturdayInOctober(time));
+		/*
 		if(time.getDayOfYear()>=getLastSundayInMarch(time) && time.getDayOfYear()<=getLastSaturdayInOctober(time)){
 			for(PreyItem prey : items){
 				prey.setTime(prey.getTime().plusHours(1));
 			}
 		}
+		*/
 		return items;
 	}
 	
@@ -214,6 +236,9 @@ public class SnmsPrayTimeAdapter {
 			throws XmlPullParserException, IOException {
 		List<PreyItem> entries = new ArrayList<PreyItem>();
 		parser.require(XmlPullParser.START_TAG, ns, "Records");
+		
+		int dayCounter = 1;
+		int month = time.getMonthOfYear();
 		while (parser.next() != XmlPullParser.END_TAG) {
 			if (parser.getEventType() != XmlPullParser.START_TAG) {
 				continue;
@@ -222,7 +247,8 @@ public class SnmsPrayTimeAdapter {
 			// Starts by looking for the entry tag
 			if (name.equals("Row")
 					&& parser.getAttributeValue(0).equals(String.valueOf(time.getDayOfMonth()))) {
-				entries.addAll(readEntry(parser,time));
+				entries.addAll(readEntry(parser,time,dayCounter,month));
+				dayCounter++;
 			} else {
 				skip(parser);
 			}
@@ -318,30 +344,35 @@ public class SnmsPrayTimeAdapter {
 	
 	
 
-	private DateTime getPrayTimeFromString(DateTime time, String timeToParse) {
+	private DateTime getPrayTimeFromString(DateTime time, String timeToParse,int day, int month) {
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("h:mm:ss aa");
 		LocalTime timeFromString = LocalTime.parse(timeToParse,fmt);
-		return time.plusHours(timeFromString.getHourOfDay()).plusMinutes(timeFromString.getMinuteOfHour());
+		DateTime toReturn = time.plusHours(timeFromString.getHourOfDay()).plusMinutes(timeFromString.getMinuteOfHour());
+		
+		//stuff to clean up summer time in the orginal calender(from 2013)
 
+		
+		return toReturn;
+	
 	}
 	
 	
 	
 	
-	private List<PreyItem> readEntry(XmlPullParser parser,DateTime time) throws XmlPullParserException, IOException {
+	private List<PreyItem> readEntry(XmlPullParser parser,DateTime time,int day,int month) throws XmlPullParserException, IOException {
 	    parser.require(XmlPullParser.START_TAG, ns, "Row");
 	    List <PreyItem> preyList = new ArrayList<PreyItem>();
-	  	DateTime fajrTime = getPrayTimeFromString(time,parser.getAttributeValue(1));
+	  	DateTime fajrTime = getPrayTimeFromString(time,parser.getAttributeValue(1), day,month);
 	  	PreyItem fajr = new PreyItem("Fajr", fajrTime, false);	 
-	 	DateTime soloppgangTime = getPrayTimeFromString(time,parser.getAttributeValue(2));
+	 	DateTime soloppgangTime = getPrayTimeFromString(time,parser.getAttributeValue(2),day,month);
 	  	PreyItem soloppgang = new PreyItem("Soloppgang", soloppgangTime, false);		  	 
-	  	DateTime dhuhrTime = getPrayTimeFromString(time,parser.getAttributeValue(3));
+	  	DateTime dhuhrTime = getPrayTimeFromString(time,parser.getAttributeValue(3),day,month);
 	  	PreyItem duhr = new PreyItem("Dhuhr", dhuhrTime, false);	
-		DateTime asrTime = getPrayTimeFromString(time,parser.getAttributeValue(4));
+		DateTime asrTime = getPrayTimeFromString(time,parser.getAttributeValue(4),day,month);
 		PreyItem asr = new PreyItem("Asr", asrTime, false);	
-	    DateTime maghribTime = getPrayTimeFromString(time,parser.getAttributeValue(5));  	
+	    DateTime maghribTime = getPrayTimeFromString(time,parser.getAttributeValue(5),day,month);  	
 		PreyItem maghrib = new PreyItem("Maghrib", maghribTime, false);	
-		DateTime ishaTime = getPrayTimeFromString(time,parser.getAttributeValue(6));
+		DateTime ishaTime = getPrayTimeFromString(time,parser.getAttributeValue(6),day,month);
 		PreyItem isha = new PreyItem("Isha", ishaTime, false);	
 		preyList.add(fajr);
 		preyList.add(soloppgang);
@@ -356,17 +387,17 @@ public class SnmsPrayTimeAdapter {
 	private List<PreyItem> readCityEntry(XmlPullParser parser,DateTime time) throws XmlPullParserException, IOException {
 	    parser.require(XmlPullParser.START_TAG, ns, "Row");
 	    List <PreyItem> preyList = new ArrayList<PreyItem>();
-	  	DateTime fajrTime = getPrayTimeFromString(time,parser.getAttributeValue(2));
+	  	DateTime fajrTime = getPrayTimeFromString(time,parser.getAttributeValue(2),-1,-1);
 	  	PreyItem fajr = new PreyItem("Fajr", fajrTime, false);	 
-	 	DateTime soloppgangTime = getPrayTimeFromString(time,parser.getAttributeValue(3));
+	 	DateTime soloppgangTime = getPrayTimeFromString(time,parser.getAttributeValue(3),-1,-1);
 	  	PreyItem soloppgang = new PreyItem("Soloppgang", soloppgangTime, false);		  	 
-	  	DateTime dhuhrTime = getPrayTimeFromString(time,parser.getAttributeValue(4));
+	  	DateTime dhuhrTime = getPrayTimeFromString(time,parser.getAttributeValue(4),-1,-1);
 	  	PreyItem duhr = new PreyItem("Dhuhr", dhuhrTime, false);	
-		DateTime asrTime = getPrayTimeFromString(time,parser.getAttributeValue(5));
+		DateTime asrTime = getPrayTimeFromString(time,parser.getAttributeValue(5),-1,-1);
 		PreyItem asr = new PreyItem("Asr", asrTime, false);	
-	    DateTime maghribTime = getPrayTimeFromString(time,parser.getAttributeValue(6));  	
+	    DateTime maghribTime = getPrayTimeFromString(time,parser.getAttributeValue(6),-1,-1);  	
 		PreyItem maghrib = new PreyItem("Maghrib", maghribTime, false);	
-		DateTime ishaTime = getPrayTimeFromString(time,parser.getAttributeValue(7));
+		DateTime ishaTime = getPrayTimeFromString(time,parser.getAttributeValue(7),-1,-1);
 		PreyItem isha = new PreyItem("Isha", ishaTime, false);	
 		preyList.add(fajr);
 		preyList.add(soloppgang);
