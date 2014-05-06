@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager.BackStackEntry;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.util.DisplayMetrics;
@@ -30,7 +31,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
-
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.android.volley.Request;
@@ -151,6 +151,12 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements
 						return true;
 					}
 		});
+		
+		if(getSupportFragmentManager().getBackStackEntryCount()>5){
+			BackStackEntry f = getSupportFragmentManager().getBackStackEntryAt(1);
+			getSupportFragmentManager();
+		}
+		
 		if (fragment2 == null) {
 			if (currentFragment2 != null) {
 				getSupportFragmentManager().beginTransaction().

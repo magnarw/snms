@@ -20,8 +20,8 @@
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentTop="true"
 	    android:layout_width="fill_parent"
-	    android:layout_height="150dp"
-	     android:scaleType="fitXY"
+	    android:layout_height="180dp"
+	     android:scaleType="centerCrop"
 	    android:padding="0dp"
 	 />
         
@@ -153,12 +153,13 @@
 	    android:id="@+id/newsImage"
 	    android:layout_marginTop="5dp"
      	android:layout_below="@+id/Newstext"
-	    android:layout_height="300px"
+	    android:layout_height="wrap_content"
 	     android:layout_marginLeft="15dp"
  	    android:layout_marginRight="15dp"
 	     android:layout_alignParentRight="true"
 	    android:layout_width="fill_parent"
-	    android:scaleType="fitXY"
+	   android:scaleType="centerInside"
+    android:adjustViewBounds="true"
 	    android:padding="0dp"
 	 />
          	   <TextView
@@ -166,12 +167,12 @@
   android:layout_width="wrap_content"
 	  android:layout_height="wrap_content"
 	 android:layout_marginLeft="15dp"
+	 android:textSize="10dp"
  	 android:layout_marginRight="15dp"
     android:layout_below="@+id/newsImage"
     android:gravity="left"
     android:text="lorod dfd dfjdf d kdjfdkfj  dkfjdkfj dkfj kdfjdkfj kdf  kdfjdkfj dfj kdfj dfj kdfj kdjff djkf  djfkdj fdfj kdjfkdfj"
-    android:textColor="@color/black" 
-     android:textAppearance="@android:style/TextAppearance.Small" />
+    android:textColor="@color/black" />
     /> 
     
 		

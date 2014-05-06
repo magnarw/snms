@@ -67,9 +67,8 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
-	
-		
+		Bundle bundle = this.getArguments();
+		this.newsItem  =(NewsItem) bundle.getSerializable("newsItem");
 		if (this.newsItem.getCat()==1
 				|| this.newsItem.getCat()==2) {
 			View root = inflater.inflate(R.layout.news_widget, null);
@@ -123,13 +122,14 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 		if (this.newsItem.getCat()==1
 				|| this.newsItem.getCat()==2) {
 			
-			imageHeader.setImageUrl(newsItem.getImgUrl()+"?w=600"  +"&h=300", ImageCacheManager
+			imageHeader.setImageUrl(newsItem.getImgUrl()+"?w=300"  +"&h=300", ImageCacheManager
 					.getInstance().getImageLoader());
+			
 			
 			imageHeader.setOnClickListener(this);
 			//150;
 			if(newsItem.getArticleImageUrl()!=null) {
-				image.setImageUrl(newsItem.getArticleImageUrl()+"?w=600&h=600", ImageCacheManager
+				image.setImageUrl(newsItem.getArticleImageUrl()+"?w=400&h=400", ImageCacheManager
 						.getInstance().getImageLoader());
 				image.setOnClickListener(this);
 			}
@@ -137,6 +137,8 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			
 			DateTimeFormatter formatter = DateTimeFormat.forPattern("'Publisert' dd.MMM yyyy");
 			String created = formatter.print(newsItem.getCreatedDate());
+			
+			
 			
 			String newsText1 = "";
 			String newsText2 = "";
@@ -154,6 +156,8 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			createdDate.setText(created);
 			ingress.setText(newsItem.getIngress());
 		//	authorTag.setText(newsItem.getAuthor());
+			
+			
 			text.setText(newsText1);
 			newstext2.setText(newsText2);
 		} else {
@@ -162,7 +166,7 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 					.getInstance().getImageLoader());
 			mapImage.setOnClickListener(this);
 
-			imageHeader.setImageUrl(newsItem.getImgUrl()+"?w=600"  +"&h=300", ImageCacheManager
+			imageHeader.setImageUrl(newsItem.getImgUrl()+"?w=300"  +"&h=300", ImageCacheManager
 					.getInstance().getImageLoader());
 			
 			imageHeader.setOnClickListener(this);
@@ -174,6 +178,13 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			timeFrom.setText(formatter.print(from));
 			text.setText(newsItem.getText());
 			String [] address =  newsItem.getAddress().split(",");
+			DateTimeFormatter formatterMonth = DateTimeFormat.forPattern("MMM");
+			DateTimeFormatter formatterDay = DateTimeFormat.forPattern("dd");
+			String formatedMonth = formatterMonth.print(newsItem.getFrom());
+			String formatedDay = formatterDay.print(newsItem.getFrom());
+
+			monthNumber.setText(formatedDay);
+			monthText.setText(formatedMonth.toUpperCase());
 			if(address.length>1){
 				addressLine1.setText(address[0]);
 				String addressLine2 = "";
@@ -229,13 +240,13 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 				intent.putExtra("rrule", "FREQ=YEARLY");
 				intent.putExtra("endTime", newsItem.getTo().getMillis());
 				intent.putExtra("title", newsItem.getTitle());
-				intent.putExtra("location", newsItem.getAddress());
+				intent.putExtra("eventLocation", newsItem.getAddress());
 				startActivity(intent);
 				addToCalender.setPressed(true);
 			}
 	
 		if(v.equals(imageHeader)){
-			this.createImageDialog(newsItem.getImgUrl()+"?w=1200"  +"&h=600");
+			this.createImageDialog(newsItem.getImgUrl()+"?w=300"  +"&h=300");
 		}
 		if(v.equals(image)){
 			this.createImageDialog(newsItem.getArticleImageUrl()+"?w=600&h=600");

@@ -73,15 +73,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:padding="7dp"
-                android:text="Avsanserte innstillinger er i beta. Dette betyr at noen tider vil være unøyaktig. Reglene vi benytter er hentet fra preytimes.org"
+                android:text="Avsanserte innstillinger er i beta. Dette betyr at noen tider vil være unøyaktig."
                 android:textColor="@color/black"
                 android:textSize="14sp" />
-         <CheckBox
-            android:id="@+id/beta"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content"
-            android:text="Vis avanserte innstillinger" />
         
          <CheckBox
             android:id="@+id/cityCheckBox"
@@ -97,12 +91,6 @@
                 android:layout_marginTop="0dp"
                 android:gravity="bottom"
                 android:textColor="@color/white" />
-
-        <CheckBox
-            android:id="@+id/avansert"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Preytimes.org" />
 
         <RelativeLayout
             android:id="@+id/avansertContainer"

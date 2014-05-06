@@ -1,9 +1,14 @@
 package com.example.snms.domain;
 
+import java.io.Serializable;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
-public class NewsItem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class NewsItem implements Serializable {
 
 	String title;
 	String text;
@@ -183,6 +188,8 @@ public class NewsItem {
 	public void setNextPage(Integer nextPage) {
 		this.nextPage = nextPage;
 	}
+
+
 	
 	
 

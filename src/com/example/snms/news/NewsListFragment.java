@@ -20,6 +20,7 @@ import com.example.snms.domain.HolydayItem;
 import com.example.snms.domain.NewsItem;
 import com.example.snms.images.ImageCacheManager;
 import com.example.snms.network.GsonRequest;
+import com.google.gson.Gson;
 
 import android.content.Context;
 import android.content.Intent;
@@ -69,7 +70,12 @@ public class NewsListFragment extends ListFragment {
 	@Override
 	  public void onListItemClick(ListView l, View v, int position, long id) {
 	   NewsItem clickedDetail = (NewsItem)l.getItemAtPosition(position);
+	   
+	   Bundle args = new Bundle();
+	   args.putSerializable("newsItem", clickedDetail);
+	   
 	   NewsDetailsFragment myDetailFragment = new NewsDetailsFragment(clickedDetail);
+	   myDetailFragment.setArguments(args);
 	   switchFragment(myDetailFragment,null);
 
 	  }
@@ -111,18 +117,31 @@ public class NewsListFragment extends ListFragment {
 	    return new Response.Listener <NewsItem[]>() {
 	    	@Override
 			public void onResponse(NewsItem[] response) {
+	    		
 	    		progressBar.setVisibility(View.GONE);
 	    		if(adapter==null) {
 	    			adapter = new NewsListAdapter(getActivity());
 	    			setListAdapter(adapter);
 	    		}
 				for(NewsItem item : response) {
-					adapter.add(item);
+					if(notInListAllready(item))
+						adapter.add(item);
 				}
 				adapter.notifyDataSetChanged();
 				isLoading = false;
 			}
 	    };	
+	}
+	
+	private boolean notInListAllready(NewsItem item) {
+		int count = adapter.getCount();
+		
+		for(int i = 0;i<count;i++){
+			NewsItem tempItem = adapter.getItem(i);
+			if(tempItem.get_id().equals(item.get_id()))
+					return false;
+		}
+		return true;
 	}
 	
 	private Response.ErrorListener createErrorListener() {
@@ -192,7 +211,6 @@ public class NewsListFragment extends ListFragment {
 				e.printStackTrace();
 			}
 		//	text.setText(h.getText());
-		
 			return convertView;
 		}
 	

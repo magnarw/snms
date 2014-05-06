@@ -198,7 +198,7 @@
                 android:background="@color/snmsActiveGreen"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="TRYKK HER FOR\n FOR Å GI PENGESTØTTE"
+                android:text="TRYKK HER FOR\n Å GI PENGESTØTTE"
                 android:textColor="@color/white" />
             
              <LinearLayout

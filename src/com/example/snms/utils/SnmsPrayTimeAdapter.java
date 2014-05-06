@@ -78,11 +78,11 @@ public class SnmsPrayTimeAdapter {
 		
 	}
 	
-	private int getLastSaturdayInOctober(DateTime time) {
+	private int getLastSundayInOctober(DateTime time) {
 		int lastSaturdayInOctober = -1;
 		DateTime october = new DateTime(time.getYear(),10, 1,0,0);
 		while(october.getMonthOfYear()==10){
-			if(october.getDayOfWeek()==DateTimeConstants.SATURDAY){
+			if(october.getDayOfWeek()==DateTimeConstants.SUNDAY){
 				lastSaturdayInOctober = october.getDayOfYear();
 			}
 			//Keep adding days to march until we reach 
@@ -121,10 +121,7 @@ public class SnmsPrayTimeAdapter {
 	
 		
 		System.out.println("This is last sunday in march:" + getLastSundayInMarch(time));
-		System.out.println("This is last sauterday in october:" + getLastSaturdayInOctober(time));
 		
-		System.out.println("This is last sauterday in october:" + getLastSaturdayInOctober(time));
-		System.out.println("This is last sauterday in october:" + getLastSaturdayInOctober(time));
 		/*
 		if(time.getDayOfYear()>=getLastSundayInMarch(time) && time.getDayOfYear()<=getLastSaturdayInOctober(time)){
 			for(PreyItem prey : items){
@@ -347,7 +344,30 @@ public class SnmsPrayTimeAdapter {
 	private DateTime getPrayTimeFromString(DateTime time, String timeToParse,int day, int month) {
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("h:mm:ss aa");
 		LocalTime timeFromString = LocalTime.parse(timeToParse,fmt);
+		System.out.println("Month, day, year:" + time.getMonthOfYear() + "," + time.getDayOfMonth() + "," + time.getYear());
+		
+		//clean up orginal calender
+		if(time.getMonthOfYear()>=3 && time.getMonthOfYear()<=10){
+			if(time.getMonthOfYear()==3 && time.getDayOfMonth()>=31){
+				timeFromString = timeFromString.minusHours(1);
+			}else if(time.getMonthOfYear()==10){
+				timeFromString = timeFromString.minusHours(1);
+			}else if (time.getMonthOfYear()>3 && time.getMonthOfYear()<10){
+				timeFromString = timeFromString.minusHours(1);
+			}
+		}
+		
+		
 		DateTime toReturn = time.plusHours(timeFromString.getHourOfDay()).plusMinutes(timeFromString.getMinuteOfHour());
+		
+		//adjust for summer time
+		if(toReturn.getDayOfYear()>getLastSundayInMarch(time) && toReturn.getDayOfYear()<getLastSundayInOctober(time)){
+			toReturn = toReturn.plusHours(1);
+		}
+		if(time.getDayOfYear() == getLastSundayInOctober(time))
+			toReturn = toReturn.plusHours(1);
+		
+		
 		
 		//stuff to clean up summer time in the orginal calender(from 2013)
 

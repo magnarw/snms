@@ -8,6 +8,7 @@ import android.widget.TextView;
 public class SnmsTextView extends TextView {
 
 	
+	
 	public SnmsTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
 

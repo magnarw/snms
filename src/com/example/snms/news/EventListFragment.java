@@ -75,8 +75,11 @@ public class EventListFragment extends ListFragment {
 		 * startActivity( new Intent( android.content.Intent.ACTION_VIEW,
 		 * Uri.parse("geo:51.49234,7.43045")));
 		 */
+		  Bundle args = new Bundle();
+		   args.putSerializable("newsItem", clickedDetail);
 		NewsDetailsFragment myDetailFragment = new NewsDetailsFragment(
 				clickedDetail);
+		myDetailFragment.setArguments(args);
 		switchFragment(myDetailFragment, null);
 
 	}
@@ -125,12 +128,24 @@ public class EventListFragment extends ListFragment {
 	    			setListAdapter(adapter);
 	    		}
 				for(NewsItem item : response) {
-					adapter.add(item);
+					if(notInListAllready(item))
+						adapter.add(item);
 				}
 				adapter.notifyDataSetChanged();
 				isLoading = false;
 			}
 	    };	
+	}
+	
+	private boolean notInListAllready(NewsItem item) {
+		int count = adapter.getCount();
+		
+		for(int i = 0;i<count;i++){
+			NewsItem tempItem = adapter.getItem(i);
+			if(tempItem.get_id().equals(item.get_id()))
+					return false;
+		}
+		return true;
 	}
 
 	private Response.ErrorListener createErrorListener() {

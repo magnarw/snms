@@ -204,6 +204,7 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 				} else {
 					ImageView alarmIcon = (ImageView) row
 							.findViewById(R.id.alarmclock_inactive);
+					alarmIcon.setOnClickListener(this);
 					 alarmIcon.setImageResource(Color.GRAY);
 					 alarmIcon.setBackgroundResource(R.drawable.snmsnoneactivealarm);
 				}
@@ -602,10 +603,15 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 			if (v.equals(key)) {
 				NewsDetailsFragment myDetailFragment = new NewsDetailsFragment(
 						newsMap.get(key));
+				
+				   Bundle args = new Bundle();
+				   args.putSerializable("newsItem", newsMap.get(key));
+				   
+				   myDetailFragment.setArguments(args);
 				switchFragment(myDetailFragment, null);
 			}
 		}
-
+		try {
 		for (String key : alarmButtonNameMap.keySet()) {
 			if (!key.equals("Soloppgang") && v.equals(alarmButtonNameMap.get(key))) {
 				if (!Util.hasAlarm(key)) {
@@ -672,6 +678,9 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 				}
 
 			}
+		}
+		} catch (Exception e){
+			System.out.println("blah");
 		}
 	}
 

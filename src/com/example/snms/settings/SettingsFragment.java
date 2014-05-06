@@ -41,7 +41,8 @@ public class SettingsFragment extends Fragment implements
 		OnItemSelectedListener, OnCheckedChangeListener, OnClickListener {
 
 	SnmsDAO dao;
-
+	
+	boolean showDilaog = true; 
 	EditText location;
 	Spinner calcMethod;
 	Spinner jurMethod;
@@ -49,8 +50,6 @@ public class SettingsFragment extends Fragment implements
 	Spinner adjustMethod;
 	CheckBox hanaFi;
 	CheckBox icc;
-	CheckBox beta;
-	CheckBox avansert;
 	CheckBox city;
 	Button searchButton;
 	RelativeLayout avansertContainer;
@@ -74,27 +73,23 @@ public class SettingsFragment extends Fragment implements
 
 		dao = ((PreyOverView) getActivity()).getDAO();
 		View root = inflater.inflate(R.layout.settings, null);
-		beta =  (CheckBox) root.findViewById(R.id.beta);
-		beta.setOnCheckedChangeListener(this);
 		hanaFi = (CheckBox) root.findViewById(R.id.hanafi);
 		city = (CheckBox) root.findViewById(R.id.cityCheckBox);
 		city.setOnCheckedChangeListener(this);
 		icc = (CheckBox) root.findViewById(R.id.icc);
-		avansert = (CheckBox) root.findViewById(R.id.avansert);
 		progressBar = (ProgressBar) root.findViewById(R.id.progressBar);
 		progressBar.setVisibility(View.GONE);
 		locationText = (TextView) root.findViewById(R.id.locationContainer);
 		timeZoneContainer = (TextView) root
 				.findViewById(R.id.timeZoneContainer);
 		hanaFi.setOnCheckedChangeListener(this);
+	
 		hanaFi.setOnClickListener(this);
 		hanaFi.setOnClickListener(this);
 		hanaFi.setOnClickListener(this);
 		city.setOnClickListener(this);
-		avansert.setOnClickListener(this);
 		icc.setOnClickListener(this);
 		icc.setOnCheckedChangeListener(this);
-		avansert.setOnCheckedChangeListener(this);
 		avansertContainer = (RelativeLayout) root
 				.findViewById(R.id.avansertContainer);
 		searchButton = (Button) root.findViewById(R.id.search);
@@ -109,7 +104,7 @@ public class SettingsFragment extends Fragment implements
 		
 		adjustMethod = (Spinner) root.findViewById(R.id.adjustMethod);
 		jurMethod = (Spinner) root.findViewById(R.id.jurMethod);
-
+		//cities.setOnClickListener(this);
 		calcAdapter = ArrayAdapter.createFromResource(getActivity(),
 				R.array.calculation_methods,
 				android.R.layout.simple_spinner_item);
@@ -153,28 +148,14 @@ public class SettingsFragment extends Fragment implements
 		timeZoneContainer.setText(TimeZone.getDefault().getDisplayName() + " "
 				+ timeZonePretty);
 		
-		
-		if(dao.getSettingsValue("beta")!=null){
-			city.setVisibility(View.VISIBLE);
-			cities.setVisibility(View.VISIBLE);
-			avansert.setVisibility(View.VISIBLE);
-			beta.setChecked(true);
-		}else {
-			cities.setVisibility(View.GONE);
-			avansert.setVisibility(View.GONE);
-			beta.setChecked(false);
-			city.setVisibility(View.GONE);
-		}
 		if (dao.getSettingsValue("hanfi") != null) {
 			hanaFi.setChecked(true);
 			icc.setChecked(false);
 			cities.setEnabled(false);
 			city.setChecked(false);
-			avansert.setChecked(false);
 		} else if (dao.getSettingsValue("icc") != null) {
 			hanaFi.setChecked(false);
 			icc.setChecked(true);
-			avansert.setChecked(false);
 			cities.setEnabled(false);
 			city.setChecked(false);
 		}
@@ -182,8 +163,8 @@ public class SettingsFragment extends Fragment implements
 			hanaFi.setChecked(false);
 			icc.setChecked(false);
 			city.setChecked(true);
-			avansert.setChecked(false);
 			cities.setEnabled(true);
+			showDilaog = false;
 			if (dao.getSettingsValue("city") != null) {
 				cities.setSelection(citiesAdapter.getPosition(dao
 						.getSettingsValue("city")));
@@ -196,7 +177,6 @@ public class SettingsFragment extends Fragment implements
 		else if (dao.getSettingsValue("avansert") != null) {
 			hanaFi.setChecked(false);
 			icc.setChecked(false);
-			avansert.setChecked(true);
 			cities.setEnabled(false);
 			city.setChecked(false);
 			if (dao.getSettingsValue("jurmethod") != null) {
@@ -218,7 +198,6 @@ public class SettingsFragment extends Fragment implements
 		} else {
 			hanaFi.setChecked(true);
 			icc.setChecked(false);
-			avansert.setChecked(false);
 			cities.setEnabled(false);
 			city.setChecked(false);
 			dao.saveSetting("icc", "true");
@@ -244,6 +223,13 @@ public class SettingsFragment extends Fragment implements
 		if (arg0 == cities) {
 			String city = (String) arg0.getItemAtPosition(arg2);
 			dao.saveSetting("city", city);
+			Context context = getActivity().getApplicationContext();
+			String output = city.substring(0, 1).toUpperCase() + city.substring(1).toLowerCase();
+			int duration = Toast.LENGTH_SHORT;
+			Toast toast = Toast.makeText(context, output + " er valgt" , duration);
+			if(showDilaog && dao.getSettingsValue("citysetting") != null)
+				toast.show();
+			showDilaog = true;
 		}
 
 	}
@@ -293,17 +279,7 @@ public class SettingsFragment extends Fragment implements
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		if (buttonView.equals(avansert) && isChecked) {
-			dao.saveSetting("avansert", "true");
-			dao.deleteSetting("hanfi");
-			avansertContainer.setVisibility(View.VISIBLE);
-			dao.deleteSetting("icc");
-			dao.deleteSetting("citysetting");
-			cities.setEnabled(false);
-			city.setChecked(false);
-			icc.setChecked(false);
-			hanaFi.setChecked(false);
-				}
+	
 		if (buttonView.equals(hanaFi) && isChecked) {
 			dao.saveSetting("hanfi", "true");
 			dao.deleteSetting("avansert");
@@ -313,7 +289,6 @@ public class SettingsFragment extends Fragment implements
 			avansertContainer.setVisibility(View.GONE);
 			dao.deleteSetting("icc");
 			icc.setChecked(false);
-			avansert.setChecked(false);
 				}
 		if (buttonView.equals(icc) && isChecked) {
 			dao.saveSetting("icc", "true");
@@ -324,7 +299,6 @@ public class SettingsFragment extends Fragment implements
 			dao.deleteSetting("avansert");
 			avansertContainer.setVisibility(View.GONE);
 			hanaFi.setChecked(false);
-			avansert.setChecked(false);
 				}
 		if (buttonView.equals(city) && isChecked) {
 			dao.saveSetting("citysetting","true");
@@ -333,36 +307,13 @@ public class SettingsFragment extends Fragment implements
 			dao.deleteSetting("icc");
 			avansertContainer.setVisibility(View.GONE);
 			hanaFi.setChecked(false);
-			avansert.setChecked(false);
 			icc.setChecked(false);
 			city.setChecked(true);
 			cities.setEnabled(true);
 				}
-		if(buttonView.equals(beta) && isChecked){
-			city.setVisibility(View.VISIBLE);
-			cities.setVisibility(View.VISIBLE);
-			avansert.setVisibility(View.VISIBLE);
-			dao.saveSetting("beta","true");
-			beta.setChecked(true);
-		}
-		if(buttonView.equals(beta) && !isChecked){
-				city.setVisibility(View.GONE);
-				cities.setVisibility(View.GONE);
-				avansert.setVisibility(View.GONE);
-				beta.setChecked(false);
-				dao.deleteSetting("beta");
-				dao.deleteSetting("hanfi");
-				dao.deleteSetting("avansert");
-				dao.deleteSetting("icc");
-				dao.deleteSetting("citysetting");
-				icc.setChecked(true);
-				dao.saveSetting("icc","true");
-				
-			
 		
-		}
 		
-		if(!icc.isChecked() && !hanaFi.isChecked() && !avansert.isChecked() && !city.isChecked())
+		if(!icc.isChecked() && !hanaFi.isChecked() && !city.isChecked())
 			hanaFi.setChecked(true);
 		
 		
@@ -379,12 +330,28 @@ public class SettingsFragment extends Fragment implements
 					createErrorListener(), address);
 
 		}
-		if(v instanceof CheckBox) {
+		if(v.equals(icc)) {
 			Context context = getActivity().getApplicationContext();
-			CharSequence text = "Lagert";
+			CharSequence text = "Shafi tider er valgt";
 			int duration = Toast.LENGTH_SHORT;
 
 			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+		}
+		if(v.equals(hanaFi)) {
+			Context context = getActivity().getApplicationContext();
+			CharSequence text = "Hanafi tider er valgt";
+			int duration = Toast.LENGTH_SHORT;
+
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+		}
+		if(v.equals(cities)){
+			String city = dao.getSettingsValue("city");
+			Context context = getActivity().getApplicationContext();
+			String output = city.substring(0, 1).toUpperCase() + city.substring(1).toLowerCase();
+			int duration = Toast.LENGTH_SHORT;
+			Toast toast = Toast.makeText(context, output + " er valgt" , duration);
 			toast.show();
 		}
 
