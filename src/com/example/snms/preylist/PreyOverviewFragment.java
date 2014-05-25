@@ -236,7 +236,7 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 		renderAlarmState();
 
 		NewsManager.getInstance().getNews(createSuccessListener(),
-				createErrorListener(), 6, 0, 0);
+				createErrorListener(), 6, 0, 0, true);
 
 	}
 
@@ -533,24 +533,7 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 					.tryFetchningJummaLocally(this.timeCurrentlyUsedInPreyOverView);
 
 		}
-		if (v.equals(nextNews)) {
-			newsPage++;
-			newsImage1.setVisibility(View.GONE);
-			newsImage2.setVisibility(View.GONE);
-			newsText1.setVisibility(View.GONE);
-			newsText2.setVisibility(View.GONE);
-			NewsManager.getInstance().getNews(createSuccessListener(),
-					createErrorListener(), 2, newsPage, 1);
-		}
-		if (v.equals(prevNews)) {
-			newsPage--;
-			newsImage1.setVisibility(View.GONE);
-			newsImage2.setVisibility(View.GONE);
-			newsText1.setVisibility(View.GONE);
-			newsText2.setVisibility(View.GONE);
-			NewsManager.getInstance().getNews(createSuccessListener(),
-					createErrorListener(), 2, newsPage, 1);
-		}
+		
 		if (v.equals(shortCuts)) {
 			shortCuts.setSelected(true);
 			latestNews.setSelected(false);
@@ -733,7 +716,7 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 					NetworkImageView newsimage = (NetworkImageView) latestNews
 							.findViewById(R.id.newsImage);
 					newsText.setText(item.getTitle());
-					newsimage.setImageUrl(item.getImgUrl() + "?w=300&h=300",
+					newsimage.setImageUrl(getVersion("medium",item.getImgUrl()),
 							ImageCacheManager.getInstance().getImageLoader());
 					latestNewsContainer.addView(latestNews);
 					newsMap.put(latestNews, item);
@@ -809,6 +792,23 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 		jummaAdaptor
 				.tryFetchningJummaLocally(this.timeCurrentlyUsedInPreyOverView);
 
+	}
+	
+	private String getVersion(String version,String imageUrl){
+		
+		String [] temp = imageUrl.split("\\.");
+		
+		String toReturn = "";
+		for(int i = 0; i<temp.length;i++){
+			if(i == temp.length-2)
+				toReturn +=  temp[i] + "_" + version + ".";
+			else if(i == temp.length -1) 
+				toReturn+= temp[i];
+			else 
+				toReturn+= temp[i] + ".";
+		}
+		
+		return toReturn;
 	}
 
 }

@@ -15,7 +15,7 @@ public class JummaManager {
 	private final String TAG = getClass().getSimpleName();
 	private static JummaManager mInstance;
 
-	private static String NEWS_BASE =  "http://54.247.104.192/snmscms/rest/json/jumma";
+	private static String NEWS_BASE =  "http://app.muslimskesenter.no/snmscms/rest/json/jumma";
 
 
 	public static JummaManager getInstance(){
