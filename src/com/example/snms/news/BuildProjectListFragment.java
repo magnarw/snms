@@ -97,7 +97,7 @@ public class BuildProjectListFragment extends ListFragment {
 			isLoading = true;
 			lastLoadedPage = 0; 
 			
-			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_BUILDPROJECT,0,2);
+			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_BUILDPROJECT,0,2,false);
 			progressBar.setVisibility(View.VISIBLE);
 		}else {
 			progressBar.setVisibility(View.GONE);
@@ -176,7 +176,7 @@ public class BuildProjectListFragment extends ListFragment {
 			isLoading = true;
 			lastLoadedPage = nextPage;
 			Log.v(getClass().toString(), "Load more tweets");
-			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_BUILDPROJECT,nextPage,2);
+			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_BUILDPROJECT,nextPage,2, false);
 		}
 		
 		
@@ -199,7 +199,7 @@ public class BuildProjectListFragment extends ListFragment {
 			text.setTextColor(Color.BLACK);
 			Uri uri = Uri.parse(h.getImgUrl());
 		//	text.setText(h.getText());
-			image.setImageUrl(h.getImgUrl()+"?w=300&h=300", ImageCacheManager.getInstance().getImageLoader());
+			image.setImageUrl(getVersion("extrasmall", h.getImgUrl()), ImageCacheManager.getInstance().getImageLoader());
 			return convertView;
 		}
 	
@@ -245,6 +245,24 @@ public class BuildProjectListFragment extends ListFragment {
 
 		
 		
+	}
+	
+	
+	private String getVersion(String version,String imageUrl){
+		
+		String [] temp = imageUrl.split("\\.");
+		
+		String toReturn = "";
+		for(int i = 0; i<temp.length;i++){
+			if(i == temp.length-2)
+				toReturn +=  temp[i] + "_" + version + ".";
+			else if(i == temp.length -1) 
+				toReturn+= temp[i];
+			else 
+				toReturn+= temp[i] + ".";
+		}
+		
+		return toReturn;
 	}
 	
 	

@@ -122,14 +122,14 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 		if (this.newsItem.getCat()==1
 				|| this.newsItem.getCat()==2) {
 			
-			imageHeader.setImageUrl(newsItem.getImgUrl()+"?w=300"  +"&h=300", ImageCacheManager
+			imageHeader.setImageUrl(getVersion("small", newsItem.getImgUrl()), ImageCacheManager
 					.getInstance().getImageLoader());
 			
 			
 			imageHeader.setOnClickListener(this);
 			//150;
 			if(newsItem.getArticleImageUrl()!=null) {
-				image.setImageUrl(newsItem.getArticleImageUrl()+"?w=400&h=400", ImageCacheManager
+				image.setImageUrl(getVersion("lagre", newsItem.getArticleImageUrl()), ImageCacheManager
 						.getInstance().getImageLoader());
 				image.setOnClickListener(this);
 			}
@@ -166,7 +166,7 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 					.getInstance().getImageLoader());
 			mapImage.setOnClickListener(this);
 
-			imageHeader.setImageUrl(newsItem.getImgUrl()+"?w=300"  +"&h=300", ImageCacheManager
+			imageHeader.setImageUrl(getVersion("medium", newsItem.getImgUrl()), ImageCacheManager
 					.getInstance().getImageLoader());
 			
 			imageHeader.setOnClickListener(this);
@@ -238,7 +238,8 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 				intent.putExtra("beginTime",newsItem.getFrom().getMillis());
 				intent.putExtra("allDay", false);
 				intent.putExtra("rrule", "FREQ=YEARLY");
-				intent.putExtra("endTime", newsItem.getTo().getMillis());
+				if(newsItem.getTo()!=null)
+					intent.putExtra("endTime", newsItem.getTo().getMillis());
 				intent.putExtra("title", newsItem.getTitle());
 				intent.putExtra("eventLocation", newsItem.getAddress());
 				startActivity(intent);
@@ -246,12 +247,31 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			}
 	
 		if(v.equals(imageHeader)){
-			this.createImageDialog(newsItem.getImgUrl()+"?w=300"  +"&h=300");
+			this.createImageDialog(getVersion("lagre", newsItem.getImgUrl()));
 		}
 		if(v.equals(image)){
-			this.createImageDialog(newsItem.getArticleImageUrl()+"?w=600&h=600");
+			this.createImageDialog(getVersion("lagre", newsItem.getArticleImageUrl()));
 		}
 		
+		
+	}
+	
+	
+	private String getVersion(String version,String imageUrl){
+		
+		String [] temp = imageUrl.split("\\.");
+		
+		String toReturn = "";
+		for(int i = 0; i<temp.length;i++){
+			if(i == temp.length-2)
+				toReturn +=  temp[i] + "_" + version + ".";
+			else if(i == temp.length -1) 
+				toReturn+= temp[i];
+			else 
+				toReturn+= temp[i] + ".";
+		}
+		
+		return toReturn;
 		
 	}
 

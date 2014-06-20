@@ -15,7 +15,7 @@ public class NewsManager {
 	private final String TAG = getClass().getSimpleName();
 	private static NewsManager mInstance;
 
-	private static String NEWS_BASE =  "http://54.247.104.192/snmscms/rest/json/news";
+	private static String NEWS_BASE =  "http://app.muslimskesenter.no/snmscms/rest/json/news";
 	private static String NEWS_NUMBER_OF_RESULTS = "CapTech";
 	private static String NEWS_PAGENING = "CapTech";
 
@@ -28,10 +28,11 @@ public class NewsManager {
 		return mInstance;
 	}
 
-	public void getNews(Listener< NewsItem[]> listener, ErrorListener errorListener, int pageSize, int pageNum,int filter){
+	public void getNews(Listener< NewsItem[]> listener, ErrorListener errorListener, int pageSize, int pageNum,int filter, boolean b){
 		Uri.Builder uriBuilder = Uri.parse(NEWS_BASE).buildUpon().appendQueryParameter("filter",String.valueOf(filter)).
 		appendQueryParameter("pageSize", String.valueOf(pageSize)).
-		appendQueryParameter("pageNumber", String.valueOf(pageNum));
+		appendQueryParameter("pageNumber", String.valueOf(pageNum)).
+		appendQueryParameter("includePri", String.valueOf(b));
 		
 		
 		String uri = uriBuilder.build().toString();

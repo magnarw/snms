@@ -104,7 +104,7 @@ public class EventListFragment extends ListFragment {
 			isLoading = true;
 			lastLoadedPage = 0; 
 			
-			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_EVENTS,0,3);
+			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_EVENTS,0,3,false);
 			progressBar.setVisibility(View.VISIBLE);
 		}else {
 			progressBar.setVisibility(View.GONE);
@@ -179,7 +179,7 @@ public class EventListFragment extends ListFragment {
 			isLoading = true;
 			lastLoadedPage = nextPage;
 			Log.v(getClass().toString(), "Load more tweets");
-			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_EVENTS,nextPage,3);
+			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),PAGE_SIZE_FOR_EVENTS,nextPage,3,false);
 		}
 
 
@@ -203,7 +203,7 @@ public class EventListFragment extends ListFragment {
 			title.setText(getItem(position).getTitle());
 			Uri uri = Uri.parse(h.getImgUrl()+"?w=" + image.getWidth() +"&h="+ image.getHeight()); 
 			// text.setText(h.getText());
-			image.setImageUrl(h.getImgUrl()+"?w=300&h=300", ImageCacheManager.getInstance().getImageLoader());
+			image.setImageUrl(getVersion("extrasmall", h.getImgUrl()), ImageCacheManager.getInstance().getImageLoader());
 			
 			DateTimeFormatter formatter = DateTimeFormat.forPattern("EEEE dd.MMM 'kl' HH:mm");
 			//Onsdag 30.april, kl 20:30
@@ -261,5 +261,20 @@ public class EventListFragment extends ListFragment {
 		}
 
 	}
-
+	private String getVersion(String version,String imageUrl){
+		
+		String [] temp = imageUrl.split("\\.");
+		
+		String toReturn = "";
+		for(int i = 0; i<temp.length;i++){
+			if(i == temp.length-2)
+				toReturn +=  temp[i] + "_" + version + ".";
+			else if(i == temp.length -1) 
+				toReturn+= temp[i];
+			else 
+				toReturn+= temp[i] + ".";
+		}
+		
+		return toReturn;
+	}
 }
