@@ -139,12 +139,12 @@ public class SnmsPrayTimeAdapter {
 		
 		if(!settings.getHasAvansertPreyCalenderSet()){
 			if(settings.getHasShafiPreyCalenderSet())
-				return adjustForDaylightSavings(time,readPrayItemFormXml(time,"shafi"));
+				return adjustForDaylightSavings(time,readPrayItemFormXml(time,"asr1x"));
 			else if(settings.getHasCityCalednerSet()){
 				return adjustForDaylightSavings(time,getPreyItemBasedOnCity(settings.getCity(),time,false));
 			}
 			else {
-				return adjustForDaylightSavings(time,readPrayItemFormXml(time,"hanafi"));
+				return adjustForDaylightSavings(time,readPrayItemFormXml(time,"asr2x"));
 			}
 		}else {
 			PrayTime prayers = new PrayTime();
@@ -213,6 +213,7 @@ public class SnmsPrayTimeAdapter {
 			return dayPreyListMap;
 			
 		}
+		
 		
 		DateTime dateTime = new DateTime(year, month, 1, 1, 0, 0, 000);
 		List<PreyItemList> dayPreyListMap = new ArrayList<PreyItemList>();
