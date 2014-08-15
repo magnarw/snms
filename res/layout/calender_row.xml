@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:weightSum="1.0" >
 
-    <com.example.snms.SnmsTextView
+    <no.snms.app.SnmsTextView
         android:id="@+id/row_date"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -18,7 +18,7 @@
         android:textAppearance="@android:style/TextAppearance.Small" 
         android:textSize="14dp" />
 
-    <com.example.snms.SnmsTextView
+    <no.snms.app.SnmsTextView
         android:id="@+id/row_fajr"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -28,7 +28,7 @@
         android:textAppearance="@android:style/TextAppearance.Small" 
         android:textSize="14dp" />
 
-    <com.example.snms.SnmsTextView
+    <no.snms.app.SnmsTextView
         android:id="@+id/row_soloppgang"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -38,7 +38,7 @@
         android:textAppearance="@android:style/TextAppearance.Small"
         android:textSize="14dp" />
 
-    <com.example.snms.SnmsTextView
+    <no.snms.app.SnmsTextView
         android:id="@+id/row_duhr"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -48,7 +48,7 @@
         android:textAppearance="@android:style/TextAppearance.Small"
         android:textSize="14dp" />
 
-    <com.example.snms.SnmsTextView
+    <no.snms.app.SnmsTextView
         android:id="@+id/row_asr"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -58,7 +58,7 @@
         android:textAppearance="@android:style/TextAppearance.Small"
         android:textSize="14dp" />
 
-    <com.example.snms.SnmsTextView
+    <no.snms.app.SnmsTextView
         android:id="@+id/row_magrihb"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -68,7 +68,7 @@
         android:textAppearance="@android:style/TextAppearance.Small"
         android:textSize="14dp" />
 
-    <com.example.snms.SnmsTextView
+    <no.snms.app.SnmsTextView
         android:id="@+id/row_isha"
         android:layout_width="0dp"
         android:layout_height="match_parent"

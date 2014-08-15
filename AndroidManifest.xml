@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.snms"
+    package="no.snms.app"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -26,14 +26,14 @@
         android:xlargeScreens="true" />
 
     <application
-        android:name="com.example.snms.MainApplication"
+        android:name="no.snms.app.MainApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher_snms2_small"
         android:label="@string/app_name"
         android:theme="@style/SnmsTheme" >
         
          <activity
-            android:name="com.example.snms.SnmsSplashScreen"
+            android:name="no.snms.app.SnmsSplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Sherlock.NoActionBar" >
@@ -43,15 +43,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.snms.PreyOverView"
+            android:name="no.snms.app.PreyOverView"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
 
         <!-- This activity is the activity that will be launched by the alarm -->
-        <activity android:name="com.example.snms.alarm.AlarmReceiverActivity" />
+        <activity android:name="no.snms.app.alarm.AlarmReceiverActivity" />
 
-        <receiver android:name="com.example.snms.alarm.PollReciever" >
+        <receiver android:name="no.snms.app.alarm.PollReciever" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
