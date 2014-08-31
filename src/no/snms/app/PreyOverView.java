@@ -13,15 +13,27 @@ import no.snms.app.preylist.PreyOverviewFragment;
 import no.snms.app.utils.SnmsPrayTimeAdapter;
 
 import org.joda.time.DateTime;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import no.snms.app.R;
+
+
+
+
+
+
 //import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.parse.Parse;
+import com.parse.ParseInstallation;
+import com.parse.PushService;
 
 import android.net.Uri;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -45,7 +57,7 @@ public class PreyOverView extends  BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		ParseInstallation.getCurrentInstallation().saveInBackground();
 		
 //		Context context = getApplicationContext();		//Dag-Martin
 		getSlidingMenu().setMode(SlidingMenu.LEFT_RIGHT);
@@ -70,7 +82,32 @@ public class PreyOverView extends  BaseActivity {
 		.beginTransaction()
 		.replace(R.id.menu_frame_two, new SampleListFragment())
 		.commit();
+		Intent intent = getIntent();
+		Bundle extra  = intent.getExtras();
+		if(extra !=null) {
+			String jsonData = extra.getString("com.parse.Data");
+			try {
+				JSONObject obj = new JSONObject(jsonData);
+				String alert = obj.getString("alert");
+				String tep = "";
+				// 1. Instantiate an AlertDialog.Builder with its constructor
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+				// 2. Chain together various setter methods to set the dialog characteristics
+				builder.setMessage(alert).setTitle("Pushvarsel fra SNMS");
+
+				// 3. Get the AlertDialog from create()
+				AlertDialog dialog = builder.create();
+				dialog.show();
+				
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
+		}
+		
 	}
 	
 	public void setAlarm(String alarm,Boolean value) {

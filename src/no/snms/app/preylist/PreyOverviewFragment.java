@@ -42,10 +42,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
+
 import no.snms.app.R;
 import no.snms.app.R.id;
 import no.snms.app.R.layout;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -76,6 +76,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PreyOverviewFragment extends Fragment implements OnClickListener,
 		JummaListner, AlarmChangeListner,
@@ -660,6 +661,11 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 					Alarm alarm = Util.getAlarm(key);
 					Util.RemoveAlarm(alarm.getId(), getAppContext(),
 							alarm.getPrey());
+					
+					int duration = Toast.LENGTH_SHORT;
+					Toast toast = null;
+						toast = Toast.makeText(getActivity(), "Alarm deaktivert" , duration);
+					toast.show();
 					renderAlarmState();
 				}
 
@@ -776,7 +782,17 @@ public class PreyOverviewFragment extends Fragment implements OnClickListener,
 
 	@Override
 	public void alarmChanged(String alarm, Boolean value) {
+		
+		//Alarm aktivert
+		
+		int duration = Toast.LENGTH_SHORT;
+		Toast toast = null;
+		if(value) 
+			toast = Toast.makeText(getActivity(), "Alarm aktivert" , duration);
+		else 
+			toast = Toast.makeText(getActivity(), "Alarm deaktivert" , duration);
 		renderAlarmState();
+		toast.show();
 
 	}
 

@@ -2,6 +2,10 @@ package no.snms.app;
 
 
 
+import com.parse.Parse;
+import com.parse.ParseInstallation;
+import com.parse.PushService;
+
 import no.snms.app.images.ImageCacheManager;
 import no.snms.app.network.RequestManager;
 import android.app.Application;
@@ -18,9 +22,16 @@ public class MainApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		Parse.initialize(this, "wYQcUGs8yWdREXFkiVAjnov1OtFgaHnUuTeVBTXw", "cuN51kRM0uUoCSf1OCvNQg7HXSeNOFL7mED7Z5tc");
+		PushService.setDefaultPushCallback(this, PreyOverView.class);
+		
 		MainApplication.context = getApplicationContext();
 
 		init();
+		
+		  
+
+		
 	}
 
 	/**
